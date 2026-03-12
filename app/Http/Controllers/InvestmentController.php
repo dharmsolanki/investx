@@ -1,0 +1,130 @@
+<?php
+
+namespace App\Http\Controllers;
+
+use App\Models\Investment;
+use App\Models\InvestmentPlan;
+use App\Models\Transaction;
+use Carbon\Carbon;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
+
+class InvestmentController extends Controller
+{
+    // Show all plans
+    public function plans()
+    {
+        $plans = InvestmentPlan::active()->get();
+        return view('investments.plans', compact('plans'));
+    }
+
+    // Show invest form for a specific plan
+    public function showInvestForm(InvestmentPlan $plan)
+    {
+        $user = Auth::user();
+
+        if (!$user->isKycVerified()) {
+            return redirect()->route('kyc')->with('warning', 'Investment ke liye pehle KYC complete karein.');
+        }
+
+        return view('investments.invest', compact('plan', 'user'));
+    }
+
+    // Process investment (after payment success)
+    public function store(Request $request)
+    {
+        $request->validate([
+            'plan_id'        => 'required|exists:investment_plans,id',
+            'amount'         => 'required|numeric|min:1',
+            'payment_method' => 'required|in:upi,netbanking,card,imps,neft,crypto,paytm',
+        ]);
+
+        $user = Auth::user();
+        $plan = InvestmentPlan::findOrFail($request->plan_id);
+
+        if (!$user->isKycVerified()) {
+            return back()->with('error', 'KYC verify hone ke baad invest kar sakte hain.');
+        }
+
+        if ($request->amount < $plan->min_amount) {
+            return back()->with('error', "Minimum amount ₹" . number_format($plan->min_amount) . " hona chahiye.");
+        }
+
+        if ($plan->max_amount && $request->amount > $plan->max_amount) {
+            return back()->with('error', "Maximum amount ₹" . number_format($plan->max_amount) . " se zyada nahi ho sakta.");
+        }
+
+        // Calculate returns
+        $calc = $plan->calculateProfit($request->amount);
+
+        DB::beginTransaction();
+        try {
+            $investment = Investment::create([
+                'user_id'           => $user->id,
+                'plan_id'           => $plan->id,
+                'principal_amount'  => $calc['principal'],
+                'expected_profit'   => $calc['gross_profit'],
+                'commission_amount' => $calc['commission_amount'],
+                'net_profit'        => $calc['net_profit'],
+                'status'            => 'active',
+                'invested_at'       => now(),
+                'maturity_date'     => now()->addMonths($plan->duration_months),
+            ]);
+
+            // Record deposit transaction
+            Transaction::create([
+                'user_id'        => $user->id,
+                'investment_id'  => $investment->id,
+                'type'           => 'deposit',
+                'amount'         => $calc['principal'],
+                'payment_method' => $request->payment_method,
+                'payment_id'     => $request->payment_id ?? 'MANUAL_' . uniqid(),
+                'status'         => 'completed',
+                'notes'          => "Investment in {$plan->name}",
+            ]);
+
+            DB::commit();
+
+            return redirect()->route('investments.my')
+                ->with('success', "Investment successful! ₹" . number_format($calc['principal']) . " invest ho gaya. Maturity: " . now()->addMonths($plan->duration_months)->format('d M Y'));
+
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return back()->with('error', 'Kuch gadbad ho gayi. Dobara try karein. Error: ' . $e->getMessage());
+        }
+    }
+
+    // My investments list
+    public function myInvestments()
+    {
+        $user = Auth::user();
+
+        // Auto-mature investments
+        $user->investments()->where('status', 'active')
+            ->whereDate('maturity_date', '<=', now())
+            ->update(['status' => 'matured']);
+
+        $investments = $user->investments()
+            ->with('plan', 'withdrawal')
+            ->latest()
+            ->paginate(10);
+
+        $stats = [
+            'total_invested' => $user->investments()->sum('principal_amount'),
+            'active_count'   => $user->investments()->where('status', 'active')->count(),
+            'total_profit'   => $user->investments()->where('status', 'withdrawn')->sum('net_profit'),
+            'matured_count'  => $user->investments()->where('status', 'matured')->count(),
+        ];
+
+        return view('investments.my', compact('investments', 'stats'));
+    }
+
+    // AJAX: calculate profit
+    public function calculate(Request $request)
+    {
+        $plan   = InvestmentPlan::findOrFail($request->plan_id);
+        $result = $plan->calculateProfit((float) $request->amount);
+        return response()->json($result);
+    }
+}
