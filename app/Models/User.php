@@ -12,10 +12,26 @@ class User extends Authenticatable
     use HasFactory, Notifiable;
 
     protected $fillable = [
-        'name', 'email', 'phone', 'password', 'pan_number',
-        'aadhar_number', 'kyc_status', 'wallet_balance',
-        'bank_account', 'bank_ifsc', 'bank_name',
-        'referral_code', 'referred_by', 'is_admin', 'is_active',
+        'name',
+        'email',
+        'phone',
+        'password',
+        'pan_number',
+        'aadhar_number',
+        'kyc_status',
+        'wallet_balance',
+        'bank_account',
+        'bank_ifsc',
+        'bank_name',
+        'referral_code',
+        'referred_by',
+        'is_admin',
+        'is_active',
+        'pan_image',
+        'aadhar_front_image',
+        'aadhar_back_image',
+        'bank_passbook_image',
+        'kyc_rejection_reason',
     ];
 
     protected $hidden = ['password', 'remember_token'];
@@ -26,6 +42,9 @@ class User extends Authenticatable
         'wallet_balance'    => 'decimal:2',
         'is_admin'          => 'boolean',
         'is_active'         => 'boolean',
+        'aadhar_number' => 'encrypted',
+        'pan_number'    => 'encrypted',
+        'bank_account'  => 'encrypted',
     ];
 
     // Auto-generate referral code on create

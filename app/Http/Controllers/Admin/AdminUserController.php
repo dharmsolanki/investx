@@ -1,7 +1,4 @@
 <?php
-// ============================================================
-// FILE: app/Http/Controllers/Admin/AdminUserController.php
-// ============================================================
 
 namespace App\Http\Controllers\Admin;
 
@@ -17,7 +14,9 @@ class AdminUserController extends Controller
 
         if ($request->filled('search')) {
             $s = $request->search;
-            $query->where(fn($q) => $q->where('name','like',"%$s%")->orWhere('email','like',"%$s%")->orWhere('phone','like',"%$s%"));
+            $query->where(fn($q) => $q->where('name','like',"%$s%")
+                ->orWhere('email','like',"%$s%")
+                ->orWhere('phone','like',"%$s%"));
         }
 
         if ($request->filled('kyc')) {
@@ -36,11 +35,26 @@ class AdminUserController extends Controller
 
     public function updateKyc(Request $request, User $user)
     {
-        $request->validate(['kyc_status' => 'required|in:verified,rejected']);
+        $request->validate([
+            'kyc_status' => 'required|in:verified,rejected',
+            'reason'     => 'nullable|string|max:500',
+        ]);
 
-        $user->update(['kyc_status' => $request->kyc_status]);
+        $data = ['kyc_status' => $request->kyc_status];
 
-        return back()->with('success', "KYC status updated: {$request->kyc_status}");
+        if ($request->kyc_status === 'rejected' && $request->filled('reason')) {
+            $data['kyc_rejection_reason'] = $request->reason;
+        } else {
+            $data['kyc_rejection_reason'] = null;
+        }
+
+        $user->update($data);
+
+        $msg = $request->kyc_status === 'verified'
+            ? "✅ KYC Verified: {$user->name}"
+            : "❌ KYC Rejected: {$user->name}";
+
+        return back()->with('success', $msg);
     }
 
     public function toggleStatus(User $user)
