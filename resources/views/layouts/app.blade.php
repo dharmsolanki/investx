@@ -42,10 +42,10 @@ body { font-family:'DM Sans',sans-serif; background:var(--dark); color:var(--tex
     display:inline-block; font-size:0.65rem; font-weight:600;
     padding:2px 8px; border-radius:20px; margin-top:5px; text-transform:uppercase;
 }
-.kyc-badge.verified { background:rgba(34,197,94,0.15); color:var(--green); }
-.kyc-badge.pending  { background:rgba(201,168,76,0.15); color:var(--gold); }
+.kyc-badge.verified  { background:rgba(34,197,94,0.15); color:var(--green); }
+.kyc-badge.pending   { background:rgba(201,168,76,0.15); color:var(--gold); }
 .kyc-badge.submitted { background:rgba(59,130,246,0.15); color:var(--blue); }
-.kyc-badge.rejected { background:rgba(239,68,68,0.15); color:var(--red); }
+.kyc-badge.rejected  { background:rgba(239,68,68,0.15); color:var(--red); }
 
 .sidebar-nav { flex:1; padding: 1rem 0; overflow-y:auto; }
 .nav-section { padding: 0.6rem 1.5rem 0.3rem; font-size:0.65rem; font-weight:600; letter-spacing:1.5px; text-transform:uppercase; color:var(--muted); }
@@ -137,14 +137,14 @@ tr:hover td { background:rgba(255,255,255,0.02); }
 
 /* BADGES */
 .badge { display:inline-block; padding:3px 10px; border-radius:20px; font-size:0.7rem; font-weight:600; text-transform:uppercase; }
-.badge.active    { background:rgba(34,197,94,0.15); color:var(--green); }
-.badge.matured   { background:rgba(201,168,76,0.15); color:var(--gold); }
-.badge.withdrawn { background:rgba(107,114,128,0.15); color:var(--muted); }
-.badge.pending   { background:rgba(251,191,36,0.15); color:#FBB924; }
-.badge.completed { background:rgba(34,197,94,0.15); color:var(--green); }
-.badge.failed    { background:rgba(239,68,68,0.15); color:var(--red); }
-.badge.deposit   { background:rgba(59,130,246,0.15); color:var(--blue); }
-.badge.profit    { background:rgba(34,197,94,0.15); color:var(--green); }
+.badge.active     { background:rgba(34,197,94,0.15); color:var(--green); }
+.badge.matured    { background:rgba(201,168,76,0.15); color:var(--gold); }
+.badge.withdrawn  { background:rgba(107,114,128,0.15); color:var(--muted); }
+.badge.pending    { background:rgba(251,191,36,0.15); color:#FBB924; }
+.badge.completed  { background:rgba(34,197,94,0.15); color:var(--green); }
+.badge.failed     { background:rgba(239,68,68,0.15); color:var(--red); }
+.badge.deposit    { background:rgba(59,130,246,0.15); color:var(--blue); }
+.badge.profit     { background:rgba(34,197,94,0.15); color:var(--green); }
 .badge.commission { background:rgba(239,68,68,0.15); color:var(--red); }
 .badge.withdrawal { background:rgba(251,191,36,0.15); color:#FBB924; }
 
@@ -211,10 +211,10 @@ tr:hover td { background:rgba(255,255,255,0.02); }
             <span class="icon">📊</span> Dashboard
         </a>
         <a href="{{ route('plans') }}" class="{{ request()->routeIs('plans') ? 'active' : '' }}">
-            <span class="icon">📈</span> Investment Plans
+            <span class="icon">📈</span> Trading Plans
         </a>
         <a href="{{ route('investments.my') }}" class="{{ request()->routeIs('investments.*') ? 'active' : '' }}">
-            <span class="icon">💼</span> My Investments
+            <span class="icon">💼</span> My Participations
         </a>
         <a href="{{ route('withdrawals.index') }}" class="{{ request()->routeIs('withdrawals.*') ? 'active' : '' }}">
             <span class="icon">💸</span> Withdrawals

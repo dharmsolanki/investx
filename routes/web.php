@@ -14,6 +14,7 @@ use Illuminate\Support\Facades\Route;
 
 // ─── Public Routes ─────────────────────────────────────────
 Route::get('/', fn() => view('welcome.index'))->name('home');
+Route::get('/terms', fn() => view('terms'))->name('terms');
 
 // Auth
 Route::middleware('guest')->group(function () {

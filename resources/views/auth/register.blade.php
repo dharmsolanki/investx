@@ -23,18 +23,35 @@ body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellips
 .btn-gold{width:100%;padding:0.85rem;background:var(--gold);color:#0A0C10;border:none;border-radius:10px;font-size:1rem;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif;transition:all 0.2s;margin-top:0.5rem;}
 .btn-gold:hover{background:#E8C97A;}
 .link{color:var(--gold);text-decoration:none;font-weight:500;}
+.link:hover{text-decoration:underline;}
 .divider{text-align:center;font-size:0.82rem;color:var(--muted);margin-top:1.2rem;}
 .alert.error{background:rgba(239,68,68,0.1);border:1px solid rgba(239,68,68,0.25);color:var(--red);padding:0.75rem 1rem;border-radius:8px;margin-bottom:1rem;font-size:0.85rem;}
+
+/* Risk note box */
+.risk-note{background:rgba(239,68,68,0.06);border:1px solid rgba(239,68,68,0.2);border-radius:10px;padding:0.9rem 1rem;margin-bottom:1.2rem;font-size:0.78rem;color:#F87171;line-height:1.6;}
+.risk-note strong{color:var(--red);}
+
+/* Checkbox styling */
+.checkbox-group{display:flex;align-items:flex-start;gap:0.6rem;cursor:pointer;}
+.checkbox-group input[type="checkbox"]{margin-top:3px;width:15px;height:15px;accent-color:var(--gold);flex-shrink:0;cursor:pointer;}
+.checkbox-group span{font-size:0.82rem;color:var(--muted);line-height:1.5;}
 </style>
 </head>
 <body>
 <div class="auth-box">
     <div class="logo">Invest<span>X</span></div>
-    <div class="subtitle">Free account banayein aur invest shuru karein</div>
+    <div class="subtitle">Free account banayein aur trading community join karein</div>
 
     @if($errors->any())
         <div class="alert error">❌ {{ $errors->first() }}</div>
     @endif
+
+    {{-- Risk Warning --}}
+    <div class="risk-note">
+        ⚠️ <strong>Risk Warning:</strong> Forex trading mein substantial risk hota hai.
+        Aap apni poori capital kho sakte hain. Returns guaranteed nahi hain.
+        Sirf woh funds use karein jo aap afford kar sakein.
+    </div>
 
     <form action="{{ url('/register') }}" method="POST">
         @csrf
@@ -70,15 +87,35 @@ body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellips
             <input class="form-control" type="text" name="referral_code" value="{{ old('referral_code', request('ref')) }}" placeholder="Friend ka referral code" maxlength="8">
         </div>
 
-        <div class="form-group" style="margin-top:0.5rem">
-            <label style="display:flex;align-items:flex-start;gap:0.6rem;cursor:pointer;font-size:0.82rem;color:var(--muted)">
-                <input type="checkbox" name="terms" value="1" style="margin-top:2px">
-                <span>Main <a href="#" class="link">Terms & Conditions</a> aur <a href="#" class="link">Privacy Policy</a> se agree karta/karti hun.</span>
+        {{-- T&C Checkbox --}}
+        <div class="form-group" style="margin-top:0.8rem">
+            <label class="checkbox-group">
+                <input type="checkbox" name="terms" value="1" {{ old('terms') ? 'checked' : '' }} required>
+                <span>
+                    Main <a href="{{ route('terms') }}" class="link" target="_blank">Terms & Conditions</a> padh chuka/chuki hun aur agree karta/karti hun.
+                    Mujhe pata hai ki <strong style="color:var(--text)">forex trading mein risk hai aur returns guaranteed nahi hain.</strong>
+                </span>
             </label>
-            @error('terms')<div class="form-error">{{ $message }}</div>@enderror
+            @error('terms')
+                <div class="form-error">⚠️ {{ $message }}</div>
+            @enderror
         </div>
 
-        <button type="submit" class="btn-gold">Free Account Banayein →</button>
+        {{-- Risk Acknowledge Checkbox --}}
+        <div class="form-group">
+            <label class="checkbox-group">
+                <input type="checkbox" name="risk_acknowledge" value="1" {{ old('risk_acknowledge') ? 'checked' : '' }} required>
+                <span>
+                    Main samajhta/samajhti hun ki main apni poori contributed amount kho sakta/sakti hun.
+                    Yeh participation meri <strong style="color:var(--text)">apni marzi se hai.</strong>
+                </span>
+            </label>
+            @error('risk_acknowledge')
+                <div class="form-error">⚠️ {{ $message }}</div>
+            @enderror
+        </div>
+
+        <button type="submit" class="btn-gold">Community Join Karein →</button>
     </form>
 
     <div class="divider">Already account hai? <a href="{{ route('login') }}" class="link">Login karein</a></div>

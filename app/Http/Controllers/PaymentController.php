@@ -55,10 +55,9 @@ class PaymentController extends Controller
                 'user_email' => Auth::user()->email,
                 'user_phone' => Auth::user()->phone,
             ]);
-
         } catch (\Exception $e) {
             Log::error('Razorpay order creation failed: ' . $e->getMessage());
-            return response()->json(['error' => 'Payment gateway error'], 500);
+            return response()->json(['error' => $e->getMessage()]); // ← change karo
         }
     }
 

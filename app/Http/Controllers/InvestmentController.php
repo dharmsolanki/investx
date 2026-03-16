@@ -25,7 +25,7 @@ class InvestmentController extends Controller
         $user = Auth::user();
 
         if (!$user->isKycVerified()) {
-            return redirect()->route('kyc')->with('warning', 'Investment ke liye pehle KYC complete karein.');
+            return redirect()->route('kyc')->with('warning', 'Participate karne ke liye pehle KYC complete karein.');
         }
 
         return view('investments.invest', compact('plan', 'user'));
@@ -37,22 +37,22 @@ class InvestmentController extends Controller
         $request->validate([
             'plan_id'        => 'required|exists:investment_plans,id',
             'amount'         => 'required|numeric|min:1',
-            'payment_method' => 'required|in:upi,netbanking,card,imps,neft,crypto,paytm',
+            'payment_method' => 'required|in:upi,netbanking,card,imps,neft',
         ]);
 
         $user = Auth::user();
         $plan = InvestmentPlan::findOrFail($request->plan_id);
 
         if (!$user->isKycVerified()) {
-            return back()->with('error', 'KYC verify hone ke baad invest kar sakte hain.');
+            return back()->with('error', 'KYC verify hone ke baad participate kar sakte hain.');
         }
 
         if ($request->amount < $plan->min_amount) {
-            return back()->with('error', "Minimum amount ₹" . number_format($plan->min_amount) . " hona chahiye.");
+            return back()->with('error', "Minimum contribution ₹" . number_format($plan->min_amount) . " hona chahiye.");
         }
 
         if ($plan->max_amount && $request->amount > $plan->max_amount) {
-            return back()->with('error', "Maximum amount ₹" . number_format($plan->max_amount) . " se zyada nahi ho sakta.");
+            return back()->with('error', "Maximum contribution ₹" . number_format($plan->max_amount) . " se zyada nahi ho sakta.");
         }
 
         // Calculate returns
@@ -80,14 +80,15 @@ class InvestmentController extends Controller
                 'amount'         => $calc['principal'],
                 'payment_method' => $request->payment_method,
                 'payment_id'     => $request->payment_id ?? 'MANUAL_' . uniqid(),
+                'gateway_order_id' => $request->razorpay_order_id ?? null,
                 'status'         => 'completed',
-                'notes'          => "Investment in {$plan->name}",
+                'notes'          => "Participation in {$plan->name}",
             ]);
 
             DB::commit();
 
             return redirect()->route('investments.my')
-                ->with('success', "Investment successful! ₹" . number_format($calc['principal']) . " invest ho gaya. Maturity: " . now()->addMonths($plan->duration_months)->format('d M Y'));
+                ->with('success', "Participation successful! ₹" . number_format($calc['principal']) . " contribute ho gaya. Maturity: " . now()->addMonths($plan->duration_months)->format('d M Y'));
 
         } catch (\Exception $e) {
             DB::rollBack();

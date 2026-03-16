@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>InvestX — Smart Investment Platform</title>
+<title>InvestX — Forex Trading Community</title>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
   :root {
@@ -16,7 +16,6 @@
   * { margin:0; padding:0; box-sizing:border-box; }
   body { font-family:'DM Sans',sans-serif; background:var(--dark); color:var(--text); overflow-x:hidden; }
 
-  /* NAV */
   nav {
     position:fixed; top:0; left:0; right:0; z-index:100;
     display:flex; align-items:center; justify-content:space-between;
@@ -36,7 +35,6 @@
   .btn-gold { padding:0.5rem 1.4rem; background:var(--gold); color:#0A0C10; border:none; border-radius:6px; font-size:0.88rem; font-weight:600; cursor:pointer; font-family:'DM Sans',sans-serif; transition:all 0.2s; text-decoration:none; }
   .btn-gold:hover { background:var(--gold-light); }
 
-  /* TICKER */
   .ticker-wrap { margin-top:64px; background:rgba(201,168,76,0.06); border-bottom:1px solid var(--border); padding:0.6rem 0; overflow:hidden; }
   .ticker-inner { display:flex; gap:3rem; animation:tickerScroll 25s linear infinite; white-space:nowrap; }
   @keyframes tickerScroll { 0%{transform:translateX(0)} 100%{transform:translateX(-50%)} }
@@ -46,7 +44,6 @@
   .ticker-chg.up { color:var(--green); }
   .ticker-chg.dn { color:var(--red); }
 
-  /* HERO */
   .hero { min-height:92vh; display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center; padding:6rem 2rem 4rem; position:relative; overflow:hidden; }
   .hero::before { content:''; position:absolute; inset:0; background:radial-gradient(ellipse 80% 60% at 50% 30%, rgba(201,168,76,0.1) 0%, transparent 70%); pointer-events:none; }
   .hero-grid { position:absolute; inset:0; background-image:linear-gradient(rgba(201,168,76,0.04) 1px, transparent 1px), linear-gradient(90deg, rgba(201,168,76,0.04) 1px, transparent 1px); background-size:60px 60px; pointer-events:none; mask-image:radial-gradient(ellipse at center, black 30%, transparent 80%); }
@@ -64,7 +61,6 @@
   .stat-num { font-family:'Playfair Display',serif; font-size:2.2rem; font-weight:700; color:var(--gold); display:block; }
   .stat-label { font-size:0.82rem; color:var(--muted); margin-top:0.3rem; }
 
-  /* SECTIONS */
   section { padding:6rem 2rem; }
   .container { max-width:1100px; margin:0 auto; }
   .section-label { font-size:0.78rem; font-weight:600; letter-spacing:2px; color:var(--gold); text-transform:uppercase; margin-bottom:0.8rem; }
@@ -72,7 +68,6 @@
   .section-sub { font-size:1rem; color:var(--muted); max-width:500px; line-height:1.7; }
   .section-head { margin-bottom:4rem; }
 
-  /* HOW IT WORKS */
   .how-bg { background:var(--dark2); }
   .steps-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:2rem; }
   .step-card { background:var(--dark3); border:1px solid var(--border); border-radius:16px; padding:2rem; position:relative; overflow:hidden; transition:transform 0.3s, border-color 0.3s; }
@@ -83,7 +78,6 @@
   .step-card h3 { font-size:1.1rem; font-weight:600; margin-bottom:0.6rem; }
   .step-card p { font-size:0.88rem; color:var(--muted); line-height:1.6; }
 
-  /* PLANS */
   .plans-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(280px,1fr)); gap:1.5rem; }
   .plan-card { background:var(--dark3); border:1px solid var(--border); border-radius:20px; padding:2.5rem; position:relative; transition:transform 0.3s; }
   .plan-card.featured { background:linear-gradient(135deg,rgba(201,168,76,0.12),rgba(201,168,76,0.04)); border-color:var(--gold); transform:scale(1.03); }
@@ -105,7 +99,6 @@
   .btn-plan.filled { background:var(--gold); border:none; color:#0A0C10; }
   .btn-plan.filled:hover { background:var(--gold-light); }
 
-  /* SECURITY */
   .security-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(200px,1fr)); gap:1.5rem; }
   .sec-card { background:var(--dark3); border:1px solid var(--border); border-radius:14px; padding:1.8rem; text-align:center; transition:transform 0.3s; }
   .sec-card:hover { transform:translateY(-4px); border-color:var(--gold); }
@@ -113,7 +106,6 @@
   .sec-card h4 { font-size:0.95rem; font-weight:600; margin-bottom:0.4rem; }
   .sec-card p { font-size:0.82rem; color:var(--muted); line-height:1.5; }
 
-  /* TESTIMONIALS */
   .testi-bg { background:var(--dark2); }
   .testi-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(280px,1fr)); gap:1.5rem; }
   .testi-card { background:var(--dark3); border:1px solid var(--border); border-radius:16px; padding:2rem; }
@@ -124,7 +116,6 @@
   .testi-name { font-size:0.9rem; font-weight:600; }
   .testi-loc { font-size:0.75rem; color:var(--muted); }
 
-  /* FAQ */
   .faq-list { max-width:700px; margin:0 auto; }
   .faq-item { border:1px solid var(--border); border-radius:12px; margin-bottom:0.8rem; overflow:hidden; }
   .faq-q { padding:1.2rem 1.5rem; font-size:0.95rem; font-weight:600; cursor:pointer; display:flex; justify-content:space-between; align-items:center; background:var(--dark3); transition:color 0.2s; }
@@ -133,7 +124,8 @@
   .faq-item.open .faq-a { display:block; }
   .faq-item.open .faq-q { color:var(--gold); }
 
-  /* FOOTER */
+  .disclaimer { background:rgba(201,168,76,0.04); border-top:1px solid var(--border); padding:1.2rem 2rem; text-align:center; font-size:0.78rem; color:var(--muted); line-height:1.7; }
+
   footer { background:var(--dark2); border-top:1px solid var(--border); padding:4rem 2rem 2rem; }
   .footer-grid { max-width:1100px; margin:0 auto; display:grid; grid-template-columns:2fr 1fr 1fr 1fr; gap:3rem; margin-bottom:3rem; }
   .footer-logo { font-family:'Playfair Display',serif; font-size:1.5rem; font-weight:900; color:var(--gold); margin-bottom:1rem; }
@@ -161,47 +153,47 @@
   <div class="logo">Invest<span>X</span></div>
   <ul>
     <li><a href="#how">Kaise Kaam Karta Hai</a></li>
-    <li><a href="#plans">Plans</a></li>
+    <li><a href="#plans">Trading Plans</a></li>
     <li><a href="#security">Security</a></li>
     <li><a href="#faq">FAQ</a></li>
   </ul>
   <div class="nav-btns">
     <a href="{{ route('login') }}" class="btn-outline">Login</a>
-    <a href="{{ route('register') }}" class="btn-gold">Register Karein</a>
+    <a href="{{ route('register') }}" class="btn-gold">Join Karein</a>
   </div>
 </nav>
 
 <!-- TICKER -->
 <div class="ticker-wrap">
   <div class="ticker-inner">
-    <div class="ticker-item"><span class="ticker-name">BTC/USD</span><span class="ticker-val">₹67,42,150</span><span class="ticker-chg up">▲ 2.4%</span></div>
-    <div class="ticker-item"><span class="ticker-name">ETH/USD</span><span class="ticker-val">₹3,18,200</span><span class="ticker-chg up">▲ 1.8%</span></div>
-    <div class="ticker-item"><span class="ticker-name">NIFTY 50</span><span class="ticker-val">22,450</span><span class="ticker-chg dn">▼ 0.3%</span></div>
-    <div class="ticker-item"><span class="ticker-name">SENSEX</span><span class="ticker-val">73,840</span><span class="ticker-chg up">▲ 0.5%</span></div>
-    <div class="ticker-item"><span class="ticker-name">GOLD</span><span class="ticker-val">₹68,200/10g</span><span class="ticker-chg up">▲ 0.9%</span></div>
+    <div class="ticker-item"><span class="ticker-name">EUR/USD</span><span class="ticker-val">1.0842</span><span class="ticker-chg up">▲ 0.4%</span></div>
+    <div class="ticker-item"><span class="ticker-name">GBP/USD</span><span class="ticker-val">1.2654</span><span class="ticker-chg up">▲ 0.2%</span></div>
+    <div class="ticker-item"><span class="ticker-name">USD/JPY</span><span class="ticker-val">149.82</span><span class="ticker-chg dn">▼ 0.3%</span></div>
     <div class="ticker-item"><span class="ticker-name">USD/INR</span><span class="ticker-val">₹83.42</span><span class="ticker-chg dn">▼ 0.1%</span></div>
-    <div class="ticker-item"><span class="ticker-name">BTC/USD</span><span class="ticker-val">₹67,42,150</span><span class="ticker-chg up">▲ 2.4%</span></div>
-    <div class="ticker-item"><span class="ticker-name">ETH/USD</span><span class="ticker-val">₹3,18,200</span><span class="ticker-chg up">▲ 1.8%</span></div>
-    <div class="ticker-item"><span class="ticker-name">NIFTY 50</span><span class="ticker-val">22,450</span><span class="ticker-chg dn">▼ 0.3%</span></div>
-    <div class="ticker-item"><span class="ticker-name">SENSEX</span><span class="ticker-val">73,840</span><span class="ticker-chg up">▲ 0.5%</span></div>
-    <div class="ticker-item"><span class="ticker-name">GOLD</span><span class="ticker-val">₹68,200/10g</span><span class="ticker-chg up">▲ 0.9%</span></div>
+    <div class="ticker-item"><span class="ticker-name">XAU/USD</span><span class="ticker-val">2,312.40</span><span class="ticker-chg up">▲ 0.9%</span></div>
+    <div class="ticker-item"><span class="ticker-name">AUD/USD</span><span class="ticker-val">0.6541</span><span class="ticker-chg up">▲ 0.5%</span></div>
+    <div class="ticker-item"><span class="ticker-name">EUR/USD</span><span class="ticker-val">1.0842</span><span class="ticker-chg up">▲ 0.4%</span></div>
+    <div class="ticker-item"><span class="ticker-name">GBP/USD</span><span class="ticker-val">1.2654</span><span class="ticker-chg up">▲ 0.2%</span></div>
+    <div class="ticker-item"><span class="ticker-name">USD/JPY</span><span class="ticker-val">149.82</span><span class="ticker-chg dn">▼ 0.3%</span></div>
+    <div class="ticker-item"><span class="ticker-name">USD/INR</span><span class="ticker-val">₹83.42</span><span class="ticker-chg dn">▼ 0.1%</span></div>
+    <div class="ticker-item"><span class="ticker-name">XAU/USD</span><span class="ticker-val">2,312.40</span><span class="ticker-chg up">▲ 0.9%</span></div>
   </div>
 </div>
 
 <!-- HERO -->
 <section class="hero">
   <div class="hero-grid"></div>
-  <div class="hero-badge">🔒 SEBI Registered &nbsp;|&nbsp; 50,000+ Active Investors</div>
-  <h1>Apna Paisa <em>Badhaiye</em><br>— Hum Invest Karenge</h1>
-  <p>Hamari expert team aapka paisa stocks, crypto aur mutual funds mein invest karti hai. Profit ka bada hissa aapko milta hai, chhota hissa hamara commission.</p>
+  <div class="hero-badge">📈 Expert Forex Traders &nbsp;|&nbsp; 50,000+ Active Members</div>
+  <h1>Expert Traders Ke Saath<br><em>Milke Trade Karein</em></h1>
+  <p>Hamari experienced forex trading team ke saath apna fund contribute karein aur performance-based returns share karein. Paisa aapka, expertise hamari.</p>
   <div class="hero-cta">
-    <a href="{{ route('register') }}" class="btn-lg gold">Abhi Shuru Karein →</a>
-    <a href="#plans" class="btn-lg ghost">Plans Dekhein</a>
+    <a href="{{ route('register') }}" class="btn-lg gold">Community Join Karein →</a>
+    <a href="#plans" class="btn-lg ghost">Trading Plans Dekhein</a>
   </div>
   <div class="hero-stats">
-    <div><span class="stat-num">₹42Cr+</span><div class="stat-label">Total Invested</div></div>
-    <div><span class="stat-num">18–32%</span><div class="stat-label">Annual Returns</div></div>
-    <div><span class="stat-num">50K+</span><div class="stat-label">Happy Investors</div></div>
+    <div><span class="stat-num">₹42Cr+</span><div class="stat-label">Total Fund Managed</div></div>
+    <div><span class="stat-num">18–32%</span><div class="stat-label">Expected Annual Returns</div></div>
+    <div><span class="stat-num">50K+</span><div class="stat-label">Active Members</div></div>
     <div><span class="stat-num">99.8%</span><div class="stat-label">Withdrawal Success</div></div>
   </div>
 </section>
@@ -212,32 +204,32 @@
     <div class="section-head">
       <div class="section-label">Process</div>
       <h2 class="section-title">Sirf 4 Steps Mein Shuru Karein</h2>
-      <p class="section-sub">Koi complication nahi — register karein, invest karein, profit paayein, withdraw karein.</p>
+      <p class="section-sub">Register karein, fund contribute karein, trading returns share karein, withdraw karein.</p>
     </div>
     <div class="steps-grid">
       <div class="step-card">
         <div class="step-num">01</div>
         <div class="step-icon">👤</div>
         <h3>Register & KYC</h3>
-        <p>Free account banayein. Aadhar/PAN se KYC complete karein. 5 minute mein verified ho jayein.</p>
+        <p>Free account banayein. Aadhaar/PAN se KYC complete karein. 5 minute mein verified ho jayein.</p>
       </div>
       <div class="step-card">
         <div class="step-num">02</div>
         <div class="step-icon">💳</div>
-        <h3>Amount Deposit Karein</h3>
-        <p>UPI, Bank Transfer ya Net Banking se minimum ₹1,000 se invest karein. Instant credit.</p>
+        <h3>Fund Contribute Karein</h3>
+        <p>UPI, Bank Transfer ya Net Banking se minimum ₹1,000 se participate karein. Instant confirmation.</p>
       </div>
       <div class="step-card">
         <div class="step-num">03</div>
         <div class="step-icon">📈</div>
-        <h3>Hamari Team Invest Karti Hai</h3>
-        <p>Experts aapka paisa diversified portfolio mein lagaate hain — stocks, crypto, bonds.</p>
+        <h3>Hamari Team Trade Karti Hai</h3>
+        <p>Expert forex traders aapka fund professionally manage karte hain — EUR/USD, GBP/USD aur aur bhi.</p>
       </div>
       <div class="step-card">
         <div class="step-num">04</div>
         <div class="step-icon">💰</div>
-        <h3>Profit Withdraw Karein</h3>
-        <p>Maturity pe principal + profit aapke account mein. Hamara sirf 15–20% commission kata jaata hai.</p>
+        <h3>Returns Withdraw Karein</h3>
+        <p>Lock-in period ke baad contribution + net returns aapke account mein. Hamara sirf 15–20% management fee kata jaata hai.</p>
       </div>
     </div>
   </div>
@@ -247,50 +239,50 @@
 <section id="plans">
   <div class="container">
     <div class="section-head">
-      <div class="section-label">Investment Plans</div>
-      <h2 class="section-title">Apna Plan Chunein</h2>
-      <p class="section-sub">Har investor ke liye alag plan. Jitna invest karein, utna zyada return.</p>
+      <div class="section-label">Trading Plans</div>
+      <h2 class="section-title">Apna Trading Plan Chunein</h2>
+      <p class="section-sub">Har member ke liye alag plan. Jitna zyada contribute karein, utne better expected returns.</p>
     </div>
     <div class="plans-grid">
       <div class="plan-card">
         <div class="plan-name">Starter Plan</div>
         <div class="plan-roi">18%</div>
-        <div class="plan-period">Salana Return (Expected)</div>
-        <div class="plan-min">Minimum: <strong>₹1,000</strong></div>
+        <div class="plan-period">Expected Annual Returns</div>
+        <div class="plan-min">Minimum Contribution: <strong>₹1,000</strong></div>
         <ul class="plan-features">
           <li><span>✓</span> Lock-in: <strong>3 Mahine</strong></li>
-          <li><span>✓</span> Commission: <strong>20%</strong></li>
-          <li><span>✓</span> Monthly Profit Update</li>
+          <li><span>✓</span> Management Fee: <strong>20%</strong></li>
+          <li><span>✓</span> Monthly Performance Update</li>
           <li><span>✓</span> UPI Withdrawal</li>
         </ul>
-        <a href="{{ route('register') }}" class="btn-plan outline">Shuru Karein</a>
+        <a href="{{ route('register') }}" class="btn-plan outline">Participate Karein</a>
       </div>
       <div class="plan-card featured">
         <div class="plan-badge">⭐ Most Popular</div>
         <div class="plan-name">Growth Plan</div>
         <div class="plan-roi">25%</div>
-        <div class="plan-period">Salana Return (Expected)</div>
-        <div class="plan-min">Minimum: <strong>₹10,000</strong></div>
+        <div class="plan-period">Expected Annual Returns</div>
+        <div class="plan-min">Minimum Contribution: <strong>₹10,000</strong></div>
         <ul class="plan-features">
           <li><span>✓</span> Lock-in: <strong>6 Mahine</strong></li>
-          <li><span>✓</span> Commission: <strong>17%</strong></li>
-          <li><span>✓</span> Weekly Profit Update</li>
+          <li><span>✓</span> Management Fee: <strong>17%</strong></li>
+          <li><span>✓</span> Weekly Performance Update</li>
           <li><span>✓</span> Priority Withdrawal</li>
         </ul>
-        <a href="{{ route('register') }}" class="btn-plan filled">Shuru Karein</a>
+        <a href="{{ route('register') }}" class="btn-plan filled">Participate Karein</a>
       </div>
       <div class="plan-card">
         <div class="plan-name">Elite Plan</div>
         <div class="plan-roi">32%</div>
-        <div class="plan-period">Salana Return (Expected)</div>
-        <div class="plan-min">Minimum: <strong>₹1,00,000</strong></div>
+        <div class="plan-period">Expected Annual Returns</div>
+        <div class="plan-min">Minimum Contribution: <strong>₹1,00,000</strong></div>
         <ul class="plan-features">
           <li><span>✓</span> Lock-in: <strong>12 Mahine</strong></li>
-          <li><span>✓</span> Commission: <strong>15%</strong></li>
+          <li><span>✓</span> Management Fee: <strong>15%</strong></li>
           <li><span>✓</span> Daily Dashboard</li>
           <li><span>✓</span> Same-Day Withdrawal</li>
         </ul>
-        <a href="{{ route('register') }}" class="btn-plan outline">Shuru Karein</a>
+        <a href="{{ route('register') }}" class="btn-plan outline">Participate Karein</a>
       </div>
     </div>
   </div>
@@ -301,14 +293,14 @@
   <div class="container">
     <div class="section-head" style="text-align:center">
       <div class="section-label" style="text-align:center">Security</div>
-      <h2 class="section-title">Aapka Paisa 100% Safe Hai</h2>
+      <h2 class="section-title">Aapka Fund Secure Hai</h2>
     </div>
     <div class="security-grid">
       <div class="sec-card"><span class="sec-icon">🔐</span><h4>256-bit SSL</h4><p>Har transaction bank-level encryption se protected hai.</p></div>
-      <div class="sec-card"><span class="sec-icon">📋</span><h4>SEBI Registered</h4><p>Fully registered investment firm. Sab legal aur compliant.</p></div>
+      <div class="sec-card"><span class="sec-icon">✅</span><h4>Verified Traders</h4><p>Hamare sabhi traders verified aur experienced professionals hain.</p></div>
       <div class="sec-card"><span class="sec-icon">🔑</span><h4>2FA Authentication</h4><p>OTP + double layer security aapke account ke liye.</p></div>
-      <div class="sec-card"><span class="sec-icon">📊</span><h4>Full Transparency</h4><p>Real-time dekho aapka paisa kahan invest hua.</p></div>
-      <div class="sec-card"><span class="sec-icon">🏛️</span><h4>Escrow Protected</h4><p>Funds third-party escrow mein safe rehte hain.</p></div>
+      <div class="sec-card"><span class="sec-icon">📊</span><h4>Full Transparency</h4><p>Real-time dekho aapka fund kaise perform kar raha hai.</p></div>
+      <div class="sec-card"><span class="sec-icon">🏛️</span><h4>Dedicated Account</h4><p>Aapka fund dedicated current account mein safe rehta hai.</p></div>
       <div class="sec-card"><span class="sec-icon">📱</span><h4>Instant Alerts</h4><p>Har transaction pe SMS + email alert milta hai.</p></div>
     </div>
   </div>
@@ -319,22 +311,22 @@
   <div class="container">
     <div class="section-head">
       <div class="section-label">Reviews</div>
-      <h2 class="section-title">Investors Kya Kehte Hain</h2>
+      <h2 class="section-title">Members Kya Kehte Hain</h2>
     </div>
     <div class="testi-grid">
       <div class="testi-card">
         <div class="stars">★★★★★</div>
-        <p class="testi-text">"Maine ₹25,000 lagaye the, 6 mahine mein ₹5,800 ka profit mila. Sab kuch transparent tha aur withdrawal fast hua."</p>
+        <p class="testi-text">"Maine ₹25,000 contribute kiye the, 6 mahine mein ₹5,800 ka return mila. Sab kuch transparent tha aur withdrawal fast hua."</p>
         <div class="testi-user"><div class="avatar">RK</div><div><div class="testi-name">Rajesh Kumar</div><div class="testi-loc">Jaipur, Rajasthan</div></div></div>
       </div>
       <div class="testi-card">
         <div class="stars">★★★★★</div>
-        <p class="testi-text">"Elite Plan try kiya. 1 lakh pe 28,000 ka return mila 1 saal mein. Ab regularly invest karta hun."</p>
+        <p class="testi-text">"Elite Plan try kiya. 1 lakh pe 28,000 ka return mila 1 saal mein. Ab regularly participate karta hun."</p>
         <div class="testi-user"><div class="avatar">PS</div><div><div class="testi-name">Priya Sharma</div><div class="testi-loc">Surat, Gujarat</div></div></div>
       </div>
       <div class="testi-card">
         <div class="stars">★★★★☆</div>
-        <p class="testi-text">"Dashboard bahut clear hai. Har din dekh sakta hun kitna profit aa raha hai. Support team bhi responsive hai."</p>
+        <p class="testi-text">"Dashboard bahut clear hai. Har din performance dekh sakta hun. Support team bhi responsive hai."</p>
         <div class="testi-user"><div class="avatar">AM</div><div><div class="testi-name">Amit Mehta</div><div class="testi-loc">Ahmedabad, Gujarat</div></div></div>
       </div>
     </div>
@@ -350,31 +342,37 @@
     </div>
     <div class="faq-list">
       <div class="faq-item open">
-        <div class="faq-q" onclick="this.parentElement.classList.toggle('open')">Minimum kitna invest kar sakta hun? <span>▼</span></div>
+        <div class="faq-q" onclick="this.parentElement.classList.toggle('open')">Minimum kitna contribute kar sakta hun? <span>▼</span></div>
         <div class="faq-a">Starter Plan mein minimum ₹1,000 se shuru kar sakte hain. Growth Plan mein ₹10,000 aur Elite Plan mein ₹1,00,000 minimum hai.</div>
       </div>
       <div class="faq-item">
-        <div class="faq-q" onclick="this.parentElement.classList.toggle('open')">Paisa kab aur kaise milega? <span>▼</span></div>
-        <div class="faq-a">Lock-in period complete hone ke baad withdrawal request kar sakte hain. 4 ghante mein aapke bank account mein transfer ho jaata hai.</div>
+        <div class="faq-q" onclick="this.parentElement.classList.toggle('open')">Returns kab aur kaise milenge? <span>▼</span></div>
+        <div class="faq-a">Lock-in period complete hone ke baad withdrawal request kar sakte hain. 24 ghante mein aapke bank account mein transfer ho jaata hai.</div>
       </div>
       <div class="faq-item">
-        <div class="faq-q" onclick="this.parentElement.classList.toggle('open')">Commission kaise calculate hota hai? <span>▼</span></div>
-        <div class="faq-a">Commission sirf PROFIT pe lagta hai — principal pe nahi. Example: ₹10,000 invest kiya, ₹2,500 profit aaya, Growth Plan ka 17% = ₹425 commission. Aapko ₹12,075 milenge.</div>
+        <div class="faq-q" onclick="this.parentElement.classList.toggle('open')">Management fee kaise calculate hoti hai? <span>▼</span></div>
+        <div class="faq-a">Management fee sirf NET RETURNS pe lagti hai — contribution pe nahi. Example: ₹10,000 contribute kiya, ₹2,500 return aaya, Growth Plan ka 17% = ₹425 fee. Aapko ₹12,075 milenge.</div>
       </div>
       <div class="faq-item">
         <div class="faq-q" onclick="this.parentElement.classList.toggle('open')">Kya returns guaranteed hain? <span>▼</span></div>
-        <div class="faq-a">Returns market-linked hain isliye exact guarantee nahi. Lekin hamari team ka track record consistently 18–32% annual returns ka raha hai.</div>
+        <div class="faq-a">Forex trading market-linked hoti hai isliye returns guaranteed nahi hote. Dikhaye gaye figures past performance par based hain. Apni risk capacity samajhke participate karein.</div>
       </div>
     </div>
   </div>
 </section>
+
+<!-- DISCLAIMER -->
+<div class="disclaimer">
+  ⚠️ <strong>Risk Disclaimer:</strong> Forex trading mein substantial risk hota hai aur sabke liye suitable nahi hai. Past performance future results ki guarantee nahi deta.
+  Yahan dikhaye gaye returns expected hain, guaranteed nahi. Sirf utna hi contribute karein jitna aap afford kar sakein.
+</div>
 
 <!-- FOOTER -->
 <footer>
   <div class="footer-grid">
     <div>
       <div class="footer-logo">Invest<span>X</span></div>
-      <p class="footer-desc">India ka trusted investment platform. Aapka paisa, hamari zimmedari. SEBI registered, RBI compliant.</p>
+      <p class="footer-desc">Expert forex traders ki community. Performance-based profit sharing. Paisa aapka, expertise hamari.</p>
     </div>
     <div class="footer-col">
       <h5>Company</h5>
@@ -382,7 +380,7 @@
     </div>
     <div class="footer-col">
       <h5>Platform</h5>
-      <ul><li><a href="{{ route('plans') }}">Investment Plans</a></li><li><a href="{{ route('login') }}">Dashboard</a></li><li><a href="#">Mobile App</a></li></ul>
+      <ul><li><a href="{{ route('plans') }}">Trading Plans</a></li><li><a href="{{ route('login') }}">Dashboard</a></li><li><a href="#">Mobile App</a></li></ul>
     </div>
     <div class="footer-col">
       <h5>Support</h5>
@@ -390,8 +388,8 @@
     </div>
   </div>
   <div class="footer-bottom">
-    <span>© {{ date('Y') }} InvestX Pvt. Ltd. All rights reserved.</span>
-    <span>⚠️ Investments are subject to market risks.</span>
+    <span>© {{ date('Y') }} InvestX. All rights reserved.</span>
+    <span>⚠️ Forex trading involves significant risk. Past performance is not indicative of future results.</span>
   </div>
 </footer>
 

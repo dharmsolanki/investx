@@ -18,16 +18,20 @@ class RegisterController extends Controller
     public function register(Request $request)
     {
         $request->validate([
-            'name'                  => 'required|string|max:100',
-            'email'                 => 'required|email|unique:users,email',
-            'phone'                 => 'required|digits:10|unique:users,phone',
-            'password'              => 'required|min:8|confirmed',
-            'referral_code'         => 'nullable|exists:users,referral_code',
-            'terms'                 => 'accepted',
+            'name'             => 'required|string|max:100',
+            'email'            => 'required|email|unique:users,email',
+            'phone'            => 'required|digits:10|unique:users,phone',
+            'password'         => 'required|min:8|confirmed',
+            'referral_code'    => 'nullable|exists:users,referral_code',
+            'terms'            => 'required|accepted',
+            'risk_acknowledge' => 'required|accepted',
         ], [
-            'email.unique'  => 'Yeh email already registered hai.',
-            'phone.unique'  => 'Yeh phone number already registered hai.',
-            'terms.accepted' => 'Terms & Conditions accept karna zaroori hai.',
+            'email.unique'                => 'Yeh email already registered hai.',
+            'phone.unique'                => 'Yeh phone number already registered hai.',
+            'terms.required'              => 'Terms & Conditions accept karna zaroori hai.',
+            'terms.accepted'              => 'Terms & Conditions accept karna zaroori hai.',
+            'risk_acknowledge.required'   => 'Risk acknowledgement zaroori hai.',
+            'risk_acknowledge.accepted'   => 'Risk acknowledgement zaroori hai.',
         ]);
 
         // Find referrer
@@ -46,6 +50,7 @@ class RegisterController extends Controller
 
         Auth::login($user);
 
-        return redirect()->route('dashboard')->with('success', 'Welcome! Aapka account ban gaya. Ab KYC complete karein.');
+        return redirect()->route('dashboard')
+            ->with('success', 'Welcome! Aapka account ban gaya. Ab KYC complete karein.');
     }
 }

@@ -7,7 +7,7 @@
 {{-- KYC Warning --}}
 @if($user->kyc_status !== 'verified')
 <div class="alert warning">
-    ⚠️ Aapka KYC <strong>{{ ucfirst($user->kyc_status) }}</strong> hai. 
+    ⚠️ Aapka KYC <strong>{{ ucfirst($user->kyc_status) }}</strong> hai.
     @if($user->kyc_status === 'pending')
         <a href="{{ route('kyc') }}" style="color:var(--gold);font-weight:600;">KYC complete karein →</a>
     @elseif($user->kyc_status === 'submitted')
@@ -19,17 +19,17 @@
 {{-- STATS --}}
 <div class="stats-grid">
     <div class="stat-card">
-        <div class="label">💰 Total Invested</div>
+        <div class="label">💰 Total Contributed</div>
         <div class="value" style="color:var(--gold)">₹{{ number_format($totalInvested, 2) }}</div>
         <div class="change up">{{ $activeInvestments }} active plan{{ $activeInvestments != 1 ? 's' : '' }}</div>
     </div>
     <div class="stat-card">
-        <div class="label">📈 Total Profit Earned</div>
+        <div class="label">📈 Total Returns Earned</div>
         <div class="value" style="color:var(--green)">₹{{ number_format($totalProfit, 2) }}</div>
-        <div class="change up">Withdrawn investments se</div>
+        <div class="change up">Completed participations se</div>
     </div>
     <div class="stat-card">
-        <div class="label">📊 Active Investments</div>
+        <div class="label">📊 Active Participations</div>
         <div class="value">{{ $activeInvestments }}</div>
         <div class="change" style="color:var(--muted)">Plans running</div>
     </div>
@@ -42,10 +42,10 @@
 
 <div class="grid-2" style="margin-bottom:2rem">
 
-    {{-- Active Investments --}}
+    {{-- Active Participations --}}
     <div class="card">
         <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:1.2rem">
-            <div class="card-title" style="margin-bottom:0">Active Investments</div>
+            <div class="card-title" style="margin-bottom:0">Active Participations</div>
             <a href="{{ route('investments.my') }}" style="font-size:0.8rem;color:var(--gold);text-decoration:none">Sab dekho →</a>
         </div>
 
@@ -73,8 +73,8 @@
         @empty
         <div style="text-align:center;padding:2rem;color:var(--muted)">
             <div style="font-size:2rem;margin-bottom:0.5rem">📊</div>
-            Koi active investment nahi.<br>
-            <a href="{{ route('plans') }}" style="color:var(--gold)">Plans dekhein →</a>
+            Koi active participation nahi.<br>
+            <a href="{{ route('plans') }}" style="color:var(--gold)">Trading plans dekhein →</a>
         </div>
         @endforelse
     </div>
@@ -98,9 +98,9 @@
     </div>
 </div>
 
-{{-- Profit Chart --}}
+{{-- Returns Chart --}}
 <div class="card">
-    <div class="card-title">Monthly Profit (Last 6 Months)</div>
+    <div class="card-title">Monthly Returns (Last 6 Months)</div>
     <div style="height:200px;position:relative">
         <canvas id="profitChart" height="200"></canvas>
     </div>
@@ -118,7 +118,7 @@ new Chart(ctx, {
     data: {
         labels: chartData.map(d => d.month),
         datasets: [{
-            label: 'Profit (₹)',
+            label: 'Returns (₹)',
             data: chartData.map(d => d.profit),
             backgroundColor: 'rgba(201,168,76,0.3)',
             borderColor: '#C9A84C',

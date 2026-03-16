@@ -1,16 +1,13 @@
-{{-- ============================================================ --}}
-{{-- FILE: resources/views/investments/my.blade.php --}}
-{{-- ============================================================ --}}
 @extends('layouts.app')
-@section('title', 'My Investments')
-@section('page-title', 'My Investments')
+@section('title', 'My Participations')
+@section('page-title', 'My Participations')
 
 @section('content')
 
 {{-- Stats --}}
 <div class="stats-grid" style="margin-bottom:2rem">
     <div class="stat-card">
-        <div class="label">Total Invested</div>
+        <div class="label">Total Contributed</div>
         <div class="value" style="color:var(--gold)">₹{{ number_format($stats['total_invested'], 2) }}</div>
     </div>
     <div class="stat-card">
@@ -22,15 +19,15 @@
         <div class="value" style="color:#FBB924">{{ $stats['matured_count'] }}</div>
     </div>
     <div class="stat-card">
-        <div class="label">Total Profit Earned</div>
+        <div class="label">Total Returns Earned</div>
         <div class="value" style="color:var(--green)">₹{{ number_format($stats['total_profit'], 2) }}</div>
     </div>
 </div>
 
 <div class="card">
     <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:1.5rem">
-        <div class="card-title" style="margin-bottom:0">All Investments</div>
-        <a href="{{ route('plans') }}" class="btn btn-gold btn-sm">+ New Investment</a>
+        <div class="card-title" style="margin-bottom:0">All Participations</div>
+        <a href="{{ route('plans') }}" class="btn btn-gold btn-sm">+ New Participation</a>
     </div>
 
     <div class="table-wrap">
@@ -38,10 +35,10 @@
             <thead>
                 <tr>
                     <th>Plan</th>
-                    <th>Principal</th>
-                    <th>Expected Profit</th>
-                    <th>Commission</th>
-                    <th>Net Return</th>
+                    <th>Contribution</th>
+                    <th>Expected Returns</th>
+                    <th>Management Fee</th>
+                    <th>Net Returns</th>
                     <th>Maturity</th>
                     <th>Status</th>
                     <th>Action</th>
@@ -52,7 +49,7 @@
                 <tr>
                     <td>
                         <div style="font-weight:600">{{ $inv->plan->name }}</div>
-                        <div style="font-size:0.72rem;color:var(--muted)">{{ $inv->plan->roi_percent }}% ROI · {{ $inv->plan->duration_months }}mo</div>
+                        <div style="font-size:0.72rem;color:var(--muted)">{{ $inv->plan->roi_percent }}% Returns · {{ $inv->plan->duration_months }}mo</div>
                     </td>
                     <td style="font-weight:600">₹{{ number_format($inv->principal_amount, 2) }}</td>
                     <td style="color:var(--green)">₹{{ number_format($inv->expected_profit, 2) }}</td>
@@ -83,8 +80,8 @@
                 @empty
                 <tr>
                     <td colspan="8" style="text-align:center;padding:3rem;color:var(--muted)">
-                        Koi investment nahi abhi tak.<br>
-                        <a href="{{ route('plans') }}" style="color:var(--gold)">Plans dekho aur invest karo →</a>
+                        Koi participation nahi abhi tak.<br>
+                        <a href="{{ route('plans') }}" style="color:var(--gold)">Trading plans dekho aur participate karo →</a>
                     </td>
                 </tr>
                 @endforelse
