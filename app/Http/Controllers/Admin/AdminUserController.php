@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\User;
+use App\Notifications\ActionAlertNotification;
 use Illuminate\Http\Request;
 
 class AdminUserController extends Controller
@@ -14,9 +15,9 @@ class AdminUserController extends Controller
 
         if ($request->filled('search')) {
             $s = $request->search;
-            $query->where(fn($q) => $q->where('name','like',"%$s%")
-                ->orWhere('email','like',"%$s%")
-                ->orWhere('phone','like',"%$s%"));
+            $query->where(fn($q) => $q->where('name', 'like', "%$s%")
+                ->orWhere('email', 'like', "%$s%")
+                ->orWhere('phone', 'like', "%$s%"));
         }
 
         if ($request->filled('kyc')) {
@@ -49,6 +50,15 @@ class AdminUserController extends Controller
         }
 
         $user->update($data);
+
+        $user->notify(new ActionAlertNotification(
+            'KYC Status Updated',
+            'Aapka KYC status update ho gaya hai.',
+            [
+                'Naya status: ' . ucfirst($request->kyc_status),
+                $request->kyc_status === 'rejected' && $request->filled('reason') ? ('Reason: ' . $request->reason) : 'Aap dashboard me details dekh sakte hain.',
+            ]
+        ));
 
         $msg = $request->kyc_status === 'verified'
             ? "✅ KYC Verified: {$user->name}"

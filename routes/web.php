@@ -5,6 +5,7 @@ use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\InvestmentController;
 use App\Http\Controllers\PaymentController;
+use App\Http\Controllers\WalletController;
 use App\Http\Controllers\WithdrawalController;
 use App\Http\Controllers\Admin\AdminDashboardController;
 use App\Http\Controllers\Admin\AdminUserController;
@@ -48,6 +49,7 @@ Route::middleware(['auth'])->group(function () {
     // Withdrawals
     Route::get('/withdrawals',            [WithdrawalController::class, 'index'])->name('withdrawals.index');
     Route::post('/withdrawals/request',   [WithdrawalController::class, 'request'])->name('withdrawals.request');
+    Route::get('/wallet',                 [WalletController::class, 'index'])->name('wallet.index');
 });
 
 // Razorpay webhook (no CSRF, no auth)

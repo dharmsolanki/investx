@@ -35,12 +35,13 @@
 
         <div class="form-group">
             <label class="form-label">Payment Method</label>
-            <select class="form-control" name="payment_method" required>
+            <select class="form-control" name="payment_method" id="paymentMethod" required>
                 <option value="upi">📱 UPI (GPay, PhonePe, Paytm)</option>
                 <option value="netbanking">🏦 Net Banking</option>
                 <option value="card">💳 Credit/Debit Card</option>
                 <option value="imps">⚡ IMPS</option>
                 <option value="neft">🏛️ NEFT</option>
+                <option value="wallet">👛 Wallet Balance</option>
             </select>
         </div>
 
@@ -149,8 +150,16 @@ calculateProfit(document.getElementById('amount').value);
 
 async function initiatePayment() {
     const amount = document.getElementById('amount').value;
+    const method = document.getElementById('paymentMethod').value;
+
     if (!amount || amount < {{ $plan->min_amount }}) {
         alert('Minimum ₹{{ number_format($plan->min_amount) }} contribution zaroori hai.');
+        return;
+    }
+
+    if (method === 'wallet') {
+        document.getElementById('investForm').action = '{{ route('investments.store') }}';
+        document.getElementById('investForm').submit();
         return;
     }
 

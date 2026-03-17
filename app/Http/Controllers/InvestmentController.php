@@ -37,7 +37,7 @@ class InvestmentController extends Controller
         $request->validate([
             'plan_id'        => 'required|exists:investment_plans,id',
             'amount'         => 'required|numeric|min:1',
-            'payment_method' => 'required|in:upi,netbanking,card,imps,neft',
+            'payment_method' => 'required|in:upi,netbanking,card,imps,neft,wallet',
         ]);
 
         $user = Auth::user();
@@ -58,6 +58,10 @@ class InvestmentController extends Controller
         // Calculate returns
         $calc = $plan->calculateProfit($request->amount);
 
+        if ($request->payment_method === 'wallet' && $user->wallet_balance < $request->amount) {
+            return back()->with('error', 'Wallet balance kam hai. Pehle wallet top-up karein.');
+        }
+
         DB::beginTransaction();
         try {
             $investment = Investment::create([
@@ -72,6 +76,11 @@ class InvestmentController extends Controller
                 'maturity_date'     => now()->addMonths($plan->duration_months),
             ]);
 
+            // Wallet payment handled instantly
+            if ($request->payment_method === 'wallet') {
+                $user->decrement('wallet_balance', $calc['principal']);
+            }
+
             // Record deposit transaction
             Transaction::create([
                 'user_id'        => $user->id,
@@ -79,10 +88,10 @@ class InvestmentController extends Controller
                 'type'           => 'deposit',
                 'amount'         => $calc['principal'],
                 'payment_method' => $request->payment_method,
-                'payment_id'     => $request->payment_id ?? 'MANUAL_' . uniqid(),
+                'payment_id'     => $request->payment_method === 'wallet' ? 'WALLET_' . uniqid() : ($request->payment_id ?? 'MANUAL_' . uniqid()),
                 'gateway_order_id' => $request->razorpay_order_id ?? null,
                 'status'         => 'completed',
-                'notes'          => "Participation in {$plan->name}",
+                'notes'          => $request->payment_method === 'wallet' ? "Participation in {$plan->name} via wallet" : "Participation in {$plan->name}",
             ]);
 
             DB::commit();
@@ -100,10 +109,8 @@ class InvestmentController extends Controller
     {
         $user = Auth::user();
 
-        // Auto-mature investments
-        $user->investments()->where('status', 'active')
-            ->whereDate('maturity_date', '<=', now())
-            ->update(['status' => 'matured']);
+        // Auto-settle matured investments directly to wallet
+        $this->autoSettleMaturedInvestments($user);
 
         $investments = $user->investments()
             ->with('plan', 'withdrawal')
@@ -118,6 +125,56 @@ class InvestmentController extends Controller
         ];
 
         return view('investments.my', compact('investments', 'stats'));
+    }
+
+
+    private function autoSettleMaturedInvestments($user): void
+    {
+        $maturedInvestments = $user->investments()
+            ->where('status', 'active')
+            ->whereDate('maturity_date', '<=', now())
+            ->get();
+
+        foreach ($maturedInvestments as $investment) {
+            DB::transaction(function () use ($user, $investment) {
+                $totalReturn = $investment->principal_amount + $investment->net_profit;
+
+                $updated = Investment::where('id', $investment->id)
+                    ->where('status', 'active')
+                    ->update([
+                        'status'       => 'withdrawn',
+                        'withdrawn_at' => now(),
+                        'actual_profit'=> $investment->net_profit,
+                        'admin_notes'  => 'Auto-settled to wallet on maturity',
+                    ]);
+
+                if (!$updated) {
+                    return;
+                }
+
+                $user->increment('wallet_balance', $totalReturn);
+
+                Transaction::create([
+                    'user_id'       => $user->id,
+                    'investment_id' => $investment->id,
+                    'type'          => 'refund',
+                    'amount'        => $investment->principal_amount,
+                    'payment_method'=> 'wallet',
+                    'status'        => 'completed',
+                    'notes'         => 'Principal auto-credited to wallet on maturity',
+                ]);
+
+                Transaction::create([
+                    'user_id'       => $user->id,
+                    'investment_id' => $investment->id,
+                    'type'          => 'profit',
+                    'amount'        => $investment->net_profit,
+                    'payment_method'=> 'wallet',
+                    'status'        => 'completed',
+                    'notes'         => 'Profit auto-credited to wallet on maturity',
+                ]);
+            });
+        }
     }
 
     // AJAX: calculate profit
