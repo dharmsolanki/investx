@@ -3,8 +3,11 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\Transaction;
 use App\Models\User;
+use App\Notifications\ActionAlertNotification;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class AdminUserController extends Controller
 {
@@ -50,6 +53,15 @@ class AdminUserController extends Controller
 
         $user->update($data);
 
+        $user->notify(new ActionAlertNotification(
+            'KYC Status Updated',
+            'Aapka KYC status update ho gaya hai.',
+            [
+                'Naya status: ' . ucfirst($request->kyc_status),
+                $request->kyc_status === 'rejected' && $request->filled('reason') ? ('Reason: ' . $request->reason) : 'Aap dashboard me details dekh sakte hain.',
+            ]
+        ));
+
         $msg = $request->kyc_status === 'verified'
             ? "✅ KYC Verified: {$user->name}"
             : "❌ KYC Rejected: {$user->name}";
@@ -63,4 +75,81 @@ class AdminUserController extends Controller
         $status = $user->is_active ? 'activated' : 'suspended';
         return back()->with('success', "User {$status} successfully.");
     }
+
+
+    public function addProfit(Request $request, User $user)
+    {
+        $request->validate([
+            'amount' => 'required|numeric|min:1',
+            'notes'  => 'nullable|string|max:300',
+        ]);
+
+        DB::transaction(function () use ($request, $user) {
+            $user->increment('wallet_balance', $request->amount);
+
+            Transaction::create([
+                'user_id' => $user->id,
+                'type' => 'profit',
+                'amount' => $request->amount,
+                'payment_method' => 'wallet',
+                'status' => 'completed',
+                'notes' => $request->notes ?: 'Profit credited by admin',
+            ]);
+        });
+
+        $user->notify(new ActionAlertNotification(
+            'Profit Credited',
+            'Aapke wallet me profit add kiya gaya hai.',
+            [
+                'Amount: ₹' . number_format((float) $request->amount, 2),
+                'Updated wallet: ₹' . number_format((float) $user->fresh()->wallet_balance, 2),
+            ]
+        ));
+
+        return back()->with('success', 'Profit successfully add kar diya gaya.');
+    }
+
+    public function adjustWallet(Request $request, User $user)
+    {
+        $request->validate([
+            'type' => 'required|in:credit,debit',
+            'amount' => 'required|numeric|min:1',
+            'notes' => 'nullable|string|max:300',
+        ]);
+
+        if ($request->type === 'debit' && $user->wallet_balance < $request->amount) {
+            return back()->with('error', 'Debit amount wallet balance se zyada nahi ho sakta.');
+        }
+
+        DB::transaction(function () use ($request, $user) {
+            if ($request->type === 'credit') {
+                $user->increment('wallet_balance', $request->amount);
+            } else {
+                $user->decrement('wallet_balance', $request->amount);
+            }
+
+            Transaction::create([
+                'user_id' => $user->id,
+                'type' => $request->type === 'credit' ? 'deposit' : 'withdrawal',
+                'amount' => $request->amount,
+                'payment_method' => 'wallet',
+                'status' => 'completed',
+                'notes' => $request->notes ?: ('Wallet ' . $request->type . ' by admin'),
+            ]);
+        });
+
+        $action = $request->type === 'credit' ? 'credited' : 'debited';
+        $user->notify(new ActionAlertNotification(
+            'Wallet Updated',
+            'Aapka wallet balance admin ne update kiya hai.',
+            [
+                'Action: ' . ucfirst($request->type),
+                'Amount: ₹' . number_format((float) $request->amount, 2),
+                'Updated wallet: ₹' . number_format((float) $user->fresh()->wallet_balance, 2),
+            ]
+        ));
+
+        return back()->with('success', "Wallet {$action} successfully.");
+    }
+
 }

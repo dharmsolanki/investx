@@ -41,6 +41,7 @@
                 <option value="card">💳 Credit/Debit Card</option>
                 <option value="imps">⚡ IMPS</option>
                 <option value="neft">🏛️ NEFT</option>
+                <option value="wallet">👛 Wallet Balance</option>
             </select>
         </div>
 

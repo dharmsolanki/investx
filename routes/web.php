@@ -5,6 +5,7 @@ use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\InvestmentController;
 use App\Http\Controllers\PaymentController;
+use App\Http\Controllers\WalletController;
 use App\Http\Controllers\WithdrawalController;
 use App\Http\Controllers\Admin\AdminDashboardController;
 use App\Http\Controllers\Admin\AdminUserController;
@@ -48,6 +49,7 @@ Route::middleware(['auth'])->group(function () {
     // Withdrawals
     Route::get('/withdrawals',            [WithdrawalController::class, 'index'])->name('withdrawals.index');
     Route::post('/withdrawals/request',   [WithdrawalController::class, 'request'])->name('withdrawals.request');
+    Route::get('/wallet',                 [WalletController::class, 'index'])->name('wallet.index');
 });
 
 // Razorpay webhook (no CSRF, no auth)
@@ -68,6 +70,8 @@ Route::middleware(['auth', \App\Http\Middleware\AdminMiddleware::class])
         Route::get('/users/{user}',         [AdminUserController::class, 'show'])->name('users.show');
         Route::post('/users/{user}/kyc',    [AdminUserController::class, 'updateKyc'])->name('users.kyc');
         Route::post('/users/{user}/toggle', [AdminUserController::class, 'toggleStatus'])->name('users.toggle');
+        Route::post('/users/{user}/profit', [AdminUserController::class, 'addProfit'])->name('users.profit');
+        Route::post('/users/{user}/wallet', [AdminUserController::class, 'adjustWallet'])->name('users.wallet');
 
         // Plans
         Route::get('/plans',                [AdminPlanController::class, 'index'])->name('plans.index');

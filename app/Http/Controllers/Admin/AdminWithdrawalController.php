@@ -9,6 +9,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Investment;
 use App\Models\Transaction;
 use App\Models\Withdrawal;
+use App\Notifications\ActionAlertNotification;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -61,6 +62,15 @@ class AdminWithdrawalController extends Controller
                 'notes'         => 'Commission deducted on profit withdrawal',
             ]);
 
+            $withdrawal->user->notify(new ActionAlertNotification(
+                'Withdrawal Approved',
+                'Aapki withdrawal request approve ho gayi hai.',
+                [
+                    'UTR: ' . $request->utr_number,
+                    'Amount: ₹' . number_format((float) $withdrawal->total_amount, 2),
+                ]
+            ));
+
             DB::commit();
             return back()->with('success', "Withdrawal approved. UTR: {$request->utr_number}");
 
@@ -83,6 +93,15 @@ class AdminWithdrawalController extends Controller
 
         // Revert investment to matured so user can re-request
         $withdrawal->investment->update(['status' => 'matured']);
+
+        $withdrawal->user->notify(new ActionAlertNotification(
+            'Withdrawal Rejected',
+            'Aapki withdrawal request reject ho gayi hai.',
+            [
+                'Reason: ' . $request->reason,
+                'Aap dubara request raise kar sakte hain.',
+            ]
+        ));
 
         return back()->with('success', 'Withdrawal rejected and user notified.');
     }

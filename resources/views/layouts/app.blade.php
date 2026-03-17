@@ -219,6 +219,9 @@ tr:hover td { background:rgba(255,255,255,0.02); }
         <a href="{{ route('withdrawals.index') }}" class="{{ request()->routeIs('withdrawals.*') ? 'active' : '' }}">
             <span class="icon">💸</span> Withdrawals
         </a>
+        <a href="{{ route('wallet.index') }}" class="{{ request()->routeIs('wallet.*') ? 'active' : '' }}">
+            <span class="icon">👛</span> Wallet
+        </a>
 
         <div class="nav-section">Account</div>
         <a href="{{ route('kyc') }}" class="{{ request()->routeIs('kyc') ? 'active' : '' }}">
