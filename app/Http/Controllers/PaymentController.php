@@ -57,7 +57,7 @@ class PaymentController extends Controller
             ]);
         } catch (\Exception $e) {
             Log::error('Razorpay order creation failed: ' . $e->getMessage());
-            return response()->json(['error' => $e->getMessage()]); // ← change karo
+            return response()->json(['error' => 'Payment failed: ' . $e->getMessage()], 500); // ← change karo
         }
     }
 

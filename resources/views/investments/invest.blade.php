@@ -134,7 +134,7 @@ function fmt(n) {
 async function calculateProfit(amount) {
     if (!amount || amount < 1) return;
     try {
-        const res = await fetch(`/calculate-profit?plan_id=${planId}&amount=${amount}`);
+        const res = await fetch(`{{ route('investments.calculate') }}?plan_id=${planId}&amount=${amount}`);
         const d   = await res.json();
         document.getElementById('s-principal').textContent   = fmt(d.principal);
         document.getElementById('s-profit').textContent      = fmt(d.gross_profit);
@@ -155,7 +155,7 @@ async function initiatePayment() {
     }
 
     try {
-        const res = await fetch('/payment/create-order', {
+        const res = await fetch('{{ route('payment.order') }}', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -163,6 +163,15 @@ async function initiatePayment() {
             },
             body: JSON.stringify({ plan_id: planId, amount }),
         });
+
+        // ✅ Added: Server error check
+        if (!res.ok) {
+            const text = await res.text();
+            console.error('Server error:', text);
+            alert('Server error. Please check console.');
+            return;
+        }
+
         const order = await res.json();
 
         if (order.error) { alert(order.error); return; }
@@ -192,7 +201,7 @@ async function initiatePayment() {
                 input('razorpay_order_id',   response.razorpay_order_id);
                 input('razorpay_payment_id', response.razorpay_payment_id);
                 input('razorpay_signature',  response.razorpay_signature);
-                form.action = '/payment/verify';
+                form.action = '{{ route('payment.verify') }}';
                 form.submit();
             }
         };
@@ -202,6 +211,7 @@ async function initiatePayment() {
         rzp.open();
 
     } catch(e) {
+        console.error('Payment error:', e); // ✅ Added: actual error console mein dikhega
         alert('Payment gateway error. Please try again.');
     }
 }

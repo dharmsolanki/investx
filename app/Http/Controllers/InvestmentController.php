@@ -89,7 +89,6 @@ class InvestmentController extends Controller
 
             return redirect()->route('investments.my')
                 ->with('success', "Participation successful! ₹" . number_format($calc['principal']) . " contribute ho gaya. Maturity: " . now()->addMonths($plan->duration_months)->format('d M Y'));
-
         } catch (\Exception $e) {
             DB::rollBack();
             return back()->with('error', 'Kuch gadbad ho gayi. Dobara try karein. Error: ' . $e->getMessage());
@@ -125,7 +124,19 @@ class InvestmentController extends Controller
     public function calculate(Request $request)
     {
         $plan   = InvestmentPlan::findOrFail($request->plan_id);
-        $result = $plan->calculateProfit((float) $request->amount);
-        return response()->json($result);
+        $amount = (float) $request->amount;
+
+        $grossProfit      = ($amount * $plan->roi_percent / 100) * ($plan->duration_months / 12);
+        $commissionAmount = $grossProfit * $plan->commission_percent / 100;
+        $netProfit        = $grossProfit - $commissionAmount;
+        $totalReturn      = $amount + $netProfit;
+
+        return response()->json([
+            'principal'         => $amount,
+            'gross_profit'      => round($grossProfit, 2),
+            'commission_amount' => round($commissionAmount, 2),
+            'net_profit'        => round($netProfit, 2),
+            'total_return'      => round($totalReturn, 2),
+        ]);
     }
 }
