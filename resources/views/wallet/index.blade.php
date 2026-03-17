@@ -10,11 +10,11 @@
     </div>
     <div class="stat-card">
         <div class="label">Total Credits</div>
-        <div class="value" style="color:var(--green)">₹{{ number_format($totalCredits, 2) }}</div>
+        <div class="value" style="color:var(--green)">₹{{ number_format($user->transactions->whereIn('type', ['deposit', 'profit', 'referral_bonus'])->sum('amount'), 2) }}</div>
     </div>
     <div class="stat-card">
         <div class="label">Total Debits</div>
-        <div class="value" style="color:var(--red)">₹{{ number_format($totalDebits, 2) }}</div>
+        <div class="value" style="color:var(--red)">₹{{ number_format($user->transactions->whereIn('type', ['withdrawal', 'commission'])->sum('amount'), 2) }}</div>
     </div>
 </div>
 

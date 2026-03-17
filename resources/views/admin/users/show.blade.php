@@ -159,6 +159,46 @@
 @endif
 
 
+<div class="grid-2" style="margin-bottom:1.5rem">
+    <div class="card">
+        <div class="card-title">➕ Profit Entry</div>
+        <form action="{{ route('admin.users.profit', $user) }}" method="POST">
+            @csrf
+            <div class="form-group">
+                <label class="form-label">Profit Amount (₹)</label>
+                <input type="number" step="0.01" min="1" name="amount" class="form-control" required>
+            </div>
+            <div class="form-group">
+                <label class="form-label">Notes</label>
+                <input type="text" name="notes" class="form-control" placeholder="Monthly trading profit">
+            </div>
+            <button class="btn btn-gold btn-block">Add Profit</button>
+        </form>
+    </div>
+
+    <div class="card">
+        <div class="card-title">👛 Wallet Adjust</div>
+        <form action="{{ route('admin.users.wallet', $user) }}" method="POST">
+            @csrf
+            <div class="form-group">
+                <label class="form-label">Action</label>
+                <select name="type" class="form-control" required>
+                    <option value="credit">Credit</option>
+                    <option value="debit">Debit</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label class="form-label">Amount (₹)</label>
+                <input type="number" step="0.01" min="1" name="amount" class="form-control" required>
+            </div>
+            <div class="form-group">
+                <label class="form-label">Notes</label>
+                <input type="text" name="notes" class="form-control" placeholder="Manual wallet adjustment">
+            </div>
+            <button class="btn btn-outline btn-block">Update Wallet</button>
+        </form>
+    </div>
+</div>
 
 {{-- Investment Stats --}}
 <div class="stats-grid" style="margin-bottom:1.5rem">
