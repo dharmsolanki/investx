@@ -13,7 +13,7 @@ class AdminUserController extends Controller
 {
     public function index(Request $request)
     {
-        $query = User::where('is_admin', false)->with('investments');
+        $query = User::where('is_admin', false)->with('investments')->withCount('investments');
 
         if ($request->filled('search')) {
             $s = $request->search;
