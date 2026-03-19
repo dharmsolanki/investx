@@ -18,6 +18,7 @@
         @csrf
         <input type="hidden" name="plan_id" value="{{ $plan->id }}">
         <input type="hidden" name="payment_id" id="paymentId">
+        <input type="hidden" name="payment_method" id="hiddenPaymentMethod" value="razorpay">
 
         <div class="form-group">
             <label class="form-label">Contribution Amount (₹)</label>
@@ -33,16 +34,34 @@
             </div>
         </div>
 
+        {{-- Payment Method --}}
         <div class="form-group">
             <label class="form-label">Payment Method</label>
-            <select class="form-control" name="payment_method" id="paymentMethod" required>
-                <option value="upi">📱 UPI (GPay, PhonePe, Paytm)</option>
-                <option value="netbanking">🏦 Net Banking</option>
-                <option value="card">💳 Credit/Debit Card</option>
-                <option value="imps">⚡ IMPS</option>
-                <option value="neft">🏛️ NEFT</option>
-                <option value="wallet">👛 Wallet Balance</option>
-            </select>
+            <div style="display:flex;gap:1rem">
+
+                <label style="display:flex;align-items:center;gap:0.8rem;cursor:pointer;
+                               background:var(--dark4);border:2px solid var(--gold);
+                               border-radius:10px;padding:0.9rem 1.2rem;flex:1" id="razorpay-option">
+                    <input type="radio" name="pay_choice" value="razorpay"
+                           id="pay-razorpay" checked onchange="togglePaymentMethod('razorpay')">
+                    <span>
+                        💳 Online Payment
+                        <span style="font-size:0.72rem;color:var(--muted);display:block">UPI · Card · NetBanking</span>
+                    </span>
+                </label>
+
+                <label style="display:flex;align-items:center;gap:0.8rem;cursor:pointer;
+                               background:var(--dark4);border:2px solid var(--border);
+                               border-radius:10px;padding:0.9rem 1.2rem;flex:1" id="wallet-option">
+                    <input type="radio" name="pay_choice" value="wallet"
+                           id="pay-wallet" onchange="togglePaymentMethod('wallet')">
+                    <span>
+                        👛 Wallet Balance
+                        <span style="font-size:0.72rem;color:var(--gold);display:block">Available: ₹{{ number_format($user->wallet_balance, 2) }}</span>
+                    </span>
+                </label>
+
+            </div>
         </div>
 
         {{-- Summary Box --}}
@@ -121,6 +140,21 @@ function fmt(n) {
     return '₹' + parseFloat(n).toLocaleString('en-IN', {minimumFractionDigits: 2});
 }
 
+function togglePaymentMethod(val) {
+    document.getElementById('hiddenPaymentMethod').value = val;
+
+    const razorpayLabel = document.getElementById('razorpay-option');
+    const walletLabel   = document.getElementById('wallet-option');
+
+    if (val === 'wallet') {
+        razorpayLabel.style.borderColor = 'var(--border)';
+        walletLabel.style.borderColor   = 'var(--gold)';
+    } else {
+        razorpayLabel.style.borderColor = 'var(--gold)';
+        walletLabel.style.borderColor   = 'var(--border)';
+    }
+}
+
 async function calculateProfit(amount) {
     if (!amount || amount < 1) return;
     try {
@@ -140,19 +174,20 @@ calculateProfit(document.getElementById('amount').value);
 
 async function initiatePayment() {
     const amount = document.getElementById('amount').value;
-    const method = document.getElementById('paymentMethod').value;
+    const method = document.getElementById('hiddenPaymentMethod').value;
 
     if (!amount || amount < {{ $plan->min_amount }}) {
         alert('Minimum ₹{{ number_format($plan->min_amount) }} contribution zaroori hai.');
         return;
     }
 
+    // Wallet flow
     if (method === 'wallet') {
-        document.getElementById('investForm').action = '{{ route('investments.store') }}';
         document.getElementById('investForm').submit();
         return;
     }
 
+    // Razorpay flow
     try {
         const res = await fetch('{{ route('payment.order') }}', {
             method: 'POST',
