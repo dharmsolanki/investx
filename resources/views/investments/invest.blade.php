@@ -53,26 +53,27 @@
                 <strong id="s-principal">₹0</strong>
             </div>
             <div style="display:flex;justify-content:space-between;font-size:0.85rem;padding:0.3rem 0;border-bottom:1px solid rgba(255,255,255,0.05)">
-                <span style="color:var(--muted)">Highlighted Daily Earnings</span>
-                <strong style="color:var(--green)">{{ $plan->displayDailyEarningFormatted() }}</strong>
+                <span style="color:var(--muted)">Daily Earning</span>
+                <strong id="s-daily" style="color:#22C55E">₹0</strong>
             </div>
             <div style="display:flex;justify-content:space-between;font-size:0.85rem;padding:0.3rem 0;border-bottom:1px solid rgba(255,255,255,0.05)">
-                <span style="color:var(--muted)">Plan Fee ({{ $plan->commission_percent }}%)</span>
-                <strong id="s-commission" style="color:var(--red)">₹0</strong>
+                <span style="color:var(--muted)">Platform Fee ({{ $plan->commission_percent }}%) Daily</span>
+                <strong id="s-daily-fee" style="color:var(--red)">₹0</strong>
+            </div>
+            <div style="display:flex;justify-content:space-between;font-size:0.85rem;padding:0.3rem 0;border-bottom:1px solid rgba(255,255,255,0.05)">
+                <span style="color:var(--muted)">Net Daily Earning</span>
+                <strong id="s-net-daily" style="color:var(--gold)">₹0</strong>
+            </div>
+            <div style="display:flex;justify-content:space-between;font-size:0.85rem;padding:0.3rem 0;border-bottom:1px solid rgba(255,255,255,0.05)">
+                <span style="color:var(--muted)">Total Net Earnings (<span id="s-days">{{ $plan->duration_months * 30 }}</span> days)</span>
+                <strong id="s-total-earnings" style="color:var(--gold)">₹0</strong>
             </div>
             <div style="display:flex;justify-content:space-between;font-size:0.9rem;padding:0.5rem 0;font-weight:700">
-                <span>Net Returns</span>
-                <span id="s-net" style="color:var(--gold)">₹0</span>
-            </div>
-            <div style="display:flex;justify-content:space-between;font-size:0.82rem;padding:0.3rem 0">
-                <span style="color:var(--muted)">Total Amount at Maturity</span>
-                <strong id="s-total" style="color:var(--green)">₹0</strong>
+                <span>Total at Maturity</span>
+                <span id="s-total" style="color:#22C55E">₹0</span>
             </div>
             <div style="font-size:0.72rem;color:var(--muted);margin-top:0.5rem">
                 📅 Maturity Date: <strong>{{ now()->addMonths($plan->duration_months)->format('d M Y') }}</strong>
-            </div>
-            <div style="font-size:0.7rem;color:var(--muted);margin-top:0.5rem;opacity:0.7">
-                ⚠️ Ye returns expected hain, guaranteed nahi. Market performance par depend karte hain.
             </div>
         </div>
 
@@ -88,34 +89,22 @@
 <div>
     <div class="card" style="margin-bottom:1rem">
         <div class="card-title">📋 Plan Details</div>
-        <div style="font-family:'Playfair Display',serif;font-size:2.5rem;color:var(--gold);font-weight:900;margin-bottom:0.3rem">{{ $plan->displayDailyEarningFormatted() }}</div>
-        <div style="font-size:0.82rem;color:var(--muted);margin-bottom:1.5rem">Daily Earnings Highlight</div>
+        <div style="font-size:2rem;font-weight:900;color:#22C55E;margin-bottom:0.3rem">{{ $plan->displayDailyEarningFormatted() }}</div>
+        <div style="font-size:0.82rem;color:var(--muted);margin-bottom:1.5rem">Daily Earning</div>
 
         <div style="display:flex;flex-direction:column;gap:0.6rem">
+            <div style="display:flex;justify-content:space-between;font-size:0.85rem;padding:0.5rem;background:var(--dark4);border-radius:8px">
+                <span style="color:var(--muted)">💵 Invest Amount</span>
+                <strong style="color:var(--gold)">₹{{ number_format($plan->min_amount) }}</strong>
+            </div>
             <div style="display:flex;justify-content:space-between;font-size:0.85rem;padding:0.5rem;background:var(--dark4);border-radius:8px">
                 <span style="color:var(--muted)">⏱️ Plan Duration</span>
                 <strong>{{ $plan->duration_months }} Months</strong>
             </div>
             <div style="display:flex;justify-content:space-between;font-size:0.85rem;padding:0.5rem;background:var(--dark4);border-radius:8px">
-                <span style="color:var(--muted)">💰 Invest Amount</span>
-                <strong style="color:var(--gold)">₹{{ number_format($plan->min_amount) }}</strong>
+                <span style="color:var(--muted)">📊 Platform Fee</span>
+                <strong>{{ $plan->commission_percent }}% of daily earning</strong>
             </div>
-            <div style="display:flex;justify-content:space-between;font-size:0.85rem;padding:0.5rem;background:var(--dark4);border-radius:8px">
-                <span style="color:var(--muted)">📊 Plan Fee</span>
-                <strong>{{ $plan->commission_percent }}% of returns</strong>
-            </div>
-        </div>
-    </div>
-
-    <div class="card" style="margin-bottom:1rem">
-        <div style="font-size:0.85rem;color:var(--muted);line-height:1.7">
-            <div style="font-weight:600;color:var(--text);margin-bottom:0.5rem">⚠️ Important Notes:</div>
-            <ul style="padding-left:1.2rem;display:flex;flex-direction:column;gap:0.4rem">
-                <li>Returns market conditions pe depend karte hain — guaranteed nahi hain.</li>
-                <li>Lock-in period se pehle early exit pe 5% fee lagegi.</li>
-                <li>Plan summary mein daily earning highlight dikhayi gayi hai, final returns market performance par depend karte hain.</li>
-                <li>Maturity pe withdrawal request 24 ghante mein process hogi.</li>
-            </ul>
         </div>
     </div>
 </div>
@@ -137,14 +126,16 @@ async function calculateProfit(amount) {
     try {
         const res = await fetch(`{{ route('investments.calculate') }}?plan_id=${planId}&amount=${amount}`);
         const d   = await res.json();
-        document.getElementById('s-principal').textContent   = fmt(d.principal);
-        document.getElementById('s-commission').textContent  = fmt(d.commission_amount);
-        document.getElementById('s-net').textContent         = fmt(d.net_profit);
-        document.getElementById('s-total').textContent       = fmt(d.total_return);
+        document.getElementById('s-principal').textContent      = fmt(d.principal);
+        document.getElementById('s-daily').textContent          = fmt(d.daily_earning);
+        document.getElementById('s-daily-fee').textContent      = fmt(d.daily_fee);
+        document.getElementById('s-net-daily').textContent      = fmt(d.net_daily_earning);
+        document.getElementById('s-days').textContent           = d.days;
+        document.getElementById('s-total-earnings').textContent = fmt(d.total_earnings);
+        document.getElementById('s-total').textContent          = fmt(d.total_return);
     } catch(e) { console.error(e); }
 }
 
-// Init on load
 calculateProfit(document.getElementById('amount').value);
 
 async function initiatePayment() {
@@ -172,7 +163,6 @@ async function initiatePayment() {
             body: JSON.stringify({ plan_id: planId, amount }),
         });
 
-        // ✅ Added: Server error check
         if (!res.ok) {
             const text = await res.text();
             console.error('Server error:', text);
@@ -181,7 +171,6 @@ async function initiatePayment() {
         }
 
         const order = await res.json();
-
         if (order.error) { alert(order.error); return; }
 
         const options = {
@@ -219,7 +208,7 @@ async function initiatePayment() {
         rzp.open();
 
     } catch(e) {
-        console.error('Payment error:', e); // ✅ Added: actual error console mein dikhega
+        console.error('Payment error:', e);
         alert('Payment gateway error. Please try again.');
     }
 }

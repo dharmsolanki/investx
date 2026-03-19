@@ -22,7 +22,7 @@ Route::middleware('guest')->group(function () {
     Route::get('/login',    [LoginController::class,    'showForm'])->name('login');
     Route::post('/login',   [LoginController::class,    'login']);
     Route::get('/register', [RegisterController::class, 'showForm'])->name('register');
-    Route::post('/register',[RegisterController::class, 'register']);
+    Route::post('/register', [RegisterController::class, 'register']);
 });
 
 Route::post('/logout', [LoginController::class, 'logout'])->name('logout')->middleware('auth');
@@ -49,7 +49,11 @@ Route::middleware(['auth'])->group(function () {
     // Withdrawals
     Route::get('/withdrawals',            [WithdrawalController::class, 'index'])->name('withdrawals.index');
     Route::post('/withdrawals/request',   [WithdrawalController::class, 'request'])->name('withdrawals.request');
-    Route::get('/wallet',                 [WalletController::class, 'index'])->name('wallet.index');
+    // Wallet
+    Route::get('/wallet',                    [WalletController::class, 'index'])->name('wallet.index');
+    Route::post('/wallet/topup/order',       [WalletController::class, 'topupOrder'])->name('wallet.topup.order');
+    Route::post('/wallet/topup/verify',      [WalletController::class, 'topupVerify'])->name('wallet.topup.verify');
+    Route::post('/wallet/withdraw',          [WalletController::class, 'withdrawRequest'])->name('wallet.withdraw');
 });
 
 // Razorpay webhook (no CSRF, no auth)

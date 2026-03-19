@@ -21,7 +21,7 @@
                 <tr>
                     <th>#</th>
                     <th>User</th>
-                    <th>Plan</th>
+                    <th>Type / Plan</th>
                     <th>Principal</th>
                     <th>Net Profit</th>
                     <th>Total</th>
@@ -39,9 +39,17 @@
                         <div style="font-weight:600">{{ $w->user->name }}</div>
                         <div style="font-size:0.72rem;color:var(--muted)">{{ $w->user->phone }}</div>
                     </td>
-                    <td style="font-size:0.82rem">{{ $w->investment->plan->name }}</td>
+                    <td style="font-size:0.82rem">
+                        @if($w->isWallet())
+                            <span class="badge" style="background:var(--gold);color:#0A0C10">👛 Wallet</span>
+                        @else
+                            {{ $w->investment?->plan->name ?? '—' }}
+                        @endif
+                    </td>
                     <td>₹{{ number_format($w->principal_amount, 2) }}</td>
-                    <td style="color:var(--green)">₹{{ number_format($w->net_profit, 2) }}</td>
+                    <td style="color:var(--green)">
+                        {{ $w->isWallet() ? '—' : '₹' . number_format($w->net_profit, 2) }}
+                    </td>
                     <td style="font-weight:700;color:var(--gold)">₹{{ number_format($w->total_amount, 2) }}</td>
                     <td style="font-size:0.78rem">
                         <div>{{ $w->bank_name }}</div>

@@ -71,11 +71,9 @@ class PaymentController extends Controller
             'razorpay_payment_id' => 'required',
             'razorpay_signature'  => 'required',
             'plan_id'             => 'required|exists:investment_plans,id',
-            'amount'              => 'required|numeric',
             'payment_method'      => 'required',
         ]);
 
-        // Verify signature
         $expectedSignature = hash_hmac(
             'sha256',
             $request->razorpay_order_id . '|' . $request->razorpay_payment_id,
@@ -86,8 +84,30 @@ class PaymentController extends Controller
             return back()->with('error', 'Payment verification failed. Contact support.');
         }
 
-        // Hand off to InvestmentController
-        $request->merge(['payment_id' => $request->razorpay_payment_id]);
+        // ✅ Razorpay se actual amount fetch karo
+        try {
+            $api     = new \Razorpay\Api\Api(config('services.razorpay.key'), config('services.razorpay.secret'));
+            $payment = $api->payment->fetch($request->razorpay_payment_id);
+
+            if ($payment->status !== 'captured') {
+                return back()->with('error', 'Payment captured nahi hua.');
+            }
+
+            // Duplicate check
+            if (Transaction::where('payment_id', $request->razorpay_payment_id)->exists()) {
+                return redirect()->route('investments.my')->with('success', 'Investment already recorded!');
+            }
+
+            $verifiedAmount = $payment->amount / 100;
+        } catch (\Exception $e) {
+            return back()->with('error', 'Payment verify nahi ho saka.');
+        }
+
+        $request->merge([
+            'payment_id' => $request->razorpay_payment_id,
+            'amount'     => $verifiedAmount, // ✅ verified amount replace karo
+        ]);
+
         return app(InvestmentController::class)->store($request);
     }
 

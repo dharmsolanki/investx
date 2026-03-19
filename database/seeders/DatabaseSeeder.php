@@ -42,7 +42,7 @@ class DatabaseSeeder extends Seeder
         $plans = [
             [
                 'name'               => 'Plan 1',
-                'description'        => 'Invest ₹15,000 aur plan summary mein ₹750 daily earning highlight ke saath shuru karein.',
+                'description'        => '💵 Invest ₹15,000 → Earn ₹750 daily',
                 'roi_percent'        => 18.00,
                 'duration_months'    => 3,
                 'min_amount'         => 15000.00,
@@ -52,7 +52,7 @@ class DatabaseSeeder extends Seeder
             ],
             [
                 'name'               => 'Plan 2',
-                'description'        => 'Invest ₹30,000 aur ₹1,800 daily earning highlight ke saath regular participation ke liye.',
+                'description'        => '💵 Invest ₹30,000 → Earn ₹1,800 daily',
                 'roi_percent'        => 25.00,
                 'duration_months'    => 6,
                 'min_amount'         => 30000.00,
@@ -62,7 +62,7 @@ class DatabaseSeeder extends Seeder
             ],
             [
                 'name'               => 'Plan 3',
-                'description'        => 'Invest ₹60,000 aur ₹3,600 daily earning highlight ke saath growth-focused members ke liye.',
+                'description'        => '💵 Invest ₹60,000 → Earn ₹3,600 daily',
                 'roi_percent'        => 28.00,
                 'duration_months'    => 9,
                 'min_amount'         => 60000.00,
@@ -72,7 +72,7 @@ class DatabaseSeeder extends Seeder
             ],
             [
                 'name'               => 'Plan 4',
-                'description'        => 'Invest ₹1,00,000 aur ₹7,000 daily earning highlight ke saath premium level access paayein.',
+                'description'        => '💵 Invest ₹1,00,000 → Earn ₹7,000 daily',
                 'roi_percent'        => 32.00,
                 'duration_months'    => 12,
                 'min_amount'         => 100000.00,

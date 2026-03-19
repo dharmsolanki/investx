@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Investment;
 use App\Models\InvestmentPlan;
 use App\Models\Transaction;
+use App\Services\InvestmentService;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -12,14 +13,12 @@ use Illuminate\Support\Facades\DB;
 
 class InvestmentController extends Controller
 {
-    // Show all plans
     public function plans()
     {
         $plans = InvestmentPlan::active()->get();
         return view('investments.plans', compact('plans'));
     }
 
-    // Show invest form for a specific plan
     public function showInvestForm(InvestmentPlan $plan)
     {
         $user = Auth::user();
@@ -31,7 +30,6 @@ class InvestmentController extends Controller
         return view('investments.invest', compact('plan', 'user'));
     }
 
-    // Process investment (after payment success)
     public function store(Request $request)
     {
         $request->validate([
@@ -56,7 +54,22 @@ class InvestmentController extends Controller
         }
 
         // Calculate returns
-        $calc = $plan->calculateProfit($request->amount);
+        $dailyEarning     = ($request->amount / $plan->min_amount) * $plan->displayDailyEarning();
+        $dailyFee         = $dailyEarning * ($plan->commission_percent / 100);
+        $netDailyEarning  = $dailyEarning - $dailyFee;
+        $days             = $plan->duration_months * 30;
+        $grossEarnings    = round($dailyEarning * $days, 2);       // ₹750 × 90 = ₹67,500
+        $commissionTotal  = round($dailyFee * $days, 2);           // ₹150 × 90 = ₹13,500
+        $netEarnings      = round($netDailyEarning * $days, 2);    // ₹600 × 90 = ₹54,000
+        $totalReturn      = round($request->amount + $netEarnings, 2); // ₹69,000
+
+        $calc = [
+            'principal'         => $request->amount,
+            'gross_profit'      => $grossEarnings,    // ₹67,500
+            'commission_amount' => $commissionTotal,  // ₹13,500
+            'net_profit'        => $netEarnings,      // ₹54,000
+            'total_return'      => $totalReturn,      // ₹69,000
+        ];
 
         if ($request->payment_method === 'wallet' && $user->wallet_balance < $request->amount) {
             return back()->with('error', 'Wallet balance kam hai. Pehle wallet top-up karein.');
@@ -76,22 +89,20 @@ class InvestmentController extends Controller
                 'maturity_date'     => now()->addMonths($plan->duration_months),
             ]);
 
-            // Wallet payment handled instantly
             if ($request->payment_method === 'wallet') {
                 $user->decrement('wallet_balance', $calc['principal']);
             }
 
-            // Record deposit transaction
             Transaction::create([
-                'user_id'        => $user->id,
-                'investment_id'  => $investment->id,
-                'type'           => 'deposit',
-                'amount'         => $calc['principal'],
-                'payment_method' => $request->payment_method,
-                'payment_id'     => $request->payment_method === 'wallet' ? 'WALLET_' . uniqid() : ($request->payment_id ?? 'MANUAL_' . uniqid()),
+                'user_id'          => $user->id,
+                'investment_id'    => $investment->id,
+                'type'             => 'deposit',
+                'amount'           => $calc['principal'],
+                'payment_method'   => $request->payment_method,
+                'payment_id'       => $request->payment_method === 'wallet' ? 'WALLET_' . uniqid() : ($request->payment_id ?? 'MANUAL_' . uniqid()),
                 'gateway_order_id' => $request->razorpay_order_id ?? null,
-                'status'         => 'completed',
-                'notes'          => $request->payment_method === 'wallet' ? "Participation in {$plan->name} via wallet" : "Participation in {$plan->name}",
+                'status'           => 'completed',
+                'notes'            => $request->payment_method === 'wallet' ? "Participation in {$plan->name} via wallet" : "Participation in {$plan->name}",
             ]);
 
             DB::commit();
@@ -104,13 +115,11 @@ class InvestmentController extends Controller
         }
     }
 
-    // My investments list
     public function myInvestments()
     {
         $user = Auth::user();
 
-        // Auto-settle matured investments directly to wallet
-        $this->autoSettleMaturedInvestments($user);
+        InvestmentService::autoSettleMaturedInvestments($user);
 
         $investments = $user->investments()
             ->with('plan', 'withdrawal')
@@ -127,72 +136,32 @@ class InvestmentController extends Controller
         return view('investments.my', compact('investments', 'stats'));
     }
 
-
-    private function autoSettleMaturedInvestments($user): void
-    {
-        $maturedInvestments = $user->investments()
-            ->where('status', 'active')
-            ->whereDate('maturity_date', '<=', now())
-            ->get();
-
-        foreach ($maturedInvestments as $investment) {
-            DB::transaction(function () use ($user, $investment) {
-                $totalReturn = $investment->principal_amount + $investment->net_profit;
-
-                $updated = Investment::where('id', $investment->id)
-                    ->where('status', 'active')
-                    ->update([
-                        'status'       => 'withdrawn',
-                        'withdrawn_at' => now(),
-                        'actual_profit'=> $investment->net_profit,
-                        'admin_notes'  => 'Auto-settled to wallet on maturity',
-                    ]);
-
-                if (!$updated) {
-                    return;
-                }
-
-                $user->increment('wallet_balance', $totalReturn);
-
-                Transaction::create([
-                    'user_id'       => $user->id,
-                    'investment_id' => $investment->id,
-                    'type'          => 'refund',
-                    'amount'        => $investment->principal_amount,
-                    'payment_method'=> 'wallet',
-                    'status'        => 'completed',
-                    'notes'         => 'Principal auto-credited to wallet on maturity',
-                ]);
-
-                Transaction::create([
-                    'user_id'       => $user->id,
-                    'investment_id' => $investment->id,
-                    'type'          => 'profit',
-                    'amount'        => $investment->net_profit,
-                    'payment_method'=> 'wallet',
-                    'status'        => 'completed',
-                    'notes'         => 'Profit auto-credited to wallet on maturity',
-                ]);
-            });
-        }
-    }
-
     // AJAX: calculate profit
     public function calculate(Request $request)
     {
+
+        $request->validate([
+            'plan_id' => 'required|exists:investment_plans,id',
+            'amount'  => 'required|numeric|min:1',
+        ]);
+
         $plan   = InvestmentPlan::findOrFail($request->plan_id);
         $amount = (float) $request->amount;
 
-        $grossProfit      = ($amount * $plan->roi_percent / 100) * ($plan->duration_months / 12);
-        $commissionAmount = $grossProfit * $plan->commission_percent / 100;
-        $netProfit        = $grossProfit - $commissionAmount;
-        $totalReturn      = $amount + $netProfit;
+        $dailyEarning     = ($amount / $plan->min_amount) * $plan->displayDailyEarning();
+        $dailyFee         = $dailyEarning * ($plan->commission_percent / 100);
+        $netDailyEarning  = $dailyEarning - $dailyFee;
+        $days             = $plan->duration_months * 30;
+        $totalNetEarnings = $netDailyEarning * $days;
+        $totalReturn      = $amount + $totalNetEarnings;
 
         return response()->json([
             'principal'         => $amount,
-            'gross_profit'      => round($grossProfit, 2),
-            'commission_amount' => round($commissionAmount, 2),
-            'net_profit'        => round($netProfit, 2),
+            'daily_earning'     => round($dailyEarning, 2),
+            'daily_fee'         => round($dailyFee, 2),
+            'net_daily_earning' => round($netDailyEarning, 2),
+            'days'              => $days,
+            'total_earnings'    => round($totalNetEarnings, 2),
             'total_return'      => round($totalReturn, 2),
         ]);
     }
