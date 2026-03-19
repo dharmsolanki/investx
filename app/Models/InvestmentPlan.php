@@ -29,6 +29,23 @@ class InvestmentPlan extends Model
         return $query->where('is_active', true)->orderBy('sort_order');
     }
 
+
+    public function displayDailyEarning(): float
+    {
+        return match ((int) $this->min_amount) {
+            15000 => 750.0,
+            30000 => 1800.0,
+            60000 => 3600.0,
+            100000 => 7000.0,
+            default => round($this->min_amount * 0.05, 2),
+        };
+    }
+
+    public function displayDailyEarningFormatted(): string
+    {
+        return '₹' . number_format($this->displayDailyEarning(), 0);
+    }
+
     /**
      * Calculate expected profit for a given amount
      */

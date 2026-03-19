@@ -144,9 +144,10 @@
     <div class="section">
         <h2>4. Management Fee Structure</h2>
         <ul>
-            <li><strong>Starter Plan:</strong> 20% of net returns (principal pe nahi)</li>
-            <li><strong>Growth Plan:</strong> 17% of net returns</li>
-            <li><strong>Elite Plan:</strong> 15% of net returns</li>
+            <li><strong>Plan 1:</strong> 20% of net returns (principal pe nahi)</li>
+            <li><strong>Plan 2:</strong> 17% of net returns</li>
+            <li><strong>Plan 3:</strong> 16% of net returns</li>
+            <li><strong>Plan 4:</strong> 15% of net returns</li>
             <li>Fee sirf tab deduct hoti hai jab positive returns aate hain.</li>
             <li>Loss ki situation mein koi fee charge nahi ki jaayegi.</li>
         </ul>
