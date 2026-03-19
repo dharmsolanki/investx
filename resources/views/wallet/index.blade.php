@@ -87,8 +87,12 @@
                                 <strong style="color:var(--gold)">₹{{ number_format($inv->principal_amount, 2) }}</strong>
                             </div>
                             <div>
-                                <div style="color:var(--muted)">Milega (Net)</div>
+                                <div style="color:var(--muted)">Wallet Mein Aayega</div>
                                 <strong style="color:#22C55E">₹{{ number_format($totalReturn, 2) }}</strong>
+                                <div style="font-size:0.7rem;color:var(--muted)">
+                                    ₹{{ number_format($inv->principal_amount, 2) }} +
+                                    ₹{{ number_format($inv->net_profit, 2) }} profit
+                                </div>
                             </div>
                             <div>
                                 <div style="color:var(--muted)">Maturity Date</div>
