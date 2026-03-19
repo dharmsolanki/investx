@@ -15,20 +15,20 @@
 
     <div style="font-size:0.75rem;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-bottom:0.6rem">{{ $plan->name }}</div>
 
-    <div style="font-family:'Playfair Display',serif;font-size:3rem;font-weight:900;color:var(--gold);line-height:1">{{ $plan->roi_percent }}%</div>
-    <div style="font-size:0.82rem;color:var(--muted);margin-bottom:1.5rem">Expected Annual Returns</div>
+    <div style="font-family:'Playfair Display',serif;font-size:3rem;font-weight:900;color:var(--gold);line-height:1">{{ $plan->displayDailyEarningFormatted() }}</div>
+    <div style="font-size:0.82rem;color:var(--muted);margin-bottom:1.5rem">Daily Earnings Highlight</div>
 
     <div style="background:var(--dark4);border-radius:10px;padding:1rem;margin-bottom:1.5rem">
         <div style="display:flex;justify-content:space-between;font-size:0.82rem;padding:0.3rem 0">
-            <span style="color:var(--muted)">Lock-in Period</span>
+            <span style="color:var(--muted)">Plan Duration</span>
             <strong>{{ $plan->duration_months }} Mahine</strong>
         </div>
         <div style="display:flex;justify-content:space-between;font-size:0.82rem;padding:0.3rem 0">
-            <span style="color:var(--muted)">Min Contribution</span>
+            <span style="color:var(--muted)">Invest Amount</span>
             <strong style="color:var(--gold)">₹{{ number_format($plan->min_amount) }}</strong>
         </div>
         <div style="display:flex;justify-content:space-between;font-size:0.82rem;padding:0.3rem 0">
-            <span style="color:var(--muted)">Management Fee</span>
+            <span style="color:var(--muted)">Platform Fee</span>
             <strong style="color:var(--red)">{{ $plan->commission_percent }}%</strong>
         </div>
         @if($plan->max_amount)
@@ -44,9 +44,8 @@
     @endif
 
     <div style="background:rgba(34,197,94,0.08);border:1px solid rgba(34,197,94,0.2);border-radius:8px;padding:0.8rem;margin-bottom:1.5rem;font-size:0.8rem">
-        <div style="font-weight:600;color:#22C55E;margin-bottom:0.3rem">₹{{ number_format($plan->min_amount) }} contribute karoge to:</div>
-        @php $calc = $plan->calculateProfit($plan->min_amount); @endphp
-        <div style="color:var(--muted)">Net Returns: <strong style="color:var(--text)">₹{{ number_format($calc['net_profit']) }}</strong> + ₹{{ number_format($calc['principal']) }} contribution wapas</div>
+        <div style="font-weight:600;color:#22C55E;margin-bottom:0.3rem">₹{{ number_format($plan->min_amount) }} plan amount par:</div>
+        <div style="color:var(--muted)">Highlighted daily earning: <strong style="color:var(--text)">{{ $plan->displayDailyEarningFormatted() }}</strong></div>
     </div>
 
     {{-- Risk note --}}

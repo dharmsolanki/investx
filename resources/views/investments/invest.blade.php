@@ -53,11 +53,11 @@
                 <strong id="s-principal">₹0</strong>
             </div>
             <div style="display:flex;justify-content:space-between;font-size:0.85rem;padding:0.3rem 0;border-bottom:1px solid rgba(255,255,255,0.05)">
-                <span style="color:var(--muted)">Expected Returns ({{ $plan->roi_percent }}% for {{ $plan->duration_months }}mo)</span>
-                <strong id="s-profit" style="color:var(--green)">₹0</strong>
+                <span style="color:var(--muted)">Highlighted Daily Earnings</span>
+                <strong style="color:var(--green)">{{ $plan->displayDailyEarningFormatted() }}</strong>
             </div>
             <div style="display:flex;justify-content:space-between;font-size:0.85rem;padding:0.3rem 0;border-bottom:1px solid rgba(255,255,255,0.05)">
-                <span style="color:var(--muted)">Management Fee ({{ $plan->commission_percent }}%)</span>
+                <span style="color:var(--muted)">Plan Fee ({{ $plan->commission_percent }}%)</span>
                 <strong id="s-commission" style="color:var(--red)">₹0</strong>
             </div>
             <div style="display:flex;justify-content:space-between;font-size:0.9rem;padding:0.5rem 0;font-weight:700">
@@ -88,20 +88,20 @@
 <div>
     <div class="card" style="margin-bottom:1rem">
         <div class="card-title">📋 Plan Details</div>
-        <div style="font-family:'Playfair Display',serif;font-size:2.5rem;color:var(--gold);font-weight:900;margin-bottom:0.3rem">{{ $plan->roi_percent }}%</div>
-        <div style="font-size:0.82rem;color:var(--muted);margin-bottom:1.5rem">Expected Annual Returns</div>
+        <div style="font-family:'Playfair Display',serif;font-size:2.5rem;color:var(--gold);font-weight:900;margin-bottom:0.3rem">{{ $plan->displayDailyEarningFormatted() }}</div>
+        <div style="font-size:0.82rem;color:var(--muted);margin-bottom:1.5rem">Daily Earnings Highlight</div>
 
         <div style="display:flex;flex-direction:column;gap:0.6rem">
             <div style="display:flex;justify-content:space-between;font-size:0.85rem;padding:0.5rem;background:var(--dark4);border-radius:8px">
-                <span style="color:var(--muted)">⏱️ Lock-in Period</span>
+                <span style="color:var(--muted)">⏱️ Plan Duration</span>
                 <strong>{{ $plan->duration_months }} Months</strong>
             </div>
             <div style="display:flex;justify-content:space-between;font-size:0.85rem;padding:0.5rem;background:var(--dark4);border-radius:8px">
-                <span style="color:var(--muted)">💰 Min Contribution</span>
+                <span style="color:var(--muted)">💰 Invest Amount</span>
                 <strong style="color:var(--gold)">₹{{ number_format($plan->min_amount) }}</strong>
             </div>
             <div style="display:flex;justify-content:space-between;font-size:0.85rem;padding:0.5rem;background:var(--dark4);border-radius:8px">
-                <span style="color:var(--muted)">📊 Management Fee</span>
+                <span style="color:var(--muted)">📊 Plan Fee</span>
                 <strong>{{ $plan->commission_percent }}% of returns</strong>
             </div>
         </div>
@@ -113,7 +113,7 @@
             <ul style="padding-left:1.2rem;display:flex;flex-direction:column;gap:0.4rem">
                 <li>Returns market conditions pe depend karte hain — guaranteed nahi hain.</li>
                 <li>Lock-in period se pehle early exit pe 5% fee lagegi.</li>
-                <li>Management fee sirf returns pe lagti hai, contribution pe nahi.</li>
+                <li>Plan summary mein daily earning highlight dikhayi gayi hai, final returns market performance par depend karte hain.</li>
                 <li>Maturity pe withdrawal request 24 ghante mein process hogi.</li>
             </ul>
         </div>
@@ -138,7 +138,6 @@ async function calculateProfit(amount) {
         const res = await fetch(`{{ route('investments.calculate') }}?plan_id=${planId}&amount=${amount}`);
         const d   = await res.json();
         document.getElementById('s-principal').textContent   = fmt(d.principal);
-        document.getElementById('s-profit').textContent      = fmt(d.gross_profit);
         document.getElementById('s-commission').textContent  = fmt(d.commission_amount);
         document.getElementById('s-net').textContent         = fmt(d.net_profit);
         document.getElementById('s-total').textContent       = fmt(d.total_return);

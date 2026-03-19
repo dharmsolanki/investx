@@ -49,7 +49,7 @@
                 <tr>
                     <td>
                         <div style="font-weight:600">{{ $inv->plan->name }}</div>
-                        <div style="font-size:0.72rem;color:var(--muted)">{{ $inv->plan->roi_percent }}% Returns · {{ $inv->plan->duration_months }}mo</div>
+                        <div style="font-size:0.72rem;color:var(--muted)">{{ $inv->plan->displayDailyEarningFormatted() }} daily highlight · {{ $inv->plan->duration_months }}mo</div>
                     </td>
                     <td style="font-weight:600">₹{{ number_format($inv->principal_amount, 2) }}</td>
                     <td style="color:var(--green)">₹{{ number_format($inv->expected_profit, 2) }}</td>

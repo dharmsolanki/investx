@@ -241,48 +241,61 @@
     <div class="section-head">
       <div class="section-label">Trading Plans</div>
       <h2 class="section-title">Apna Trading Plan Chunein</h2>
-      <p class="section-sub">Har member ke liye alag plan. Jitna zyada contribute karein, utne better expected returns.</p>
+      <p class="section-sub">Aapke bataye hue 4 plans yahan rakhe gaye hain, jahan har amount ke saath fixed daily earning highlight ki gayi hai.</p>
     </div>
     <div class="plans-grid">
       <div class="plan-card">
-        <div class="plan-name">Starter Plan</div>
-        <div class="plan-roi">18%</div>
-        <div class="plan-period">Expected Annual Returns</div>
-        <div class="plan-min">Minimum Contribution: <strong>₹1,000</strong></div>
+        <div class="plan-name">Plan 1</div>
+        <div class="plan-roi">₹750</div>
+        <div class="plan-period">Daily Earnings</div>
+        <div class="plan-min">Invest: <strong>₹15,000</strong></div>
         <ul class="plan-features">
-          <li><span>✓</span> Lock-in: <strong>3 Mahine</strong></li>
-          <li><span>✓</span> Management Fee: <strong>20%</strong></li>
-          <li><span>✓</span> Monthly Performance Update</li>
-          <li><span>✓</span> UPI Withdrawal</li>
+          <li><span>✓</span> Daily Income: <strong>₹750</strong></li>
+          <li><span>✓</span> Suitable for: <strong>New Members</strong></li>
+          <li><span>✓</span> Simple Entry Amount</li>
+          <li><span>✓</span> Fast Start Option</li>
         </ul>
-        <a href="{{ route('register') }}" class="btn-plan outline">Participate Karein</a>
+        <a href="{{ route('register') }}" class="btn-plan outline">Join Plan 1</a>
       </div>
       <div class="plan-card featured">
         <div class="plan-badge">⭐ Most Popular</div>
-        <div class="plan-name">Growth Plan</div>
-        <div class="plan-roi">25%</div>
-        <div class="plan-period">Expected Annual Returns</div>
-        <div class="plan-min">Minimum Contribution: <strong>₹10,000</strong></div>
+        <div class="plan-name">Plan 2</div>
+        <div class="plan-roi">₹1,800</div>
+        <div class="plan-period">Daily Earnings</div>
+        <div class="plan-min">Invest: <strong>₹30,000</strong></div>
         <ul class="plan-features">
-          <li><span>✓</span> Lock-in: <strong>6 Mahine</strong></li>
-          <li><span>✓</span> Management Fee: <strong>17%</strong></li>
-          <li><span>✓</span> Weekly Performance Update</li>
-          <li><span>✓</span> Priority Withdrawal</li>
+          <li><span>✓</span> Daily Income: <strong>₹1,800</strong></li>
+          <li><span>✓</span> Suitable for: <strong>Regular Investors</strong></li>
+          <li><span>✓</span> Higher Daily Payout</li>
+          <li><span>✓</span> Priority Support</li>
         </ul>
-        <a href="{{ route('register') }}" class="btn-plan filled">Participate Karein</a>
+        <a href="{{ route('register') }}" class="btn-plan filled">Join Plan 2</a>
       </div>
       <div class="plan-card">
-        <div class="plan-name">Elite Plan</div>
-        <div class="plan-roi">32%</div>
-        <div class="plan-period">Expected Annual Returns</div>
-        <div class="plan-min">Minimum Contribution: <strong>₹1,00,000</strong></div>
+        <div class="plan-name">Plan 3</div>
+        <div class="plan-roi">₹3,600</div>
+        <div class="plan-period">Daily Earnings</div>
+        <div class="plan-min">Invest: <strong>₹60,000</strong></div>
         <ul class="plan-features">
-          <li><span>✓</span> Lock-in: <strong>12 Mahine</strong></li>
-          <li><span>✓</span> Management Fee: <strong>15%</strong></li>
-          <li><span>✓</span> Daily Dashboard</li>
-          <li><span>✓</span> Same-Day Withdrawal</li>
+          <li><span>✓</span> Daily Income: <strong>₹3,600</strong></li>
+          <li><span>✓</span> Suitable for: <strong>Growth Focused</strong></li>
+          <li><span>✓</span> Enhanced Daily Return</li>
+          <li><span>✓</span> Dedicated Assistance</li>
         </ul>
-        <a href="{{ route('register') }}" class="btn-plan outline">Participate Karein</a>
+        <a href="{{ route('register') }}" class="btn-plan outline">Join Plan 3</a>
+      </div>
+      <div class="plan-card">
+        <div class="plan-name">Plan 4</div>
+        <div class="plan-roi">₹7,000</div>
+        <div class="plan-period">Daily Earnings</div>
+        <div class="plan-min">Invest: <strong>₹1,00,000</strong></div>
+        <ul class="plan-features">
+          <li><span>✓</span> Daily Income: <strong>₹7,000</strong></li>
+          <li><span>✓</span> Suitable for: <strong>Premium Members</strong></li>
+          <li><span>✓</span> Highest Daily Payout</li>
+          <li><span>✓</span> VIP Level Access</li>
+        </ul>
+        <a href="{{ route('register') }}" class="btn-plan outline">Join Plan 4</a>
       </div>
     </div>
   </div>
@@ -321,7 +334,7 @@
       </div>
       <div class="testi-card">
         <div class="stars">★★★★★</div>
-        <p class="testi-text">"Elite Plan try kiya. 1 lakh pe 28,000 ka return mila 1 saal mein. Ab regularly participate karta hun."</p>
+        <p class="testi-text">"Plan 4 choose kiya. ₹1,00,000 amount ke saath daily earning highlight bahut clear dikh rahi thi aur dashboard samajhna easy tha."</p>
         <div class="testi-user"><div class="avatar">PS</div><div><div class="testi-name">Priya Sharma</div><div class="testi-loc">Surat, Gujarat</div></div></div>
       </div>
       <div class="testi-card">
@@ -343,7 +356,7 @@
     <div class="faq-list">
       <div class="faq-item open">
         <div class="faq-q" onclick="this.parentElement.classList.toggle('open')">Minimum kitna contribute kar sakta hun? <span>▼</span></div>
-        <div class="faq-a">Starter Plan mein minimum ₹1,000 se shuru kar sakte hain. Growth Plan mein ₹10,000 aur Elite Plan mein ₹1,00,000 minimum hai.</div>
+        <div class="faq-a">Available plans yeh hain: Plan 1 ₹15,000, Plan 2 ₹30,000, Plan 3 ₹60,000 aur Plan 4 ₹1,00,000 investment amount ke saath.</div>
       </div>
       <div class="faq-item">
         <div class="faq-q" onclick="this.parentElement.classList.toggle('open')">Returns kab aur kaise milenge? <span>▼</span></div>
@@ -351,7 +364,7 @@
       </div>
       <div class="faq-item">
         <div class="faq-q" onclick="this.parentElement.classList.toggle('open')">Management fee kaise calculate hoti hai? <span>▼</span></div>
-        <div class="faq-a">Management fee sirf NET RETURNS pe lagti hai — contribution pe nahi. Example: ₹10,000 contribute kiya, ₹2,500 return aaya, Growth Plan ka 17% = ₹425 fee. Aapko ₹12,075 milenge.</div>
+        <div class="faq-a">Plan fee sirf NET RETURNS pe lagti hai — contribution pe nahi. Example ke liye aap apne selected plan ki summary invest screen par dekh sakte hain.</div>
       </div>
       <div class="faq-item">
         <div class="faq-q" onclick="this.parentElement.classList.toggle('open')">Kya returns guaranteed hain? <span>▼</span></div>
