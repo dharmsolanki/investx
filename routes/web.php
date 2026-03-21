@@ -11,6 +11,7 @@ use App\Http\Controllers\Admin\AdminDashboardController;
 use App\Http\Controllers\Admin\AdminUserController;
 use App\Http\Controllers\Admin\AdminWithdrawalController;
 use App\Http\Controllers\Admin\AdminPlanController;
+use App\Http\Controllers\Auth\ForgotPasswordController;
 use Illuminate\Support\Facades\Route;
 
 // ─── Public Routes ─────────────────────────────────────────
@@ -23,6 +24,12 @@ Route::middleware('guest')->group(function () {
     Route::post('/login',   [LoginController::class,    'login']);
     Route::get('/register', [RegisterController::class, 'showForm'])->name('register');
     Route::post('/register', [RegisterController::class, 'register']);
+
+    // Forgot Password
+    Route::get('/forgot-password',        [ForgotPasswordController::class, 'showForgotForm'])->name('password.request');
+    Route::post('/forgot-password',       [ForgotPasswordController::class, 'sendResetLink'])->name('password.email');
+    Route::get('/reset-password/{token}', [ForgotPasswordController::class, 'showResetForm'])->name('password.reset.form');
+    Route::post('/reset-password',        [ForgotPasswordController::class, 'resetPassword'])->name('password.reset')->withoutMiddleware([\App\Http\Middleware\VerifyCsrfToken::class]);
 });
 
 Route::post('/logout', [LoginController::class, 'logout'])->name('logout')->middleware('auth');
