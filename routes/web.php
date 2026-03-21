@@ -13,6 +13,8 @@ use App\Http\Controllers\Admin\AdminWithdrawalController;
 use App\Http\Controllers\Admin\AdminPlanController;
 use App\Http\Controllers\Auth\ForgotPasswordController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\ReviewController;
+use App\Http\Controllers\Admin\AdminReviewController;
 
 // ─── Public Routes ─────────────────────────────────────────
 Route::get('/', fn() => view('welcome.index'))->name('home');
@@ -61,6 +63,9 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/wallet/topup/order',       [WalletController::class, 'topupOrder'])->name('wallet.topup.order');
     Route::post('/wallet/topup/verify',      [WalletController::class, 'topupVerify'])->name('wallet.topup.verify');
     Route::post('/wallet/withdraw',          [WalletController::class, 'withdrawRequest'])->name('wallet.withdraw');
+
+    // Review
+    Route::post('/review', [ReviewController::class, 'store'])->name('review.store');
 });
 
 // Razorpay webhook (no CSRF, no auth)
@@ -96,4 +101,9 @@ Route::middleware(['auth', \App\Http\Middleware\AdminMiddleware::class])
         Route::get('/withdrawals',                        [AdminWithdrawalController::class, 'index'])->name('withdrawals.index');
         Route::post('/withdrawals/{withdrawal}/approve',  [AdminWithdrawalController::class, 'approve'])->name('withdrawals.approve');
         Route::post('/withdrawals/{withdrawal}/reject',   [AdminWithdrawalController::class, 'reject'])->name('withdrawals.reject');
+
+        // Reviews
+        Route::get('/reviews',                    [AdminReviewController::class, 'index'])->name('reviews.index');
+        Route::post('/reviews/{review}/approve',  [AdminReviewController::class, 'approve'])->name('reviews.approve');
+        Route::post('/reviews/{review}/reject',   [AdminReviewController::class, 'reject'])->name('reviews.reject');
     });
