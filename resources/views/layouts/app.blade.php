@@ -629,7 +629,46 @@
                 </a>
             @endif
         </nav>
+        <div style="padding:0.8rem 1.5rem;border-bottom:1px solid var(--border);display:flex;gap:0.8rem">
 
+            <a href="https://instagram.com/jayrajchauhan21_" target="_blank"
+                style="flex:1;text-align:center;padding:0.6rem;background:var(--dark4);
+              border:1px solid var(--border);border-radius:8px;
+              text-decoration:none;transition:all 0.2s;display:flex;align-items:center;justify-content:center;gap:0.5rem;font-size:0.78rem;color:var(--muted)"
+                onmouseover="this.style.borderColor='#d6249f';this.style.color='#d6249f'"
+                onmouseout="this.style.borderColor='var(--border)';this.style.color='var(--muted)'">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none">
+                    <defs>
+                        <radialGradient id="ig2" cx="30%" cy="107%" r="150%">
+                            <stop offset="0%" stop-color="#fdf497" />
+                            <stop offset="5%" stop-color="#fdf497" />
+                            <stop offset="45%" stop-color="#fd5949" />
+                            <stop offset="60%" stop-color="#d6249f" />
+                            <stop offset="90%" stop-color="#285AEB" />
+                        </radialGradient>
+                    </defs>
+                    <rect x="2" y="2" width="20" height="20" rx="5" ry="5" fill="url(#ig2)" />
+                    <circle cx="12" cy="12" r="4.5" stroke="white" stroke-width="1.8" fill="none" />
+                    <circle cx="17.5" cy="6.5" r="1.2" fill="white" />
+                </svg>
+                Instagram
+            </a>
+
+            <a href="https://t.me/your_channel" target="_blank"
+                style="flex:1;text-align:center;padding:0.6rem;background:var(--dark4);
+              border:1px solid var(--border);border-radius:8px;
+              text-decoration:none;transition:all 0.2s;display:flex;align-items:center;justify-content:center;gap:0.5rem;font-size:0.78rem;color:var(--muted)"
+                onmouseover="this.style.borderColor='#29A8E0';this.style.color='#29A8E0'"
+                onmouseout="this.style.borderColor='var(--border)';this.style.color='var(--muted)'">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none">
+                    <circle cx="12" cy="12" r="10" fill="#29A8E0" />
+                    <path d="M5.5 11.8l13-5.3-4.8 13.5-2.7-5-5.5-3.2z" fill="white" />
+                    <path d="M9 14.5l.5-3.5 6-5.5" stroke="#29A8E0" stroke-width="1" fill="none" />
+                </svg>
+                Telegram
+            </a>
+
+        </div>
         <div class="sidebar-bottom">
             <form action="{{ route('logout') }}" method="POST">
                 @csrf

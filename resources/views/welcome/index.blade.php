@@ -1157,6 +1157,45 @@
                     <li><a href="#">Privacy Policy</a></li>
                 </ul>
             </div>
+            <div class="footer-col">
+                <h5>Community</h5>
+                <ul>
+                    <li>
+                        <a href="https://instagram.com/jayrajchauhan21_" target="_blank"
+                            style="display:flex;align-items:center;gap:0.6rem">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
+                                <defs>
+                                    <radialGradient id="ig1" cx="30%" cy="107%" r="150%">
+                                        <stop offset="0%" stop-color="#fdf497" />
+                                        <stop offset="5%" stop-color="#fdf497" />
+                                        <stop offset="45%" stop-color="#fd5949" />
+                                        <stop offset="60%" stop-color="#d6249f" />
+                                        <stop offset="90%" stop-color="#285AEB" />
+                                    </radialGradient>
+                                </defs>
+                                <rect x="2" y="2" width="20" height="20" rx="5" ry="5"
+                                    fill="url(#ig1)" />
+                                <circle cx="12" cy="12" r="4.5" stroke="white" stroke-width="1.8"
+                                    fill="none" />
+                                <circle cx="17.5" cy="6.5" r="1.2" fill="white" />
+                            </svg>
+                            Instagram
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://t.me/your_channel" target="_blank"
+                            style="display:flex;align-items:center;gap:0.6rem">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
+                                <circle cx="12" cy="12" r="10" fill="#29A8E0" />
+                                <path d="M6 12l3.5 3.5 8.5-7" stroke="white" stroke-width="1.8"
+                                    stroke-linecap="round" stroke-linejoin="round" fill="none" />
+                                <path d="M5.5 11.5l13-5-4.5 13-3-4.5-5.5-3.5z" fill="white" opacity="0.9" />
+                            </svg>
+                            Telegram
+                        </a>
+                    </li>
+                </ul>
+            </div>
         </div>
         <div class="footer-bottom">
             <span>© {{ date('Y') }} InvestX. All rights reserved.</span>
