@@ -68,7 +68,7 @@
             <tbody>
                 @forelse($withdrawals as $w)
                 <tr>
-                    <td>{{ $w->investment->plan->name }}</td>
+                    <td>{{ $w->investment?->plan->name ?? '👛 Wallet Withdrawal' }}</td>
                     <td>₹{{ number_format($w->principal_amount, 2) }}</td>
                     <td style="color:var(--green)">₹{{ number_format($w->net_profit, 2) }}</td>
                     <td style="font-weight:600;color:var(--gold)">₹{{ number_format($w->total_amount, 2) }}</td>
