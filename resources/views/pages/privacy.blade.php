@@ -90,11 +90,11 @@ footer a{color:var(--gold);text-decoration:none;margin:0 0.8rem;}
         </ul>
     </div>
 
-    <div class="section">
+    {{-- <div class="section">
         <h2>8. Contact</h2>
         <p>Privacy related queries ke liye: <strong>[EMAIL]</strong></p>
         <p>Address: <strong>[COMPANY ADDRESS]</strong></p>
-    </div>
+    </div> --}}
 </div>
 
 <footer>

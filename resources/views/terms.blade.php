@@ -237,7 +237,7 @@
         <h2>12. Contact Us</h2>
         <p>Koi bhi sawal ya concern ke liye:</p>
         <ul>
-            <li><strong>Email:</strong> support@investx.com</li>
+            <li><strong>Email:</strong> jayrajmchauhan6271@gmail.com</li>
             <li><strong>Support Hours:</strong> Monday–Saturday, 10 AM – 6 PM IST</li>
         </ul>
     </div>

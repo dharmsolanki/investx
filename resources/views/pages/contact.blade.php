@@ -46,7 +46,7 @@ footer a{color:var(--gold);text-decoration:none;margin:0 0.8rem;}
     <div class="grid">
         <div class="card">
             <h2>📞 Contact Details</h2>
-            <div class="contact-item">
+            {{-- <div class="contact-item">
                 <span class="contact-icon">📧</span>
                 <div>
                     <div class="contact-label">Email</div>
@@ -66,7 +66,7 @@ footer a{color:var(--gold);text-decoration:none;margin:0 0.8rem;}
                     <div class="contact-label">Address</div>
                     <div class="contact-value">[FULL ADDRESS]</div>
                 </div>
-            </div>
+            </div> --}}
             <div class="contact-item">
                 <span class="contact-icon">✈️</span>
                 <div>

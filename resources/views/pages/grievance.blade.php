@@ -19,10 +19,6 @@ h1{font-family:'Playfair Display',serif;font-size:2.5rem;font-weight:900;margin-
 .section h2{font-size:1.1rem;font-weight:700;color:var(--gold);margin-bottom:1rem;}
 .section p,.section li{color:var(--muted);line-height:1.8;font-size:0.92rem;margin-bottom:0.6rem;}
 .section ul{padding-left:1.5rem;}
-.officer-card{background:var(--dark4);border:1px solid var(--border);border-radius:12px;padding:1.5rem;}
-.officer-card .name{font-size:1.1rem;font-weight:700;margin-bottom:0.3rem;}
-.officer-card .role{font-size:0.8rem;color:var(--gold);margin-bottom:1rem;text-transform:uppercase;letter-spacing:1px;}
-.officer-detail{display:flex;align-items:center;gap:0.6rem;font-size:0.88rem;margin-bottom:0.5rem;color:var(--muted);}
 .step-item{display:flex;gap:1rem;margin-bottom:1.2rem;align-items:start;}
 .step-num{background:var(--gold);color:#0A0C10;width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:0.8rem;flex-shrink:0;margin-top:2px;}
 .step-content h3{font-size:0.92rem;font-weight:600;margin-bottom:0.3rem;}
@@ -42,38 +38,26 @@ footer a{color:var(--gold);text-decoration:none;margin:0 0.8rem;}
     <p class="subtitle">Aapki complaints aur issues ka timely resolution hamari priority hai</p>
 
     <div class="section">
-        <h2>👤 Grievance Officer</h2>
-        <div class="officer-card">
-            <div class="name">[GRIEVANCE OFFICER NAME]</div>
-            <div class="role">Grievance Officer — InvestX</div>
-            <div class="officer-detail">📧 <span>[GRIEVANCE EMAIL]</span></div>
-            <div class="officer-detail">📱 <span>[PHONE]</span></div>
-            <div class="officer-detail">🏢 <span>[COMPANY ADDRESS]</span></div>
-            <div class="officer-detail">🕐 <span>Monday–Friday, 10 AM – 6 PM</span></div>
-        </div>
-    </div>
-
-    <div class="section">
         <h2>📋 Grievance Process</h2>
         <div class="step-item">
             <div class="step-num">1</div>
             <div class="step-content">
                 <h3>Complaint Submit Karein</h3>
-                <p>Email karein grievance officer ko saari details ke saath — transaction ID, screenshot, description.</p>
+                <p>Hamare <a href="{{ route('contact') }}" style="color:var(--gold)">Contact Us</a> page par jaayein aur form fill karein — transaction ID, screenshot aur description ke saath.</p>
             </div>
         </div>
         <div class="step-item">
             <div class="step-num">2</div>
             <div class="step-content">
                 <h3>Acknowledgement (24 Hours)</h3>
-                <p>Aapko 24 ghante mein complaint ka acknowledgement milega ek ticket number ke saath.</p>
+                <p>Aapko 24 ghante mein complaint ka acknowledgement milega aapke email par.</p>
             </div>
         </div>
         <div class="step-item">
             <div class="step-num">3</div>
             <div class="step-content">
                 <h3>Investigation (3–5 Business Days)</h3>
-                <p>Hamaari team aapki complaint investigate karegi aur zaroorat padne par additional information maangi ja sakti hai.</p>
+                <p>Hamari team aapki complaint investigate karegi aur zaroorat padne par additional information maangi ja sakti hai.</p>
             </div>
         </div>
         <div class="step-item">
@@ -86,7 +70,7 @@ footer a{color:var(--gold);text-decoration:none;margin:0 0.8rem;}
     </div>
 
     <div class="section">
-        <h2>📝 Complaint Submit Karne Ke Liye Yeh Include Karein</h2>
+        <h2>📝 Complaint Mein Yeh Include Karein</h2>
         <ul>
             <li>Aapka registered email aur phone number</li>
             <li>Transaction ID / Payment ID (agar applicable)</li>
@@ -102,6 +86,13 @@ footer a{color:var(--gold);text-decoration:none;margin:0 0.8rem;}
         <p><a href="https://razorpay.com/grievances" target="_blank" style="color:var(--gold)">razorpay.com/grievances</a></p>
         <p style="margin-top:0.8rem">Aap RBI Ombudsman se bhi contact kar sakte hain: <a href="https://cms.rbi.org.in" target="_blank" style="color:var(--gold)">cms.rbi.org.in</a></p>
     </div>
+
+    <div style="text-align:center;margin-top:2rem">
+        <a href="{{ route('contact') }}"
+           style="background:var(--gold);color:#0A0C10;padding:0.85rem 2.5rem;border-radius:8px;font-weight:700;text-decoration:none;font-size:0.95rem">
+            📨 Complaint Submit Karein →
+        </a>
+    </div>
 </div>
 
 <footer>
@@ -110,7 +101,7 @@ footer a{color:var(--gold);text-decoration:none;margin:0 0.8rem;}
     <a href="{{ route('privacy') }}">Privacy</a>
     <a href="{{ route('refund') }}">Refund</a>
     <a href="{{ route('contact') }}">Contact</a>
-    <br><br>© {{ date('Y') }} InvestX. All rights reserved.
+    <br><br>© {{ date('Y') }} Meridian Flow FZ-LLC. All rights reserved.
 </footer>
 </body>
 </html>

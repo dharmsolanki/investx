@@ -97,12 +97,12 @@ footer a{color:var(--gold);text-decoration:none;margin:0 0.8rem;}
         </ul>
     </div>
 
-    <div class="section">
+    {{-- <div class="section">
         <h2>7. Contact for Refund</h2>
         <p>Email: <strong>[SUPPORT EMAIL]</strong></p>
         <p>Phone: <strong>[PHONE]</strong></p>
         <p>Support Hours: Monday–Saturday, 10 AM – 6 PM</p>
-    </div>
+    </div> --}}
 </div>
 
 <footer>

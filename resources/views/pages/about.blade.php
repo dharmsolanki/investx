@@ -46,35 +46,39 @@ footer a{color:var(--gold);text-decoration:none;margin:0 0.8rem;}
         <div class="info-grid">
             <div class="info-item">
                 <div class="label">Company Name</div>
-                <div class="value">[COMPANY NAME]</div>
+                <div class="value">Meridian Flow FZ-LLC</div>
             </div>
             <div class="info-item">
                 <div class="label">Registration No.</div>
-                <div class="value">[REG NUMBER]</div>
+                <div class="value">0000004082916</div>
             </div>
             <div class="info-item">
-                <div class="label">GST Number</div>
-                <div class="value">[GST NUMBER]</div>
+                <div class="label">License No.</div>
+                <div class="value">45034321</div>
             </div>
             <div class="info-item">
                 <div class="label">Founded</div>
-                <div class="value">2024</div>
-            </div>
-            <div class="info-item">
-                <div class="label">Registered Address</div>
-                <div class="value">[FULL ADDRESS]</div>
-            </div>
-            <div class="info-item">
-                <div class="label">Email</div>
-                <div class="value">[EMAIL]</div>
-            </div>
-            <div class="info-item">
-                <div class="label">Phone</div>
-                <div class="value">[PHONE]</div>
+                <div class="value">03 Feb 2026</div>
             </div>
             <div class="info-item">
                 <div class="label">Business Type</div>
-                <div class="value">Forex Trading Community</div>
+                <div class="value">E-Commerce (Products & Services E-Trading)</div>
+            </div>
+            <div class="info-item">
+                <div class="label">Manager</div>
+                <div class="value">Jainil Mahipalsinh Chauhan</div>
+            </div>
+            <div class="info-item">
+                <div class="label">Registered Address</div>
+                <div class="value">Compass Building, Al Shohada Road, Al Hamra Industrial Zone-FZ, Ras Al Khaimah, UAE</div>
+            </div>
+            <div class="info-item">
+                <div class="label">Email</div>
+                <div class="value"><a href="mailto:jayrajmchauhan6271@gmail.com" style="color:var(--gold)">jayrajmchauhan6271@gmail.com</a></div>
+            </div>
+            <div class="info-item">
+                <div class="label">Phone</div>
+                <div class="value"><a href="tel:+971524185587" style="color:var(--gold)">+971 52 418 5587</a></div>
             </div>
         </div>
     </div>
@@ -96,7 +100,7 @@ footer a{color:var(--gold);text-decoration:none;margin:0 0.8rem;}
     <a href="{{ route('terms') }}">Terms</a>
     <a href="{{ route('refund') }}">Refund Policy</a>
     <a href="{{ route('contact') }}">Contact</a>
-    <br><br>© {{ date('Y') }} InvestX. All rights reserved.
+    <br><br>© {{ date('Y') }} Meridian Flow FZ-LLC. All rights reserved.
 </footer>
 </body>
 </html>
