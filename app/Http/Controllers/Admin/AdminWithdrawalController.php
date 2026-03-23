@@ -40,27 +40,32 @@ class AdminWithdrawalController extends Controller
             // Investment withdrawal
             if (!$withdrawal->isWallet() && $withdrawal->investment) {
                 $withdrawal->investment->update([
-                    'status'       => 'withdrawn',
-                    'withdrawn_at' => now(),
+                    'status'        => 'withdrawn',
+                    'withdrawn_at'  => now(),
+                    'actual_profit' => $withdrawal->net_profit, // ✅ withdrawal ka actual profit
                 ]);
 
                 Transaction::where('investment_id', $withdrawal->investment_id)
                     ->where('type', 'withdrawal')
                     ->update(['status' => 'completed', 'payment_id' => $request->utr_number]);
 
-                // ✅ Actual days se commission calculate karo
-                $daysInvested     = max(1, (int) $withdrawal->investment->invested_at->diffInDays($withdrawal->created_at));
-                $dailyFee         = (float) $withdrawal->investment->commission_amount;
-                $actualCommission = round($dailyFee * $daysInvested, 2);
+                // Commission sirf tab katao jab profit hua ho
+                $daysInvested = (int) $withdrawal->investment->invested_at->startOfDay()
+                    ->diffInDays($withdrawal->created_at->startOfDay());
 
-                Transaction::create([
-                    'user_id'       => $withdrawal->user_id,
-                    'investment_id' => $withdrawal->investment_id,
-                    'type'          => 'commission',
-                    'amount'        => $actualCommission,
-                    'status'        => 'completed',
-                    'notes'         => "Platform fee — {$daysInvested} days × ₹{$dailyFee}/day = ₹{$actualCommission}",
-                ]);
+                if ($daysInvested > 0 && $withdrawal->net_profit > 0) {
+                    $dailyFee         = (float) $withdrawal->investment->commission_amount;
+                    $actualCommission = round($dailyFee * $daysInvested, 2);
+
+                    Transaction::create([
+                        'user_id'       => $withdrawal->user_id,
+                        'investment_id' => $withdrawal->investment_id,
+                        'type'          => 'commission',
+                        'amount'        => $actualCommission,
+                        'status'        => 'completed',
+                        'notes'         => "Platform fee — {$daysInvested} days × ₹{$dailyFee}/day = ₹{$actualCommission}",
+                    ]);
+                }
             }
 
             // Wallet withdrawal
@@ -85,7 +90,6 @@ class AdminWithdrawalController extends Controller
 
             DB::commit();
             return back()->with('success', "Withdrawal approved. UTR: {$request->utr_number}");
-
         } catch (\Exception $e) {
             DB::rollBack();
             return back()->with('error', $e->getMessage());
@@ -122,7 +126,6 @@ class AdminWithdrawalController extends Controller
             // Investment withdrawal reject — status wapas active karo
             if (!$withdrawal->isWallet() && $withdrawal->investment) {
                 $withdrawal->investment->update(['status' => 'active']);
-                // ✅ matured nahi — active karo taaki user dobara withdraw kar sake
             }
 
             $withdrawal->user->notify(new ActionAlertNotification(
@@ -138,7 +141,6 @@ class AdminWithdrawalController extends Controller
 
             DB::commit();
             return back()->with('success', 'Withdrawal rejected and user notified.');
-
         } catch (\Exception $e) {
             DB::rollBack();
             return back()->with('error', $e->getMessage());

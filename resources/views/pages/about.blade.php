@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>About Us — InvestX</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{--gold:#C9A84C;--dark:#0A0C10;--dark2:#111318;--dark3:#181C24;--dark4:#1E2330;--text:#E8EAF0;--muted:#7A8099;--border:rgba(201,168,76,0.18);}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'DM Sans',sans-serif;background:var(--dark);color:var(--text);}
+nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:1.2rem 3rem;background:rgba(10,12,16,0.9);backdrop-filter:blur(18px);border-bottom:1px solid var(--border);}
+.logo{font-family:'Playfair Display',serif;font-size:1.7rem;font-weight:900;color:var(--gold);text-decoration:none;}
+.logo span{color:var(--text);}
+.container{max-width:900px;margin:0 auto;padding:8rem 2rem 4rem;}
+h1{font-family:'Playfair Display',serif;font-size:2.5rem;font-weight:900;margin-bottom:0.5rem;}
+.subtitle{color:var(--muted);margin-bottom:3rem;font-size:1rem;}
+.section{background:var(--dark3);border:1px solid var(--border);border-radius:16px;padding:2rem;margin-bottom:1.5rem;}
+.section h2{font-size:1.1rem;font-weight:700;color:var(--gold);margin-bottom:1rem;}
+.section p{color:var(--muted);line-height:1.8;font-size:0.92rem;margin-bottom:0.8rem;}
+.info-grid{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-top:1rem;}
+.info-item .label{font-size:0.75rem;color:var(--muted);margin-bottom:0.3rem;text-transform:uppercase;letter-spacing:1px;}
+.info-item .value{font-size:0.92rem;font-weight:600;}
+footer{text-align:center;padding:2rem;color:var(--muted);font-size:0.82rem;border-top:1px solid var(--border);}
+footer a{color:var(--gold);text-decoration:none;margin:0 0.8rem;}
+</style>
+</head>
+<body>
+<nav>
+    <a href="{{ route('home') }}" class="logo">Invest<span>X</span></a>
+    <a href="{{ route('login') }}" style="color:var(--gold);text-decoration:none;font-size:0.9rem">Login →</a>
+</nav>
+
+<div class="container">
+    <h1>About Us</h1>
+    <p class="subtitle">InvestX ke baare mein jaanein</p>
+
+    <div class="section">
+        <h2>🏢 Company Overview</h2>
+        <p>InvestX ek professional forex trading community platform hai jahan expert traders aur investors milke trading karte hain aur returns share karte hain.</p>
+        <p>Hamari team experienced forex traders se bani hai jo EUR/USD, GBP/USD, XAU/USD jaise major pairs mein trade karti hai aur members ke saath performance-based profit share karti hai.</p>
+    </div>
+
+    <div class="section">
+        <h2>📋 Company Details</h2>
+        <div class="info-grid">
+            <div class="info-item">
+                <div class="label">Company Name</div>
+                <div class="value">[COMPANY NAME]</div>
+            </div>
+            <div class="info-item">
+                <div class="label">Registration No.</div>
+                <div class="value">[REG NUMBER]</div>
+            </div>
+            <div class="info-item">
+                <div class="label">GST Number</div>
+                <div class="value">[GST NUMBER]</div>
+            </div>
+            <div class="info-item">
+                <div class="label">Founded</div>
+                <div class="value">2024</div>
+            </div>
+            <div class="info-item">
+                <div class="label">Registered Address</div>
+                <div class="value">[FULL ADDRESS]</div>
+            </div>
+            <div class="info-item">
+                <div class="label">Email</div>
+                <div class="value">[EMAIL]</div>
+            </div>
+            <div class="info-item">
+                <div class="label">Phone</div>
+                <div class="value">[PHONE]</div>
+            </div>
+            <div class="info-item">
+                <div class="label">Business Type</div>
+                <div class="value">Forex Trading Community</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="section">
+        <h2>🎯 Hamara Mission</h2>
+        <p>Hamara mission hai ki har aam investor ko expert forex trading ka faida mil sake bina khud trading seekhe. Paisa aapka, expertise hamari.</p>
+    </div>
+
+    <div class="section">
+        <h2>🔐 Security & Trust</h2>
+        <p>Aapke funds 100% secure hain. Har transaction SSL-encrypted hai. Hamare sabhi traders KYC-verified professionals hain.</p>
+    </div>
+</div>
+
+<footer>
+    <a href="{{ route('home') }}">Home</a>
+    <a href="{{ route('privacy') }}">Privacy Policy</a>
+    <a href="{{ route('terms') }}">Terms</a>
+    <a href="{{ route('refund') }}">Refund Policy</a>
+    <a href="{{ route('contact') }}">Contact</a>
+    <br><br>© {{ date('Y') }} InvestX. All rights reserved.
+</footer>
+</body>
+</html>

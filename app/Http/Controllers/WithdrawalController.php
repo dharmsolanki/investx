@@ -15,7 +15,6 @@ class WithdrawalController extends Controller
     {
         $user = Auth::user();
 
-        // Active + matured dono dikho — jo pending request nahi hai
         $availableInvestments = $user->investments()
             ->with('plan')
             ->whereIn('status', ['active', 'matured'])
@@ -49,23 +48,19 @@ class WithdrawalController extends Controller
             return back()->with('error', 'Is investment ke liye withdrawal request already exist karti hai.');
         }
 
-        // ✅ Actual days se calculate karo
-        $daysInvested    = (int) $investment->invested_at->startOfDay()->diffInDays(now()->startOfDay());
-        $dailyNet        = $investment->net_profit;        // ab daily value hai
-        $dailyFee        = $investment->commission_amount; // ab daily fee hai
-        $dailyGross      = $investment->expected_profit;   // ab daily gross hai
+        $daysInvested = (int) $investment->invested_at->startOfDay()->diffInDays(now()->startOfDay());
 
-        $actualNetProfit    = round($dailyNet * $daysInvested, 2);
-        $actualCommission   = round($dailyFee * $daysInvested, 2);
-        $actualGrossProfit  = round($dailyGross * $daysInvested, 2);
-        $total              = round($investment->principal_amount + $actualNetProfit, 2);
-
-        // Same day withdraw — sirf principal wapas
+        // Same day — sirf principal, koi profit/commission nahi
         if ($daysInvested === 0) {
-            $actualNetProfit  = 0;
-            $actualCommission = 0;
             $actualGrossProfit = 0;
-            $total            = $investment->principal_amount;
+            $actualCommission  = 0;
+            $actualNetProfit   = 0;
+            $total             = $investment->principal_amount;
+        } else {
+            $actualGrossProfit = round($investment->expected_profit  * $daysInvested, 2);
+            $actualCommission  = round($investment->commission_amount * $daysInvested, 2);
+            $actualNetProfit   = round($investment->net_profit        * $daysInvested, 2);
+            $total             = round($investment->principal_amount  + $actualNetProfit, 2);
         }
 
         DB::beginTransaction();
@@ -82,19 +77,24 @@ class WithdrawalController extends Controller
                 'status'           => 'pending',
             ]);
 
+            $investment->update(['actual_profit' => $actualNetProfit]);
+            
             Transaction::create([
                 'user_id'       => $user->id,
                 'investment_id' => $investment->id,
                 'type'          => 'withdrawal',
                 'amount'        => $total,
                 'status'        => 'pending',
-                'notes'         => "Withdrawal — {$daysInvested} din · Gross: ₹{$actualGrossProfit} · Fee: ₹{$actualCommission} · Net: ₹{$actualNetProfit}",
+                'notes'         => $daysInvested === 0
+                    ? "Withdrawal — same day, sirf principal"
+                    : "Withdrawal — {$daysInvested} din · Gross: ₹{$actualGrossProfit} · Fee: ₹{$actualCommission} · Net: ₹{$actualNetProfit}",
             ]);
 
             DB::commit();
 
             return redirect()->route('withdrawals.index')
                 ->with('success', "Withdrawal request submit ho gayi! ₹" . number_format($total, 2) . " 24 ghante mein aapke account mein aa jayega.");
+
         } catch (\Exception $e) {
             DB::rollBack();
             return back()->with('error', 'Error: ' . $e->getMessage());

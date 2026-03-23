@@ -15,10 +15,19 @@ use App\Http\Controllers\Auth\ForgotPasswordController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ReviewController;
 use App\Http\Controllers\Admin\AdminReviewController;
+use App\Http\Controllers\Admin\AdminTransactionController;
+use App\Http\Controllers\ContactController;
 
 // ─── Public Routes ─────────────────────────────────────────
 Route::get('/', fn() => view('welcome.index'))->name('home');
 Route::get('/terms', fn() => view('terms'))->name('terms');
+Route::post('/contact', [ContactController::class, 'send'])->name('contact.send');
+// Public Pages
+Route::get('/about',      fn() => view('pages.about'))->name('about');
+Route::get('/privacy',    fn() => view('pages.privacy'))->name('privacy');
+Route::get('/refund',     fn() => view('pages.refund'))->name('refund');
+Route::get('/contact',    fn() => view('pages.contact'))->name('contact');
+Route::get('/grievance',  fn() => view('pages.grievance'))->name('grievance');
 
 // Auth
 Route::middleware('guest')->group(function () {
@@ -106,4 +115,7 @@ Route::middleware(['auth', \App\Http\Middleware\AdminMiddleware::class])
         Route::get('/reviews',                    [AdminReviewController::class, 'index'])->name('reviews.index');
         Route::post('/reviews/{review}/approve',  [AdminReviewController::class, 'approve'])->name('reviews.approve');
         Route::post('/reviews/{review}/reject',   [AdminReviewController::class, 'reject'])->name('reviews.reject');
+
+        // Transactions
+        Route::get('/transactions', [AdminTransactionController::class, 'index'])->name('transactions.index');
     });

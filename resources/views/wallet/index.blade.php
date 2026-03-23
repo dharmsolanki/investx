@@ -270,6 +270,7 @@
                     <tr>
                         <th>Type</th>
                         <th>Amount</th>
+                        <th>Payment ID</th>
                         <th>Status</th>
                         <th>Notes</th>
                         <th>Date</th>
@@ -283,6 +284,16 @@
                                 style="color:{{ in_array($txn->type, ['deposit', 'profit', 'referral_bonus']) ? 'var(--green)' : 'var(--red)' }};font-weight:600">
                                 {{ in_array($txn->type, ['deposit', 'profit', 'referral_bonus']) ? '+' : '-' }}₹{{ number_format($txn->amount, 2) }}
                             </td>
+                            <td style="font-size:0.75rem;color:var(--muted)">
+                                @if ($txn->payment_id)
+                                    <span
+                                        style="background:var(--dark4);padding:2px 8px;border-radius:6px;font-family:monospace;font-size:0.72rem">
+                                        {{ $txn->payment_id }}
+                                    </span>
+                                @else
+                                    —
+                                @endif
+                            </td>
                             <td><span class="badge {{ $txn->status }}">{{ ucfirst($txn->status) }}</span></td>
                             <td style="font-size:0.8rem;color:var(--muted)">{{ $txn->notes ?? '—' }}</td>
                             <td style="font-size:0.8rem;color:var(--muted)">{{ $txn->created_at->format('d M Y, h:i A') }}
@@ -290,7 +301,7 @@
                         </tr>
                     @empty
                         <tr>
-                            <td colspan="5" style="text-align:center;padding:2rem;color:var(--muted)">Abhi koi wallet
+                            <td colspan="6" style="text-align:center;padding:2rem;color:var(--muted)">Abhi koi wallet
                                 transaction nahi.</td>
                         </tr>
                     @endforelse

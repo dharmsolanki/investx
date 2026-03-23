@@ -125,7 +125,7 @@ class InvestmentController extends Controller
         $stats = [
             'total_invested' => $user->investments()->sum('principal_amount'),
             'active_count'   => $user->investments()->where('status', 'active')->count(),
-            'total_profit'   => $user->investments()->where('status', 'withdrawn')->sum('net_profit'),
+            'total_profit' => $user->investments()->where('status', 'withdrawn')->sum('actual_profit'),
             'matured_count' => $user->investments()->whereIn('status', ['active', 'matured'])->count(),
         ];
 

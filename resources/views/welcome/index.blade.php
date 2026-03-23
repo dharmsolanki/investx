@@ -899,7 +899,8 @@
                     <div class="step-num">04</div>
                     <div class="step-icon">💰</div>
                     <h3>Returns Withdraw Karein</h3>
-                    <p>Jab chahein withdraw karein — contribution + net returns aapke account mein. Hamara sirf 15–20% management fee kata jaata hai.</p>
+                    <p>Jab chahein withdraw karein — contribution + net returns aapke account mein. Hamara sirf 15–20%
+                        management fee kata jaata hai.</p>
                 </div>
             </div>
         </div>
@@ -1095,7 +1096,8 @@
                 <div class="faq-item">
                     <div class="faq-q" onclick="this.parentElement.classList.toggle('open')">Returns kab aur kaise
                         milenge? <span>▼</span></div>
-                    <div class="faq-a">Aap kab bhi withdrawal request kar sakte hain — koi lock-in period nahi hai. 24 ghante mein aapke bank account mein transfer ho jaata hai.</div>
+                    <div class="faq-a">Aap kab bhi withdrawal request kar sakte hain — koi lock-in period nahi hai. 24
+                        ghante mein aapke bank account mein transfer ho jaata hai.</div>
                 </div>
                 <div class="faq-item">
                     <div class="faq-q" onclick="this.parentElement.classList.toggle('open')">Management fee kaise
@@ -1130,31 +1132,25 @@
                 <p class="footer-desc">Expert forex traders ki community. Performance-based profit sharing. Paisa
                     aapka, expertise hamari.</p>
             </div>
+
             <div class="footer-col">
                 <h5>Company</h5>
                 <ul>
-                    <li><a href="#">Hamare Baare Mein</a></li>
-                    <li><a href="#">Team</a></li>
-                    <li><a href="#">Careers</a></li>
+                    <li><a href="{{ route('about') }}">Hamare Baare Mein</a></li>
+                    <li><a href="{{ route('contact') }}">Contact Us</a></li>
+                    <li><a href="{{ route('grievance') }}">Grievance</a></li>
                 </ul>
             </div>
+
             <div class="footer-col">
-                <h5>Platform</h5>
+                <h5>Legal</h5>
                 <ul>
-                    <li><a href="{{ route('plans') }}">Trading Plans</a></li>
-                    <li><a href="{{ route('login') }}">Dashboard</a></li>
-                    <li><a href="#">Mobile App</a></li>
+                    <li><a href="{{ route('terms') }}">Terms & Conditions</a></li>
+                    <li><a href="{{ route('privacy') }}">Privacy Policy</a></li>
+                    <li><a href="{{ route('refund') }}">Refund Policy</a></li>
                 </ul>
             </div>
-            <div class="footer-col">
-                <h5>Support</h5>
-                <ul>
-                    <li><a href="#">Help Center</a></li>
-                    <li><a href="#">Contact Us</a></li>
-                    <li><a href="#">Terms & Conditions</a></li>
-                    <li><a href="#">Privacy Policy</a></li>
-                </ul>
-            </div>
+
             <div class="footer-col">
                 <h5>Community</h5>
                 <ul>
@@ -1185,8 +1181,6 @@
                             style="display:flex;align-items:center;gap:0.6rem">
                             <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
                                 <circle cx="12" cy="12" r="10" fill="#29A8E0" />
-                                <path d="M6 12l3.5 3.5 8.5-7" stroke="white" stroke-width="1.8"
-                                    stroke-linecap="round" stroke-linejoin="round" fill="none" />
                                 <path d="M5.5 11.5l13-5-4.5 13-3-4.5-5.5-3.5z" fill="white" opacity="0.9" />
                             </svg>
                             Telegram
@@ -1195,6 +1189,7 @@
                 </ul>
             </div>
         </div>
+
         <div class="footer-bottom">
             <span>© {{ date('Y') }} InvestX. All rights reserved.</span>
             <span>⚠️ Forex trading involves significant risk. Past performance is not indicative of future

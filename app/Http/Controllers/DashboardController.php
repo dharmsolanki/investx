@@ -19,7 +19,7 @@ class DashboardController extends Controller
 
         $totalInvested      = $user->investments()->whereIn('status', ['active', 'matured', 'withdrawn'])->sum('principal_amount');
         $activeInvestments  = $user->investments()->where('status', 'active')->count();
-        $totalProfit        = $user->investments()->where('status', 'withdrawn')->sum('net_profit');
+        $totalProfit = $user->investments()->where('status', 'withdrawn')->sum('actual_profit');
         $pendingWithdrawals = $user->withdrawals()->where('status', 'pending')->count();
 
         $investments = $user->investments()
