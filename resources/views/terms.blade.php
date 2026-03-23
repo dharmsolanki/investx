@@ -157,10 +157,10 @@
     <div class="section">
         <h2>5. Lock-in Period</h2>
         <ul>
-            <li>Har plan mein ek defined lock-in period hota hai jiske dauran withdrawal nahi hoti.</li>
+            <li>Koi lock-in period nahi hai — aap kab bhi withdrawal request kar sakte hain.</li>
             <li>Lock-in period se pehle early exit request par <strong>5% early exit fee</strong> lagegi.</li>
             <li>Early exit sirf admin approval ke baad process hogi.</li>
-            <li>Lock-in period maturity ke baad withdrawal request 24 ghante mein process hogi.</li>
+            <li>Withdrawal request 24 ghante mein process hogi.</li>
         </ul>
     </div>
 
@@ -179,7 +179,7 @@
     <div class="section">
         <h2>7. Withdrawal Policy</h2>
         <ul>
-            <li>Withdrawal sirf maturity ke baad request ki ja sakti hai.</li>
+            <li>Withdrawal kab bhi request ki ja sakti hai — pro-rated profit milega.</li>
             <li>Withdrawal aapke KYC-verified bank account mein ki jaayegi.</li>
             <li>Processing time: <strong>24 ghante</strong> (banking days).</li>
             <li>Minimum withdrawal amount ₹500 hai.</li>

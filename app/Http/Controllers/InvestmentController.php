@@ -35,7 +35,7 @@ class InvestmentController extends Controller
         $request->validate([
             'plan_id'        => 'required|exists:investment_plans,id',
             'amount'         => 'required|numeric|min:1',
-            'payment_method' => 'required|in:upi,netbanking,card,imps,neft,wallet',
+            'payment_method' => 'required|in:upi,netbanking,card,imps,neft,wallet,razorpay',
         ]);
 
         $user = Auth::user();
@@ -53,22 +53,18 @@ class InvestmentController extends Controller
             return back()->with('error', "Maximum contribution ₹" . number_format($plan->max_amount) . " se zyada nahi ho sakta.");
         }
 
-        // Calculate returns
-        $dailyEarning     = ($request->amount / $plan->min_amount) * $plan->displayDailyEarning();
-        $dailyFee         = $dailyEarning * ($plan->commission_percent / 100);
-        $netDailyEarning  = $dailyEarning - $dailyFee;
-        $days             = $plan->duration_months * 30;
-        $grossEarnings    = round($dailyEarning * $days, 2);       // ₹750 × 90 = ₹67,500
-        $commissionTotal  = round($dailyFee * $days, 2);           // ₹150 × 90 = ₹13,500
-        $netEarnings      = round($netDailyEarning * $days, 2);    // ₹600 × 90 = ₹54,000
-        $totalReturn      = round($request->amount + $netEarnings, 2); // ₹69,000
+        // Calculate returns — daily values store karo, full period nahi
+        $dailyEarning    = ($request->amount / $plan->min_amount) * $plan->displayDailyEarning();
+        $dailyFee        = $dailyEarning * ($plan->commission_percent / 100);
+        $netDailyEarning = $dailyEarning - $dailyFee;
+        $days            = $plan->duration_months * 30;
 
         $calc = [
             'principal'         => $request->amount,
-            'gross_profit'      => $grossEarnings,    // ₹67,500
-            'commission_amount' => $commissionTotal,  // ₹13,500
-            'net_profit'        => $netEarnings,      // ₹54,000
-            'total_return'      => $totalReturn,      // ₹69,000
+            'gross_profit'      => round($dailyEarning, 2),      // ← daily gross (not total)
+            'commission_amount' => round($dailyFee, 2),           // ← daily fee (not total)
+            'net_profit'        => round($netDailyEarning, 2),   // ← daily net (not total)
+            'total_return'      => round($request->amount + ($netDailyEarning * $days), 2),
         ];
 
         if ($request->payment_method === 'wallet' && $user->wallet_balance < $request->amount) {
@@ -130,7 +126,7 @@ class InvestmentController extends Controller
             'total_invested' => $user->investments()->sum('principal_amount'),
             'active_count'   => $user->investments()->where('status', 'active')->count(),
             'total_profit'   => $user->investments()->where('status', 'withdrawn')->sum('net_profit'),
-            'matured_count'  => $user->investments()->where('status', 'matured')->count(),
+            'matured_count' => $user->investments()->whereIn('status', ['active', 'matured'])->count(),
         ];
 
         return view('investments.my', compact('investments', 'stats'));

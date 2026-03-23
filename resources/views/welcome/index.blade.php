@@ -899,8 +899,7 @@
                     <div class="step-num">04</div>
                     <div class="step-icon">💰</div>
                     <h3>Returns Withdraw Karein</h3>
-                    <p>Lock-in period ke baad contribution + net returns aapke account mein. Hamara sirf 15–20%
-                        management fee kata jaata hai.</p>
+                    <p>Jab chahein withdraw karein — contribution + net returns aapke account mein. Hamara sirf 15–20% management fee kata jaata hai.</p>
                 </div>
             </div>
         </div>
@@ -1096,8 +1095,7 @@
                 <div class="faq-item">
                     <div class="faq-q" onclick="this.parentElement.classList.toggle('open')">Returns kab aur kaise
                         milenge? <span>▼</span></div>
-                    <div class="faq-a">Lock-in period complete hone ke baad withdrawal request kar sakte hain. 24
-                        ghante mein aapke bank account mein transfer ho jaata hai.</div>
+                    <div class="faq-a">Aap kab bhi withdrawal request kar sakte hain — koi lock-in period nahi hai. 24 ghante mein aapke bank account mein transfer ho jaata hai.</div>
                 </div>
                 <div class="faq-item">
                     <div class="faq-q" onclick="this.parentElement.classList.toggle('open')">Management fee kaise
@@ -1161,7 +1159,7 @@
                 <h5>Community</h5>
                 <ul>
                     <li>
-                        <a href="https://instagram.com/jayrajchauhan21_" target="_blank"
+                        <a href="https://www.instagram.com/dailywealth_2026" target="_blank"
                             style="display:flex;align-items:center;gap:0.6rem">
                             <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
                                 <defs>
@@ -1183,7 +1181,7 @@
                         </a>
                     </li>
                     <li>
-                        <a href="https://t.me/your_channel" target="_blank"
+                        <a href="https://t.me/dailywealth2026" target="_blank"
                             style="display:flex;align-items:center;gap:0.6rem">
                             <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
                                 <circle cx="12" cy="12" r="10" fill="#29A8E0" />

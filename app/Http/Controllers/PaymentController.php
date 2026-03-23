@@ -104,8 +104,9 @@ class PaymentController extends Controller
         }
 
         $request->merge([
-            'payment_id' => $request->razorpay_payment_id,
-            'amount'     => $verifiedAmount, // ✅ verified amount replace karo
+            'payment_id'     => $request->razorpay_payment_id,
+            'amount'         => $verifiedAmount,
+            'payment_method' => 'razorpay', // ← yeh add karo
         ]);
 
         return app(InvestmentController::class)->store($request);

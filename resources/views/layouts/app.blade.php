@@ -631,7 +631,7 @@
         </nav>
         <div style="padding:0.8rem 1.5rem;border-bottom:1px solid var(--border);display:flex;gap:0.8rem">
 
-            <a href="https://instagram.com/jayrajchauhan21_" target="_blank"
+            <a href="https://www.instagram.com/dailywealth_2026" target="_blank"
                 style="flex:1;text-align:center;padding:0.6rem;background:var(--dark4);
               border:1px solid var(--border);border-radius:8px;
               text-decoration:none;transition:all 0.2s;display:flex;align-items:center;justify-content:center;gap:0.5rem;font-size:0.78rem;color:var(--muted)"
@@ -654,7 +654,7 @@
                 Instagram
             </a>
 
-            <a href="https://t.me/your_channel" target="_blank"
+            <a href="https://t.me/dailywealth2026" target="_blank"
                 style="flex:1;text-align:center;padding:0.6rem;background:var(--dark4);
               border:1px solid var(--border);border-radius:8px;
               text-decoration:none;transition:all 0.2s;display:flex;align-items:center;justify-content:center;gap:0.5rem;font-size:0.78rem;color:var(--muted)"

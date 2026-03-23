@@ -5,30 +5,12 @@
 @section('content')
 
     {{-- Stats --}}
-    <div class="stats-grid" style="margin-bottom:2rem">
+    <div class="stats-grid" style="grid-template-columns:1fr;max-width:300px;margin-bottom:2rem">
         <div class="stat-card">
             <div class="label">👛 Available Balance</div>
             <div class="value" style="color:var(--gold)">₹{{ number_format($user->wallet_balance, 2) }}</div>
             <div style="font-size:0.72rem;color:var(--green);margin-top:0.4rem;font-weight:600">
                 ✅ Sirf yahi amount withdraw ho sakti hai
-            </div>
-        </div>
-        <div class="stat-card">
-            <div class="label">📥 Total Credits</div>
-            <div class="value" style="color:var(--green)">
-                ₹{{ number_format($user->transactions->whereIn('type', ['deposit', 'profit', 'referral_bonus'])->sum('amount'), 2) }}
-            </div>
-            <div style="font-size:0.72rem;color:var(--muted);margin-top:0.4rem">
-                Kabhi bhi aaye sabhi paise ka total
-            </div>
-        </div>
-        <div class="stat-card">
-            <div class="label">📤 Total Debits</div>
-            <div class="value" style="color:var(--red)">
-                ₹{{ number_format($user->transactions->whereIn('type', ['withdrawal', 'commission'])->sum('amount'), 2) }}
-            </div>
-            <div style="font-size:0.72rem;color:var(--muted);margin-top:0.4rem">
-                Abhi tak nikale / invest kiye gaye paise
             </div>
         </div>
     </div>
@@ -57,8 +39,8 @@
             <div class="card-title">📅 Invest Kiya Hua Paisa — Kab Milega?</div>
 
             <div style="font-size:0.82rem;color:var(--muted);margin-bottom:1rem">
-                ⚠️ Invest kiya hua paisa <strong style="color:var(--text)">maturity date tak locked</strong> rahega.
-                Maturity par automatically wallet mein aa jayega, tab withdraw kar sakte ho.
+                💡 Invest kiya hua paisa <strong style="color:var(--text)">kab bhi withdraw</strong> kar sakte ho. Pro-rated
+                profit milega — jitne din invest kiya utne ka.
             </div>
 
             <div style="display:flex;flex-direction:column;gap:0.8rem">
@@ -133,7 +115,7 @@
             @if ($activeInvestments->sum(fn($i) => $i->principal_amount + $i->net_profit) > 0)
                 <div
                     style="margin-top:1rem;padding-top:1rem;border-top:1px solid var(--border);display:flex;justify-content:space-between;font-size:0.85rem">
-                    <span style="color:var(--muted)">Kul Expected Wallet Credit (sab mature hone par)</span>
+                    <span style="color:var(--muted)">Kul Expected Amount (plan complete hone par)</span>
                     <strong style="color:#22C55E">
                         ₹{{ number_format($activeInvestments->sum(fn($i) => $i->principal_amount + $i->net_profit), 2) }}
                     </strong>

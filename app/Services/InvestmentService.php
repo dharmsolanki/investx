@@ -13,11 +13,17 @@ class InvestmentService
         $maturedInvestments = $user->investments()
             ->where('status', 'active')
             ->whereDate('maturity_date', '<=', now())
+            ->whereDoesntHave(
+                'withdrawal',
+                fn($q) =>
+                $q->whereIn('status', ['pending', 'processing', 'completed'])
+            )
             ->get();
 
         foreach ($maturedInvestments as $investment) {
             DB::transaction(function () use ($user, $investment) {
-                $totalReturn = $investment->principal_amount + $investment->net_profit;
+                $days        = $investment->plan->duration_months * 30;
+                $totalReturn = $investment->principal_amount + round($investment->net_profit * $days, 2);
 
                 $updated = Investment::where('id', $investment->id)
                     ->where('status', 'active')
