@@ -10,6 +10,9 @@ class InvestmentService
 {
     public static function autoSettleMaturedInvestments($user): void
     {
+        $cacheKey = "auto_settle_checked_{$user->id}";
+        if (cache()->has($cacheKey)) return;
+
         $maturedInvestments = $user->investments()
             ->where('status', 'active')
             ->whereDate('maturity_date', '<=', now())
@@ -19,6 +22,11 @@ class InvestmentService
                 $q->whereIn('status', ['pending', 'processing', 'completed'])
             )
             ->get();
+
+        if ($maturedInvestments->isEmpty()) {
+            cache()->put($cacheKey, true, 3600); // 1 hour
+            return;
+        }
 
         foreach ($maturedInvestments as $investment) {
             DB::transaction(function () use ($user, $investment) {
@@ -59,5 +67,7 @@ class InvestmentService
                 ]);
             });
         }
+
+        cache()->put($cacheKey, true, 3600);
     }
 }

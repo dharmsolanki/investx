@@ -17,17 +17,14 @@ class DashboardController extends Controller
 
         InvestmentService::autoSettleMaturedInvestments($user);
 
-        $totalInvested      = $user->investments()->whereIn('status', ['active', 'matured', 'withdrawn'])->sum('principal_amount');
-        $activeInvestments  = $user->investments()->where('status', 'active')->count();
-        $totalProfit = $user->investments()->where('status', 'withdrawn')->sum('actual_profit');
+        $userInvestments    = $user->investments()->with('plan')->get();
+        $totalInvested      = $userInvestments->whereIn('status', ['active', 'matured', 'withdrawn'])->sum('principal_amount');
+        $activeInvestments  = $userInvestments->where('status', 'active')->count();
+        $totalProfit        = $userInvestments->where('status', 'withdrawn')->sum('actual_profit');
         $pendingWithdrawals = $user->withdrawals()->where('status', 'pending')->count();
 
-        $investments = $user->investments()
-            ->with('plan')
-            ->whereIn('status', ['active', 'withdrawn'])
-            ->latest()
-            ->take(5)
-            ->get();
+        $investments = $userInvestments->whereIn('status', ['active', 'withdrawn'])
+            ->sortByDesc('created_at')->take(5)->values();
 
         $transactions = $user->transactions()
             ->with('investment.plan')
