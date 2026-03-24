@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Terms & Conditions — InvestX</title>
+<title>Terms & Conditions — DailyWealth</title>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
   :root {
@@ -83,7 +83,7 @@
 <body>
 
 <nav>
-  <a href="{{ url('/') }}" class="logo">Invest<span>X</span></a>
+  <a href="{{ url('/') }}" class="logo">Daily<span>Wealth</span></a>
   <a href="{{ url('/') }}" class="btn-back">← Wapas Jaayein</a>
 </nav>
 
@@ -109,7 +109,7 @@
     <div class="section">
         <h2>1. Agreement to Terms</h2>
         <p>
-            InvestX platform par register karke aur participate karke aap inn Terms & Conditions ko
+            DailyWealth platform par register karke aur participate karke aap inn Terms & Conditions ko
             poori tarah padhne, samajhne aur agree karne ki confirmation dete hain.
             Agar aap kisi bhi term se asahmati rakhte hain to platform use nahi karein.
         </p>
@@ -118,7 +118,7 @@
     {{-- 2. Nature of Service --}}
     <div class="section">
         <h2>2. Service Ki Nature</h2>
-        <p>InvestX ek <strong style="color:var(--text)">Forex Trading Profit Sharing Platform</strong> hai.</p>
+        <p>DailyWealth ek <strong style="color:var(--text)">Forex Trading Profit Sharing Platform</strong> hai.</p>
         <ul>
             <li>Aap hamare experienced traders ke saath apna fund <strong>contribute</strong> karte hain.</li>
             <li>Hamari team aapka fund forex markets mein professionally trade karti hai.</li>
@@ -204,7 +204,7 @@
     <div class="section">
         <h2>9. Limitation of Liability</h2>
         <ul>
-            <li>InvestX <strong>forex market losses ke liye liable nahi hai.</strong></li>
+            <li>DailyWealth <strong>forex market losses ke liye liable nahi hai.</strong></li>
             <li>Force majeure events (war, natural disaster, regulatory changes) ke karan losses ke liye company liable nahi hai.</li>
             <li>Aap apne funds participate karne ka full risk khud lete hain.</li>
             <li>Maximum liability, agar koi ho, sirf aapke contributed amount tak seimit hogi.</li>
@@ -226,7 +226,7 @@
     <div class="section">
         <h2>11. Terms Mein Changes</h2>
         <p>
-            InvestX in terms ko kabhi bhi update karne ka adhikar rakhta hai.
+            DailyWealth in terms ko kabhi bhi update karne ka adhikar rakhta hai.
             Material changes ke case mein registered email par notification bheji jaayegi.
             Platform ka continued use updated terms ki acceptance maana jaayega.
         </p>
@@ -237,7 +237,7 @@
         <h2>12. Contact Us</h2>
         <p>Koi bhi sawal ya concern ke liye:</p>
         <ul>
-            <li><strong>Email:</strong> jayrajmchauhan6271@gmail.com</li>
+            <li><strong>Email:</strong> support@dailywealth.in</li>
             <li><strong>Support Hours:</strong> Monday–Saturday, 10 AM – 6 PM IST</li>
         </ul>
     </div>

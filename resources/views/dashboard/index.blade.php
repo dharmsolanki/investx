@@ -132,7 +132,7 @@
                 <div class="form-group">
                     <label class="form-label">Aapka Experience</label>
                     <textarea class="form-control" name="comment" rows="3"
-                        placeholder="InvestX ke baare mein apna experience share karein..." required
+                        placeholder="DailyWealth ke baare mein apna experience share karein..." required
                         style="resize:vertical;min-height:80px"></textarea>
                 </div>
                 <button type="submit" class="btn btn-gold">Submit Review →</button>

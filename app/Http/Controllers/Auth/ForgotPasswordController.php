@@ -42,10 +42,10 @@ class ForgotPasswordController extends Controller
         // Email bhejo
         Mail::send([], [], function ($message) use ($request, $resetUrl) {
             $message->to($request->email)
-                ->subject('InvestX — Password Reset Request')
+                ->subject('DailyWealth — Password Reset Request')
                 ->html("
                     <div style='font-family:sans-serif;max-width:500px;margin:0 auto;padding:20px'>
-                        <h2 style='color:#C9A84C'>InvestX Password Reset</h2>
+                        <h2 style='color:#C9A84C'>DailyWealth Password Reset</h2>
                         <p>Aapne password reset request ki hai.</p>
                         <p>Neeche button click karke naya password set karein:</p>
                         <a href='{$resetUrl}'

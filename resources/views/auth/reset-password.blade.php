@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Reset Password — InvestX</title>
+<title>Reset Password — DailyWealth</title>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
 :root { --gold:#C9A84C; --dark:#0A0C10; --dark2:#111318; --dark3:#181C24; --dark4:#1E2330; --text:#E8EAF0; --muted:#7A8099; --red:#EF4444; --border:rgba(201,168,76,0.18); }
@@ -29,7 +29,7 @@ body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellips
 </head>
 <body>
 <div class="auth-box">
-    <div class="logo">Invest<span>X</span></div>
+    <div class="logo">Daily<span>Wealth</span></div>
     <div class="subtitle">Naya password set karein</div>
 
     @if(session('error'))

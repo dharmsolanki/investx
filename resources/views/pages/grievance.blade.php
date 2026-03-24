@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Grievance Redressal — InvestX</title>
+<title>Grievance Redressal — DailyWealth</title>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
 :root{--gold:#C9A84C;--dark:#0A0C10;--dark3:#181C24;--dark4:#1E2330;--text:#E8EAF0;--muted:#7A8099;--border:rgba(201,168,76,0.18);}
@@ -29,7 +29,7 @@ footer a{color:var(--gold);text-decoration:none;margin:0 0.8rem;}
 </head>
 <body>
 <nav>
-    <a href="{{ route('home') }}" class="logo">Invest<span>X</span></a>
+    <a href="{{ route('home') }}" class="logo">Daily<span>Wealth</span></a>
     <a href="{{ route('login') }}" style="color:var(--gold);text-decoration:none;font-size:0.9rem">Login →</a>
 </nav>
 

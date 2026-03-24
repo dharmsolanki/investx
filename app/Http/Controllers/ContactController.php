@@ -30,11 +30,11 @@ class ContactController extends Controller
         // Admin ko email bhejo
         Mail::send([], [], function ($msg) use ($request, $issueLabel) {
             $msg->to(config('mail.from.address'))
-                ->subject("InvestX Support — {$issueLabel} — {$request->name}")
+                ->subject("DailyWealth Support — {$issueLabel} — {$request->name}")
                 ->html("
                     <div style='font-family:sans-serif;max-width:600px;margin:0 auto;padding:20px'>
                         <h2 style='color:#C9A84C;border-bottom:2px solid #C9A84C;padding-bottom:10px'>
-                            InvestX — New Support Request
+                            DailyWealth — New Support Request
                         </h2>
 
                         <table style='width:100%;border-collapse:collapse;margin-top:20px'>
@@ -77,10 +77,10 @@ class ContactController extends Controller
         // User ko acknowledgement email
         Mail::send([], [], function ($msg) use ($request, $issueLabel) {
             $msg->to($request->email, $request->name)
-                ->subject('InvestX — Aapki Request Receive Ho Gayi')
+                ->subject('DailyWealth — Aapki Request Receive Ho Gayi')
                 ->html("
                     <div style='font-family:sans-serif;max-width:500px;margin:0 auto;padding:20px'>
-                        <h2 style='color:#C9A84C'>InvestX Support</h2>
+                        <h2 style='color:#C9A84C'>DailyWealth Support</h2>
                         <p>Namaste <strong>{$request->name}</strong>,</p>
                         <p>Aapki support request receive ho gayi hai. Hum 24 ghante mein aapse contact karenge.</p>
                         <div style='background:#f8f9fa;padding:15px;border-radius:8px;margin:20px 0'>

@@ -7,7 +7,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login — InvestX</title>
+    <title>Login — DailyWealth</title>
     <link
         href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@300;400;500;600&display=swap"
         rel="stylesheet">
@@ -168,7 +168,7 @@
 
 <body>
     <div class="auth-box">
-        <div class="logo">Invest<span>X</span></div>
+        <div class="logo">Daily<span>Wealth</span></div>
         <div class="subtitle">Apne account mein login karein</div>
 
         @if (session('success'))

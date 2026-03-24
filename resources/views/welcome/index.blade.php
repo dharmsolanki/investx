@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>InvestX — Forex Trading Community</title>
+    <title>DailyWealth — Forex Trading Community</title>
     <link
         href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=DM+Sans:wght@300;400;500;600&display=swap"
         rel="stylesheet">
@@ -797,7 +797,7 @@
 
     <!-- NAV -->
     <nav>
-        <div class="logo">Invest<span>X</span></div>
+        <div class="logo">Daily<span>Wealth</span></div>
         <ul>
             <li><a href="#how">Kaise Kaam Karta Hai</a></li>
             <li><a href="#plans">Trading Plans</a></li>
@@ -1031,7 +1031,7 @@
                                 </div>
                                 <div>
                                     <div class="testi-name">{{ Str::mask($r->user->name, '*', 3) }}</div>
-                                    <div class="testi-loc">InvestX Member</div>
+                                    <div class="testi-loc">DailyWealth Member</div>
                                 </div>
                             </div>
                         </div>
@@ -1128,7 +1128,7 @@
     <footer>
         <div class="footer-grid">
             <div>
-                <div class="footer-logo">Invest<span>X</span></div>
+                <div class="footer-logo">Daily<span>Wealth</span></div>
                 <p class="footer-desc">Expert forex traders ki community. Performance-based profit sharing. Paisa
                     aapka, expertise hamari.</p>
             </div>
@@ -1191,7 +1191,7 @@
         </div>
 
         <div class="footer-bottom">
-            <span>© {{ date('Y') }} InvestX. All rights reserved.</span>
+            <span>© {{ date('Y') }} DailyWealth. All rights reserved.</span>
             <span>⚠️ Forex trading involves significant risk. Past performance is not indicative of future
                 results.</span>
         </div>
