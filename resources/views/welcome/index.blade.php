@@ -9,6 +9,21 @@
         href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=DM+Sans:wght@300;400;500;600&display=swap"
         rel="stylesheet">
     <style>
+        .top-strip {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 40px;
+            background: #000;
+            color: #fff;
+            z-index: 200;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 13px;
+        }
+
         :root {
             --gold: #C9A84C;
             --gold-light: #E8C97A;
@@ -34,11 +49,12 @@
             background: var(--dark);
             color: var(--text);
             overflow-x: hidden;
+            padding-top: 90px; /* strip + navbar */
         }
 
         nav {
             position: fixed;
-            top: 0;
+            top: 40px;
             left: 0;
             right: 0;
             z-index: 100;
@@ -794,7 +810,9 @@
 </head>
 
 <body>
-
+    <div class="top-strip">
+        🔥 Welcome to DailyWealth - Smart Investing Platform 🚀
+    </div>
     <!-- NAV -->
     <nav>
         <div class="logo">Daily<span>Wealth</span></div>
