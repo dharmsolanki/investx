@@ -121,57 +121,8 @@
             background: var(--gold-light);
         }
 
-        .ticker-wrap {
-            margin-top: 64px;
-            background: rgba(201, 168, 76, 0.06);
-            border-bottom: 1px solid var(--border);
-            padding: 0.6rem 0;
-            overflow: hidden;
-        }
-
-        .ticker-inner {
-            display: flex;
-            gap: 3rem;
-            animation: tickerScroll 25s linear infinite;
-            white-space: nowrap;
-        }
-
-        @keyframes tickerScroll {
-            0% {
-                transform: translateX(0)
-            }
-
-            100% {
-                transform: translateX(-50%)
-            }
-        }
-
-        .ticker-item {
-            font-size: 0.8rem;
-            display: flex;
-            align-items: center;
-            gap: 0.4rem;
-            flex-shrink: 0;
-        }
-
-        .ticker-name {
-            color: var(--muted);
-        }
-
-        .ticker-val {
-            color: var(--text);
-            font-weight: 500;
-        }
-
-        .ticker-chg.up {
-            color: var(--green);
-        }
-
-        .ticker-chg.dn {
-            color: var(--red);
-        }
-
         .hero {
+            padding-top: 64px;
             min-height: 92vh;
             display: flex;
             flex-direction: column;
@@ -773,7 +724,7 @@
             color: var(--muted);
         }
 
-        @media(max-width:768px) {
+        @media (max-width: 768px) {
             nav {
                 padding: 1rem 1.2rem;
             }
@@ -782,12 +733,49 @@
                 display: none;
             }
 
-            .footer-grid {
-                grid-template-columns: 1fr 1fr;
+            /* ✅ ADD: Nav buttons mobile pe chote karo */
+            .nav-btns {
+                gap: 0.5rem;
             }
 
+            .btn-outline,
+            .btn-gold {
+                padding: 0.4rem 0.9rem;
+                font-size: 0.78rem;
+            }
+
+            /* ✅ ADD: Hero text mobile pe fix */
+            .hero h1 {
+                font-size: 2rem;
+            }
+
+            .hero p {
+                font-size: 0.95rem;
+                padding: 0 1rem;
+            }
+
+            .hero-cta {
+                flex-direction: column;
+                align-items: center;
+                gap: 0.8rem;
+                width: 100%;
+            }
+
+            .btn-lg {
+                width: 90%;
+                text-align: center;
+            }
+
+            /* ✅ ADD: Stats section */
             .hero-stats {
-                gap: 1.5rem;
+                gap: 1rem;
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+
+            /* ✅ ADD: Cards/sections full width */
+            .footer-grid {
+                grid-template-columns: 1fr;
             }
         }
     </style>
@@ -809,34 +797,6 @@
             <a href="{{ route('register') }}" class="btn-gold">Join Karein</a>
         </div>
     </nav>
-
-    <!-- TICKER -->
-    <div class="ticker-wrap">
-        <div class="ticker-inner">
-            <div class="ticker-item"><span class="ticker-name">EUR/USD</span><span class="ticker-val">1.0842</span><span
-                    class="ticker-chg up">▲ 0.4%</span></div>
-            <div class="ticker-item"><span class="ticker-name">GBP/USD</span><span class="ticker-val">1.2654</span><span
-                    class="ticker-chg up">▲ 0.2%</span></div>
-            <div class="ticker-item"><span class="ticker-name">USD/JPY</span><span class="ticker-val">149.82</span><span
-                    class="ticker-chg dn">▼ 0.3%</span></div>
-            <div class="ticker-item"><span class="ticker-name">USD/INR</span><span class="ticker-val">₹83.42</span><span
-                    class="ticker-chg dn">▼ 0.1%</span></div>
-            <div class="ticker-item"><span class="ticker-name">XAU/USD</span><span
-                    class="ticker-val">2,312.40</span><span class="ticker-chg up">▲ 0.9%</span></div>
-            <div class="ticker-item"><span class="ticker-name">AUD/USD</span><span class="ticker-val">0.6541</span><span
-                    class="ticker-chg up">▲ 0.5%</span></div>
-            <div class="ticker-item"><span class="ticker-name">EUR/USD</span><span class="ticker-val">1.0842</span><span
-                    class="ticker-chg up">▲ 0.4%</span></div>
-            <div class="ticker-item"><span class="ticker-name">GBP/USD</span><span class="ticker-val">1.2654</span><span
-                    class="ticker-chg up">▲ 0.2%</span></div>
-            <div class="ticker-item"><span class="ticker-name">USD/JPY</span><span class="ticker-val">149.82</span><span
-                    class="ticker-chg dn">▼ 0.3%</span></div>
-            <div class="ticker-item"><span class="ticker-name">USD/INR</span><span class="ticker-val">₹83.42</span><span
-                    class="ticker-chg dn">▼ 0.1%</span></div>
-            <div class="ticker-item"><span class="ticker-name">XAU/USD</span><span
-                    class="ticker-val">2,312.40</span><span class="ticker-chg up">▲ 0.9%</span></div>
-        </div>
-    </div>
 
     <!-- HERO -->
     <section class="hero">

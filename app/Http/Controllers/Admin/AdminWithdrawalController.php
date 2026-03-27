@@ -8,6 +8,7 @@ use App\Models\Withdrawal;
 use App\Notifications\ActionAlertNotification;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 
 class AdminWithdrawalController extends Controller
@@ -89,6 +90,7 @@ class AdminWithdrawalController extends Controller
             ));
 
             DB::commit();
+            Cache::forget('admin_dashboard_stats'); // ✅ Dashboard stats refresh
             return back()->with('success', "Withdrawal approved. UTR: {$request->utr_number}");
         } catch (\Exception $e) {
             DB::rollBack();
@@ -140,6 +142,7 @@ class AdminWithdrawalController extends Controller
             ));
 
             DB::commit();
+            Cache::forget('admin_dashboard_stats'); // ✅ Dashboard stats refresh
             return back()->with('success', 'Withdrawal rejected and user notified.');
         } catch (\Exception $e) {
             DB::rollBack();
