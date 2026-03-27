@@ -19,6 +19,12 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        //
+        // Storage symlink auto-create
+        $link   = public_path('storage');
+        $target = storage_path('app/public');
+
+        if (! file_exists($link) && file_exists($target)) {
+            symlink($target, $link);
+        }
     }
 }
