@@ -26,4 +26,13 @@ return [
         'webhook_secret' => env('RAZORPAY_WEBHOOK_SECRET', ''),
     ],
 
+    'cashfree' => [
+        'app_id'     => env('CASHFREE_APP_ID'),
+        'secret_key' => env('CASHFREE_SECRET_KEY'),
+        'env'        => env('CASHFREE_ENV', 'sandbox'),
+        'base_url'   => env('CASHFREE_ENV') === 'production'
+            ? 'https://api.cashfree.com/pg'
+            : 'https://sandbox.cashfree.com/pg',
+    ],
+
 ];

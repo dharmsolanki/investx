@@ -2,18 +2,32 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Investment;
 use App\Models\InvestmentPlan;
 use App\Models\Transaction;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
 
 class PaymentController extends Controller
 {
+    private function cashfreeHeaders(): array
+    {
+        return [
+            'x-client-id'     => config('services.cashfree.app_id'),
+            'x-client-secret' => config('services.cashfree.secret_key'),
+            'x-api-version'   => '2023-08-01',
+            'Content-Type'    => 'application/json',
+        ];
+    }
+
+    private function baseUrl(): string
+    {
+        return config('services.cashfree.base_url');
+    }
+
     /**
-     * Create Razorpay order
-     * Install: composer require razorpay/razorpay
+     * Create Cashfree order
      */
     public function createOrder(Request $request)
     {
@@ -29,112 +43,132 @@ class PaymentController extends Controller
             return response()->json(['error' => 'Amount too low'], 422);
         }
 
-        try {
-            $api = new \Razorpay\Api\Api(
-                config('services.razorpay.key'),
-                config('services.razorpay.secret')
-            );
+        $user    = Auth::user();
+        $orderId = 'INV_' . uniqid();
 
-            $order = $api->order->create([
-                'receipt'  => 'INV_' . uniqid(),
-                'amount'   => $amount * 100, // paise
-                'currency' => 'INR',
-                'notes'    => [
-                    'user_id' => Auth::id(),
-                    'plan_id' => $plan->id,
-                ],
-            ]);
+        try {
+            $response = Http::withHeaders($this->cashfreeHeaders())
+                ->post($this->baseUrl() . '/orders', [
+                    'order_id'       => $orderId,
+                    'order_amount'   => $amount,
+                    'order_currency' => 'INR',
+                    'customer_details' => [
+                        'customer_id'    => (string) $user->id,
+                        'customer_name'  => $user->name,
+                        'customer_email' => $user->email,
+                        'customer_phone' => $user->phone ?? '9999999999',
+                    ],
+                    'order_meta' => [
+                        'return_url' => route('payment.verify') .
+                            '?order_id={order_id}&plan_id=' . $plan->id,
+                    ],
+                    'order_note' => 'Investment Plan: ' . $plan->name,
+                ]);
+
+            if ($response->failed()) {
+                Log::error('Cashfree order error: ' . $response->body());
+                return response()->json(['error' => 'Order create nahi hua.'], 500);
+            }
+
+            $order = $response->json();
 
             return response()->json([
-                'order_id'   => $order->id,
-                'amount'     => $amount * 100,
-                'currency'   => 'INR',
-                'key'        => config('services.razorpay.key'),
-                'name'       => config('app.name'),
-                'user_name'  => Auth::user()->name,
-                'user_email' => Auth::user()->email,
-                'user_phone' => Auth::user()->phone,
+                'order_id'         => $order['order_id'],
+                'payment_session_id' => $order['payment_session_id'],
+                'amount'           => $amount,
+                'currency'         => 'INR',
+                'app_id'           => config('services.cashfree.app_id'),
+                'env'              => config('services.cashfree.env'),
+                'name'             => config('app.name'),
+                'user_name'        => $user->name,
+                'user_email'       => $user->email,
+                'user_phone'       => $user->phone,
             ]);
+
         } catch (\Exception $e) {
-            Log::error('Razorpay order creation failed: ' . $e->getMessage());
-            return response()->json(['error' => 'Payment failed: ' . $e->getMessage()], 500); // ← change karo
+            Log::error('Cashfree exception: ' . $e->getMessage());
+            return response()->json(['error' => 'Payment failed. Try again.'], 500);
         }
     }
 
     /**
-     * Verify payment and create investment
+     * Verify payment after redirect
      */
     public function verifyPayment(Request $request)
     {
-        $request->validate([
-            'razorpay_order_id'   => 'required',
-            'razorpay_payment_id' => 'required',
-            'razorpay_signature'  => 'required',
-            'plan_id'             => 'required|exists:investment_plans,id',
-            'payment_method'      => 'required',
-        ]);
+        $orderId = $request->query('order_id');
+        $planId  = $request->query('plan_id');
 
-        $expectedSignature = hash_hmac(
-            'sha256',
-            $request->razorpay_order_id . '|' . $request->razorpay_payment_id,
-            config('services.razorpay.secret')
-        );
-
-        if ($expectedSignature !== $request->razorpay_signature) {
-            return back()->with('error', 'Payment verification failed. Contact support.');
+        if (!$orderId || !$planId) {
+            return redirect()->route('investments.index')
+                ->with('error', 'Invalid payment response.');
         }
 
-        // ✅ Razorpay se actual amount fetch karo
         try {
-            $api     = new \Razorpay\Api\Api(config('services.razorpay.key'), config('services.razorpay.secret'));
-            $payment = $api->payment->fetch($request->razorpay_payment_id);
+            $response = Http::withHeaders($this->cashfreeHeaders())
+                ->get($this->baseUrl() . '/orders/' . $orderId);
 
-            if ($payment->status !== 'captured') {
-                return back()->with('error', 'Payment captured nahi hua.');
+            if ($response->failed()) {
+                return back()->with('error', 'Payment verify nahi ho saka.');
+            }
+
+            $order = $response->json();
+
+            if ($order['order_status'] !== 'PAID') {
+                return redirect()->route('investments.index')
+                    ->with('error', 'Payment successful nahi hua. Status: ' . $order['order_status']);
             }
 
             // Duplicate check
-            if (Transaction::where('payment_id', $request->razorpay_payment_id)->exists()) {
-                return redirect()->route('investments.my')->with('success', 'Investment already recorded!');
+            if (Transaction::where('payment_id', $orderId)->exists()) {
+                return redirect()->route('investments.my')
+                    ->with('success', 'Investment already recorded!');
             }
 
-            $verifiedAmount = $payment->amount / 100;
+            $verifiedAmount = $order['order_amount'];
+
+            $request->merge([
+                'plan_id'        => $planId,
+                'payment_id'     => $orderId,
+                'amount'         => $verifiedAmount,
+                'payment_method' => 'cashfree',
+            ]);
+
+            return app(InvestmentController::class)->store($request);
+
         } catch (\Exception $e) {
-            return back()->with('error', 'Payment verify nahi ho saka.');
+            Log::error('Cashfree verify exception: ' . $e->getMessage());
+            return back()->with('error', 'Payment verification failed.');
         }
-
-        $request->merge([
-            'payment_id'     => $request->razorpay_payment_id,
-            'amount'         => $verifiedAmount,
-            'payment_method' => 'razorpay', // ← yeh add karo
-        ]);
-
-        return app(InvestmentController::class)->store($request);
     }
 
     /**
-     * Razorpay webhook (set in Razorpay dashboard)
+     * Cashfree webhook
      * URL: /payment/webhook
+     * Cashfree dashboard pe set karo
      */
     public function webhook(Request $request)
     {
-        $webhookSecret = config('services.razorpay.webhook_secret');
-        $signature     = $request->header('X-Razorpay-Signature');
+        $signature  = $request->header('x-webhook-signature');
+        $timestamp  = $request->header('x-webhook-timestamp');
+        $rawBody    = $request->getContent();
+        $secretKey  = config('services.cashfree.secret_key');
 
-        $expectedSig = hash_hmac('sha256', $request->getContent(), $webhookSecret);
+        $signedPayload = $timestamp . $rawBody;
+        $expectedSig   = base64_encode(hash_hmac('sha256', $signedPayload, $secretKey, true));
 
-        if (!hash_equals($expectedSig, $signature)) {
-            Log::warning('Invalid Razorpay webhook signature');
+        if ($signature !== $expectedSig) {
+            Log::warning('Invalid Cashfree webhook signature');
             return response('Unauthorized', 401);
         }
 
-        $event = $request->input('event');
-        Log::info('Razorpay webhook: ' . $event);
+        $event = $request->input('type');
+        Log::info('Cashfree webhook: ' . $event);
 
-        // Handle specific events
-        if ($event === 'payment.failed') {
-            $paymentId = $request->input('payload.payment.entity.id');
-            Transaction::where('payment_id', $paymentId)->update(['status' => 'failed']);
+        if ($event === 'PAYMENT_FAILED') {
+            $orderId = $request->input('data.order.order_id');
+            Transaction::where('payment_id', $orderId)
+                ->update(['status' => 'failed']);
         }
 
         return response('OK', 200);

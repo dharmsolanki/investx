@@ -48,34 +48,38 @@ Route::post('/logout', [LoginController::class, 'logout'])->name('logout')->midd
 // ─── User Routes (auth required) ───────────────────────────
 Route::middleware(['auth'])->group(function () {
 
-    // Dashboard
     Route::get('/dashboard',         [DashboardController::class, 'index'])->name('dashboard');
     Route::get('/kyc',               [DashboardController::class, 'kyc'])->name('kyc');
     Route::post('/kyc',              [DashboardController::class, 'updateKyc'])->name('kyc.update');
 
-    // Investment Plans & Investing
     Route::get('/plans',             [InvestmentController::class, 'plans'])->name('plans');
     Route::get('/invest/{plan}',     [InvestmentController::class, 'showInvestForm'])->name('investments.form');
     Route::post('/invest',           [InvestmentController::class, 'store'])->name('investments.store');
     Route::get('/my-investments',    [InvestmentController::class, 'myInvestments'])->name('investments.my');
     Route::get('/calculate-profit',  [InvestmentController::class, 'calculate'])->name('investments.calculate');
 
-    // Payments (Razorpay)
-    Route::post('/payment/create-order',  [PaymentController::class, 'createOrder'])->name('payment.order');
-    Route::post('/payment/verify',        [PaymentController::class, 'verifyPayment'])->name('payment.verify');
+    // Cashfree Payments
+    Route::post('/payment/create-order', [PaymentController::class, 'createOrder'])->name('payment.order');
+    Route::get('/payment/verify',        [PaymentController::class, 'verifyPayment'])->name('payment.verify');
+
+    // Wallet
+    Route::get('/wallet',                [WalletController::class, 'index'])->name('wallet.index');
+    Route::post('/wallet/topup/order',   [WalletController::class, 'topupOrder'])->name('wallet.topup.order');
+    Route::get('/wallet/topup/verify',   [WalletController::class, 'topupVerify'])->name('wallet.topup.verify');
+    Route::post('/wallet/withdraw',      [WalletController::class, 'withdrawRequest'])->name('wallet.withdraw');
 
     // Withdrawals
-    Route::get('/withdrawals',            [WithdrawalController::class, 'index'])->name('withdrawals.index');
-    Route::post('/withdrawals/request',   [WithdrawalController::class, 'request'])->name('withdrawals.request');
-    // Wallet
-    Route::get('/wallet',                    [WalletController::class, 'index'])->name('wallet.index');
-    Route::post('/wallet/topup/order',       [WalletController::class, 'topupOrder'])->name('wallet.topup.order');
-    Route::post('/wallet/topup/verify',      [WalletController::class, 'topupVerify'])->name('wallet.topup.verify');
-    Route::post('/wallet/withdraw',          [WalletController::class, 'withdrawRequest'])->name('wallet.withdraw');
+    Route::get('/withdrawals',           [WithdrawalController::class, 'index'])->name('withdrawals.index');
+    Route::post('/withdrawals/request',  [WithdrawalController::class, 'request'])->name('withdrawals.request');
 
     // Review
     Route::post('/review', [ReviewController::class, 'store'])->name('review.store');
 });
+
+// Cashfree webhook (no CSRF, no auth)
+Route::post('/payment/webhook', [PaymentController::class, 'webhook'])
+    ->name('payment.webhook')
+    ->withoutMiddleware([\App\Http\Middleware\VerifyCsrfToken::class]);
 
 // Razorpay webhook (no CSRF, no auth)
 Route::post('/payment/webhook', [PaymentController::class, 'webhook'])

@@ -138,8 +138,7 @@
             <button onclick="initiateTopup()" class="btn btn-gold btn-block">
                 🔒 Pay & Add to Wallet
             </button>
-            <p style="text-align:center;font-size:0.72rem;color:var(--muted);margin-top:0.6rem">Powered by Razorpay ·
-                Instant Credit</p>
+            <p style="text-align:center;font-size:0.72rem;color:var(--muted);margin-top:0.6rem">Powered by Cashfree · Instant Credit</p>
         </div>
 
         {{-- Withdraw to Bank --}}
@@ -314,8 +313,10 @@
 @endsection
 
 @push('scripts')
-    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+    <script src="https://sdk.cashfree.com/js/v3/cashfree.js"></script>
     <script>
+        const cfEnv = "{{ config('services.cashfree.env') === 'production' ? 'production' : 'sandbox' }}";
+
         async function initiateTopup() {
             const amount = document.getElementById('topupAmount').value;
             if (!amount || amount < 100) {
@@ -330,9 +331,7 @@
                         'Content-Type': 'application/json',
                         'X-CSRF-TOKEN': document.querySelector('meta[name=csrf-token]').content,
                     },
-                    body: JSON.stringify({
-                        amount
-                    }),
+                    body: JSON.stringify({ amount }),
                 });
 
                 const order = await res.json();
@@ -341,50 +340,13 @@
                     return;
                 }
 
-                const options = {
-                    key: order.key,
-                    amount: order.amount,
-                    currency: order.currency,
-                    name: order.name,
-                    description: 'Wallet Top-up',
-                    order_id: order.order_id,
-                    prefill: {
-                        name: order.user_name,
-                        email: order.user_email,
-                        contact: order.user_phone,
-                    },
-                    theme: {
-                        color: '#C9A84C'
-                    },
-                    handler: function(response) {
-                        const form = document.createElement('form');
-                        form.method = 'POST';
-                        form.action = '{{ route('wallet.topup.verify') }}';
+                // Cashfree checkout open karo
+                const cashfree = await load({ mode: cfEnv });
 
-                        const fields = {
-                            '_token': '{{ csrf_token() }}',
-                            'razorpay_order_id': response.razorpay_order_id,
-                            'razorpay_payment_id': response.razorpay_payment_id,
-                            'razorpay_signature': response.razorpay_signature,
-                            'amount': amount,
-                        };
-
-                        Object.entries(fields).forEach(([name, val]) => {
-                            const el = document.createElement('input');
-                            el.type = 'hidden';
-                            el.name = name;
-                            el.value = val;
-                            form.appendChild(el);
-                        });
-
-                        document.body.appendChild(form);
-                        form.submit();
-                    }
-                };
-
-                const rzp = new Razorpay(options);
-                rzp.on('payment.failed', (resp) => alert('Payment failed: ' + resp.error.description));
-                rzp.open();
+                cashfree.checkout({
+                    paymentSessionId: order.payment_session_id,
+                    redirectTarget:   '_self',
+                });
 
             } catch (e) {
                 console.error(e);

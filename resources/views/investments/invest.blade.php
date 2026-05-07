@@ -18,7 +18,7 @@
                     @csrf
                     <input type="hidden" name="plan_id" value="{{ $plan->id }}">
                     <input type="hidden" name="payment_id" id="paymentId">
-                    <input type="hidden" name="payment_method" id="hiddenPaymentMethod" value="razorpay">
+                    <input type="hidden" name="payment_method" id="hiddenPaymentMethod" value="cashfree">
 
                     <div class="form-group">
                         <label class="form-label">Contribution Amount (₹)</label>
@@ -44,9 +44,9 @@
                                 style="display:flex;align-items:center;gap:0.8rem;cursor:pointer;
                                background:var(--dark4);border:2px solid var(--gold);
                                border-radius:10px;padding:0.9rem 1.2rem;flex:1"
-                                id="razorpay-option">
-                                <input type="radio" name="pay_choice" value="razorpay" id="pay-razorpay" checked
-                                    onchange="togglePaymentMethod('razorpay')">
+                                id="cashfree-option">
+                                <input type="radio" name="pay_choice" value="cashfree" id="pay-cashfree" checked
+                                    onchange="togglePaymentMethod('cashfree')">
                                 <span>
                                     💳 Online Payment
                                     <span style="font-size:0.72rem;color:var(--muted);display:block">UPI · Card ·
@@ -116,8 +116,9 @@
                         style="font-size:1rem;padding:0.9rem">
                         🔒 Secure Payment Karein
                     </button>
-                    <p style="text-align:center;font-size:0.72rem;color:var(--muted);margin-top:0.6rem">Powered by Razorpay
-                        · SSL Secured · Instant Confirmation</p>
+                    <p style="text-align:center;font-size:0.72rem;color:var(--muted);margin-top:0.6rem">
+                        Powered by Cashfree · SSL Secured · Instant Confirmation
+                    </p>
                 </form>
             @endif
         </div>
@@ -158,9 +159,11 @@
 @endsection
 
 @push('scripts')
-    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+    {{-- Cashfree JS SDK --}}
+    <script src="https://sdk.cashfree.com/js/v3/cashfree.js"></script>
     <script>
         const planId = {{ $plan->id }};
+        const cfEnv  = "{{ config('services.cashfree.env') === 'production' ? 'production' : 'sandbox' }}";
 
         function fmt(n) {
             return '₹' + parseFloat(n).toLocaleString('en-IN', {
@@ -170,15 +173,13 @@
 
         function togglePaymentMethod(val) {
             document.getElementById('hiddenPaymentMethod').value = val;
-
-            const razorpayLabel = document.getElementById('razorpay-option');
+            const cfLabel     = document.getElementById('cashfree-option');
             const walletLabel = document.getElementById('wallet-option');
-
             if (val === 'wallet') {
-                razorpayLabel.style.borderColor = 'var(--border)';
+                cfLabel.style.borderColor     = 'var(--border)';
                 walletLabel.style.borderColor = 'var(--gold)';
             } else {
-                razorpayLabel.style.borderColor = 'var(--gold)';
+                cfLabel.style.borderColor     = 'var(--gold)';
                 walletLabel.style.borderColor = 'var(--border)';
             }
         }
@@ -187,14 +188,14 @@
             if (!amount || amount < 1) return;
             try {
                 const res = await fetch(`{{ route('investments.calculate') }}?plan_id=${planId}&amount=${amount}`);
-                const d = await res.json();
-                document.getElementById('s-principal').textContent = fmt(d.principal);
-                document.getElementById('s-daily').textContent = fmt(d.daily_earning);
-                document.getElementById('s-daily-fee').textContent = fmt(d.daily_fee);
-                document.getElementById('s-net-daily').textContent = fmt(d.net_daily_earning);
-                document.getElementById('s-days').textContent = d.days;
+                const d   = await res.json();
+                document.getElementById('s-principal').textContent      = fmt(d.principal);
+                document.getElementById('s-daily').textContent          = fmt(d.daily_earning);
+                document.getElementById('s-daily-fee').textContent      = fmt(d.daily_fee);
+                document.getElementById('s-net-daily').textContent      = fmt(d.net_daily_earning);
+                document.getElementById('s-days').textContent           = d.days;
                 document.getElementById('s-total-earnings').textContent = fmt(d.total_earnings);
-                document.getElementById('s-total').textContent = fmt(d.total_return);
+                document.getElementById('s-total').textContent          = fmt(d.total_return);
             } catch (e) {
                 console.error(e);
             }
@@ -217,7 +218,7 @@
                 return;
             }
 
-            // Razorpay flow
+            // Cashfree flow
             try {
                 const res = await fetch('{{ route('payment.order') }}', {
                     method: 'POST',
@@ -225,16 +226,13 @@
                         'Content-Type': 'application/json',
                         'X-CSRF-TOKEN': document.querySelector('meta[name=csrf-token]').content,
                     },
-                    body: JSON.stringify({
-                        plan_id: planId,
-                        amount
-                    }),
+                    body: JSON.stringify({ plan_id: planId, amount }),
                 });
 
                 if (!res.ok) {
                     const text = await res.text();
                     console.error('Server error:', text);
-                    alert('Server error. Please check console.');
+                    alert('Server error. Please try again.');
                     return;
                 }
 
@@ -244,43 +242,15 @@
                     return;
                 }
 
-                const options = {
-                    key: order.key,
-                    amount: order.amount,
-                    currency: order.currency,
-                    name: order.name,
-                    description: 'Trading Participation — {{ $plan->name }}',
-                    order_id: order.order_id,
-                    prefill: {
-                        name: order.user_name,
-                        email: order.user_email,
-                        contact: order.user_phone,
-                    },
-                    theme: {
-                        color: '#C9A84C'
-                    },
-                    handler: function(response) {
-                        document.getElementById('paymentId').value = response.razorpay_payment_id;
+                // Cashfree checkout open karo
+                const cashfree = await load({ mode: cfEnv });
 
-                        const form = document.getElementById('investForm');
-                        const input = (name, val) => {
-                            const el = document.createElement('input');
-                            el.type = 'hidden';
-                            el.name = name;
-                            el.value = val;
-                            form.appendChild(el);
-                        };
-                        input('razorpay_order_id', response.razorpay_order_id);
-                        input('razorpay_payment_id', response.razorpay_payment_id);
-                        input('razorpay_signature', response.razorpay_signature);
-                        form.action = '{{ route('payment.verify') }}';
-                        form.submit();
-                    }
+                const checkoutOptions = {
+                    paymentSessionId: order.payment_session_id,
+                    redirectTarget:   '_self', // same tab mein redirect
                 };
 
-                const rzp = new Razorpay(options);
-                rzp.on('payment.failed', (resp) => alert('Payment failed: ' + resp.error.description));
-                rzp.open();
+                cashfree.checkout(checkoutOptions);
 
             } catch (e) {
                 console.error('Payment error:', e);
