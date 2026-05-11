@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\InvestmentPlan;
 use App\Models\Transaction;
+use App\Http\Controllers\InvestmentController;  // ← ADD
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Http;
