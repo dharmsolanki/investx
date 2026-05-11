@@ -252,7 +252,7 @@
 
                 cashfree.checkout({
                     paymentSessionId: order.payment_session_id,
-                    redirectTarget: '_self',
+                    redirectTarget: '_modal',
                 });
 
             } catch (e) {
