@@ -243,7 +243,7 @@
                 }
 
                 // Cashfree checkout open karo
-                const cashfree = await load({ mode: cfEnv });
+                const cashfree = await Cashfree({ mode: cfEnv });
 
                 const checkoutOptions = {
                     paymentSessionId: order.payment_session_id,
