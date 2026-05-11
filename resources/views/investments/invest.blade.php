@@ -255,8 +255,6 @@
                     redirectTarget: '_self',
                 });
 
-                cashfree.checkout(checkoutOptions);
-
             } catch (e) {
                 console.error('Payment error:', e);
                 alert('Payment gateway error. Please try again.');
