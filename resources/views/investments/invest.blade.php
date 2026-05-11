@@ -163,7 +163,7 @@
     <script src="https://sdk.cashfree.com/js/v3/cashfree.js"></script>
     <script>
         const planId = {{ $plan->id }};
-        const cfEnv  = "{{ config('services.cashfree.env') === 'production' ? 'production' : 'sandbox' }}";
+        const cfEnv = "{{ config('services.cashfree.env') === 'production' ? 'production' : 'sandbox' }}";
 
         function fmt(n) {
             return '₹' + parseFloat(n).toLocaleString('en-IN', {
@@ -173,13 +173,13 @@
 
         function togglePaymentMethod(val) {
             document.getElementById('hiddenPaymentMethod').value = val;
-            const cfLabel     = document.getElementById('cashfree-option');
+            const cfLabel = document.getElementById('cashfree-option');
             const walletLabel = document.getElementById('wallet-option');
             if (val === 'wallet') {
-                cfLabel.style.borderColor     = 'var(--border)';
+                cfLabel.style.borderColor = 'var(--border)';
                 walletLabel.style.borderColor = 'var(--gold)';
             } else {
-                cfLabel.style.borderColor     = 'var(--gold)';
+                cfLabel.style.borderColor = 'var(--gold)';
                 walletLabel.style.borderColor = 'var(--border)';
             }
         }
@@ -188,14 +188,14 @@
             if (!amount || amount < 1) return;
             try {
                 const res = await fetch(`{{ route('investments.calculate') }}?plan_id=${planId}&amount=${amount}`);
-                const d   = await res.json();
-                document.getElementById('s-principal').textContent      = fmt(d.principal);
-                document.getElementById('s-daily').textContent          = fmt(d.daily_earning);
-                document.getElementById('s-daily-fee').textContent      = fmt(d.daily_fee);
-                document.getElementById('s-net-daily').textContent      = fmt(d.net_daily_earning);
-                document.getElementById('s-days').textContent           = d.days;
+                const d = await res.json();
+                document.getElementById('s-principal').textContent = fmt(d.principal);
+                document.getElementById('s-daily').textContent = fmt(d.daily_earning);
+                document.getElementById('s-daily-fee').textContent = fmt(d.daily_fee);
+                document.getElementById('s-net-daily').textContent = fmt(d.net_daily_earning);
+                document.getElementById('s-days').textContent = d.days;
                 document.getElementById('s-total-earnings').textContent = fmt(d.total_earnings);
-                document.getElementById('s-total').textContent          = fmt(d.total_return);
+                document.getElementById('s-total').textContent = fmt(d.total_return);
             } catch (e) {
                 console.error(e);
             }
@@ -226,7 +226,10 @@
                         'Content-Type': 'application/json',
                         'X-CSRF-TOKEN': document.querySelector('meta[name=csrf-token]').content,
                     },
-                    body: JSON.stringify({ plan_id: planId, amount }),
+                    body: JSON.stringify({
+                        plan_id: planId,
+                        amount
+                    }),
                 });
 
                 if (!res.ok) {
@@ -243,12 +246,14 @@
                 }
 
                 // Cashfree checkout open karo
-                const cashfree = await Cashfree({ mode: cfEnv });
+                const cashfree = Cashfree({
+                    mode: cfEnv
+                });
 
-                const checkoutOptions = {
+                cashfree.checkout({
                     paymentSessionId: order.payment_session_id,
-                    redirectTarget:   '_self', // same tab mein redirect
-                };
+                    redirectTarget: '_self',
+                });
 
                 cashfree.checkout(checkoutOptions);
 

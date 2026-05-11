@@ -138,7 +138,8 @@
             <button onclick="initiateTopup()" class="btn btn-gold btn-block">
                 🔒 Pay & Add to Wallet
             </button>
-            <p style="text-align:center;font-size:0.72rem;color:var(--muted);margin-top:0.6rem">Powered by Cashfree · Instant Credit</p>
+            <p style="text-align:center;font-size:0.72rem;color:var(--muted);margin-top:0.6rem">Powered by Cashfree ·
+                Instant Credit</p>
         </div>
 
         {{-- Withdraw to Bank --}}
@@ -331,7 +332,9 @@
                         'Content-Type': 'application/json',
                         'X-CSRF-TOKEN': document.querySelector('meta[name=csrf-token]').content,
                     },
-                    body: JSON.stringify({ amount }),
+                    body: JSON.stringify({
+                        amount
+                    }),
                 });
 
                 const order = await res.json();
@@ -341,11 +344,13 @@
                 }
 
                 // Cashfree checkout open karo
-                const cashfree = await Cashfree({ mode: cfEnv });
+                const cashfree = Cashfree({
+                    mode: cfEnv
+                });
 
                 cashfree.checkout({
                     paymentSessionId: order.payment_session_id,
-                    redirectTarget:   '_self',
+                    redirectTarget: '_self',
                 });
 
             } catch (e) {
